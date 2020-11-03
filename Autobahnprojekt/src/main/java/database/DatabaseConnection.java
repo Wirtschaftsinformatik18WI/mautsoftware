@@ -33,6 +33,20 @@ public class DatabaseConnection {
 			}
 		}
 		
+// alle Fahrezuge abrufen die zu einem Benutzer gehören - Rückgabe bitte als Arraylist oder ähnliches
+		
+		public void getVehicle() {
+			
+		}
+	
+// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
+		
+		public void getTransit() {
+			
+		}
+		
+// 
+		
 		public boolean addFeeTest(String feename, UUID feeid, double d) {
 			if (conn == null) {
 				return false;
