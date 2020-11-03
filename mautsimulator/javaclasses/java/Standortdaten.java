@@ -13,8 +13,31 @@ public class Standortdaten {
 		Abfahrt, Durchfahrt
 	}
 	
+	
+	public Standortdaten(String standort, String kennzeichen, String kfzLand, String datum, String zeit, Peilsendertyp typ) {
+		this.standort = standort;
+		this.kennzeichen = kennzeichen;
+		this.kfzLand = kfzLand;
+		this.datum = datum;
+		this.zeit = zeit;
+		this.typ = typ;
+	}
+	
+	
+	
 	public void senden() {
 		
+	}
+	
+	public void ausgeben() {
+		String s = "Standort: " + standort + "\n" +
+				   "Datum: " + datum + "\n" +
+				   "Zeit: " + zeit + "\n" +
+				   "Peilsendertyp: " + typ + "\n" +
+				   "Kennzeichen: " + kennzeichen + "\n" +
+				   "KFZ-Land: " + kfzLand;
+		
+		System.out.print(s);
 	}
 	
 	public void convertToJson() {
@@ -55,7 +78,4 @@ public class Standortdaten {
 	public void setZeit(String zeit) {
 		this.zeit = zeit;
 	}
-	
-	
-
 }
