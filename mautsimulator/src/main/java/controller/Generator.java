@@ -12,12 +12,21 @@ public class Generator {
 	ArrayList<Vehicle> vehicleList = new ArrayList<Vehicle>();
 
 
-	public void generateVehicle() {
+	public ArrayList<Vehicle> generateVehicle() {
 		
-			User user = new User("0001", "Mustermann", "Max", "Musterstraße", "02826", "40", "Musterstadt", "0123456789");
-			Vehicle vehicle = new Vehicle(Origin.DE, "DD-KM-500", user);
-			vehicleList.add(vehicle);
+			User user1 = new User("0001", "Mustermann", "Max", "Musterstraße", "02826", "40", "Musterstadt", "0123456789");
+			Vehicle vehicle1 = new Vehicle(Origin.DE, "DD-KM-500", user1);
+			vehicleList.add(vehicle1);
+			
+			User user2 = new User("0002", "Müller", "Paul", "Blumenweg", "03056", "32", "Berlin", "0123456789");
+			Vehicle vehicle2 = new Vehicle(Origin.DE, "DD-KM-500", user2);
+			vehicleList.add(vehicle2);
+			
+			User user3 = new User("0001", "Hempel", "Jens", "Fuchsweg", "04826", "6", "Löbau", "0123456789");
+			Vehicle vehicle3 = new Vehicle(Origin.DE, "DD-KM-500", user3);
+			vehicleList.add(vehicle3);
+			
+			
+			return vehicleList; 
 	}
-	
-
 }
