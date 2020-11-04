@@ -14,21 +14,23 @@ public class Zeit {
 	private Calendar calendar;
 	
 
-	public int getAktualTime() {
-		Calendar.getInstance();
+
+	public String getAktualTime() {
+		calendar = Calendar.getInstance();
 		hour = calendar.get(Calendar.HOUR);
 		minute = calendar.get(Calendar.MINUTE);
 		second = calendar.get(Calendar.SECOND);
-		return hour + minute + second;
+		String time = hour + ":" + minute + ":" + second;
+		return time;
 	}
 	
-	public void startSimulationTime() {
+	public void startSimulationTime(int hour, int minute, int second) {
+		
+		//Schleife
+		
 		
 		
 	}
-	
-	
-	
 	
 
 	public int getDay() {

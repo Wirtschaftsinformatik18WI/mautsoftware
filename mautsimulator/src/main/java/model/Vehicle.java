@@ -17,11 +17,6 @@ public class Vehicle {
         this.user = user;
     }
 
-    
-    
-    
-    
-    
 	public Origin getOrigin() {
 		return origin;
 	}
