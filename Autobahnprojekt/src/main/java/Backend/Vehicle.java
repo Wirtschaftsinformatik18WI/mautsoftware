@@ -7,11 +7,13 @@ public class Vehicle {
     private String registrationNumber = new String();
     private ArrayList<String> transitList = new ArrayList<>();
     private Position lastPos;
-    private Position acuallPos;    
+    private Position acuallPos;
+    private Person person;
     
-    public Vehicle (Origin origin, String registrationNumber) {
+    public Vehicle (Origin origin, String registrationNumber, Person person) {
         this.origin = origin;
         this.registrationNumber = registrationNumber;
+        this.person = person;
     }
 
     
