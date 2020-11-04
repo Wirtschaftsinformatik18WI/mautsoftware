@@ -1,6 +1,6 @@
 package Backend;
 
-public class Person {
+public class User {
 	private String name;
 	private String surname;
 	private String ID;
@@ -9,10 +9,11 @@ public class Person {
 	private String hnumber;
 	private String city;
 	private String telephone;
+	private String eMail;
 	private boolean firma;
 	
 	
-	public Person (String ID, String name, String surname, String street, String postcode,
+	public User (String ID, String name, String surname, String street, String postcode,
 			String hnumber, String city, String telephone) {
 		
 		this.ID = ID;
@@ -25,7 +26,7 @@ public class Person {
 		this.telephone = telephone;
 		this.firma = false;
 		}
-	public Person (String ID, String name, String street, String postcode,
+	public User (String ID, String name, String street, String postcode,
 			String hnumber, String city, String telephone) {
 		this.ID = ID;
 		this.name = name;
@@ -92,6 +93,12 @@ public class Person {
 	}
 	public String getID() {
 		return ID;
+	}
+	public String geteMail() {
+		return eMail;
+	}
+	public void seteMail(String eMail) {
+		this.eMail = eMail;
 	}
 	
 	

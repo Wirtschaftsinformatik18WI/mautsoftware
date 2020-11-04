@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
+import Backend.Position;
+
 public class DatabaseConnection {
 
 		Connection conn = null; 
@@ -48,6 +50,14 @@ public class DatabaseConnection {
 		
 		public void getUserData(String userID) {
 			
+		}
+		
+// get km aus zwei gegebenen Punkten
+		public double getKM(Position startPO, Position endPO) {
+			
+			double km;
+			km = 250.0;
+			return km;
 		}
 		
 		

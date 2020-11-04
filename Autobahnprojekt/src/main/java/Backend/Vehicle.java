@@ -8,12 +8,12 @@ public class Vehicle {
     private ArrayList<String> transitList = new ArrayList<>();
     private Position lastPos;
     private Position acuallPos;
-    private Person person;
+    private User user;
     
-    public Vehicle (Origin origin, String registrationNumber, Person person) {
+    public Vehicle (Origin origin, String registrationNumber, User user) {
         this.origin = origin;
         this.registrationNumber = registrationNumber;
-        this.person = person;
+        this.user = user;
     }
 
     

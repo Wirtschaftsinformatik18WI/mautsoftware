@@ -2,6 +2,8 @@ package Backend;
 
 import java.util.Date;
 
+import database.DatabaseConnection;
+
 public class Transit {
 
 	private Position startPO;
@@ -10,14 +12,28 @@ public class Transit {
 	private Date endDate;
 	private double km;
 	
-	
-	
+	private DatabaseConnection dbconnection = new DatabaseConnection();
 	
 	public Transit(Position startPO, Date startDate) {
 		this.startPO = startPO;
 		this.startDate = startDate;
 	}
 
+	
+	
+	private void addEndPoint(Position endpoint) {
+		setEndPO(endpoint);
+	}
+	
+	private double getKmFromStartPOToEndPO(Position startPO, Position endPO) {
+		
+		km = dbconnection.getKM(startPO, endPO);
+		return km;
+	}
+	
+	
+	
+	
 	public Position getStartPO() {
 		return startPO;
 	}

@@ -1,15 +1,17 @@
 package Backend;
 
+import java.util.UUID;
+
 public class Position {
-	private String positionID;
+	private UUID positionID;
 	private String description;
 	
-	public Position(String positionID, String description) {
+	public Position(UUID positionID, String description) {
 		this.positionID = positionID;
 		this.description = description;
 	}
 
-	public String getPositionID() {
+	public UUID getPositionID() {
 		return positionID;
 	}
 
