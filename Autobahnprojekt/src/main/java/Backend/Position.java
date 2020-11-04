@@ -3,15 +3,15 @@ package Backend;
 import java.util.UUID;
 
 public class Position {
-	private UUID positionID;
+	private String positionID;
 	private String description;
 	
-	public Position(UUID positionID, String description) {
+	public Position(String positionID, String description) {
 		this.positionID = positionID;
 		this.description = description;
 	}
 
-	public UUID getPositionID() {
+	public String getPositionID() {
 		return positionID;
 	}
 
