@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.UUID;
 
+import Backend.Position;
+
 public class DatabaseConnection {
 
 		Connection conn = null; 
@@ -32,6 +34,32 @@ public class DatabaseConnection {
 				}
 			}
 		}
+		
+// alle Fahrezuge abrufen die zu einem Benutzer gehören - Rückgabe bitte als Arraylist oder ähnliches
+		
+		public void getVehicle(String vehucleID) {
+			
+		}
+	
+// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
+		
+		public void getTransit(String transitID) {
+			
+		}
+// Get alle Daten von einer Person - Rückgabe einer Person bitte
+		
+		public void getUserData(String userID) {
+			
+		}
+		
+// get km aus zwei gegebenen Punkten
+		public double getKM(Position startPO, Position endPO) {
+			
+			double km;
+			km = 250.0;
+			return km;
+		}
+		
 		
 		public boolean addFeeTest(String feename, UUID feeid, double d) {
 			if (conn == null) {
