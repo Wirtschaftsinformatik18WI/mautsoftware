@@ -27,9 +27,23 @@ public class User {
 		this.telephone = telephone;
 		this.firma = false;
 		}
+	public User (String ID, String name, String street, String postcode,
+			String hnumber, String city, String telephone) {
+		this.ID = ID;
+		this.name = name;
+		this.street = street;
+		this.postcode = postcode;
+		this.hnumber = hnumber;
+		this.city = city;
+		this.telephone = telephone;
+		this.firma = true;
+	}
 	
 	
-
+	
+	
+	
+	
 	public String getName() {
 		return name;
 	}

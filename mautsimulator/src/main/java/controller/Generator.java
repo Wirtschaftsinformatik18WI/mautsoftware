@@ -28,5 +28,6 @@ public class Generator {
 			
 			
 			return vehicleList; 
+
 	}
 }
