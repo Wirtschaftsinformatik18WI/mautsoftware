@@ -1,4 +1,4 @@
-package java;
+package backend;
 
 public class Standortdaten {
 	
@@ -14,13 +14,13 @@ public class Standortdaten {
 	}
 	
 	
-	public Standortdaten(String standort, String kennzeichen, String kfzLand, String datum, String zeit, Peilsendertyp typ) {
+	public Standortdaten(String standort, String kennzeichen, String kfzLand, String datum, String zeit, Peilsendertyp durchfahrt) {
 		this.standort = standort;
 		this.kennzeichen = kennzeichen;
 		this.kfzLand = kfzLand;
 		this.datum = datum;
 		this.zeit = zeit;
-		this.typ = typ;
+		this.typ = durchfahrt;
 	}
 	
 	

@@ -1,6 +1,6 @@
-package java;
+package backend;
 
-import java.Standortdaten.Peilsendertyp;
+import backend.Standortdaten.Peilsendertyp;
 
 public class Simulation {
 	
@@ -11,5 +11,6 @@ public class Simulation {
 	
 		standortdaten.ausgeben();
 		
+		System.out.println("test");
 	}
 }
