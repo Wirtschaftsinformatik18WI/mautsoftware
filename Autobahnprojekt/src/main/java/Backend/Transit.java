@@ -34,12 +34,14 @@ public class Transit {
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("D")) {
 			this.endPO = this.startPO;
 			this.startPO = point;
+			getKmFromStartPOToEndPO(endPO, startPO);
 			//Berechung Where -> KM aus der DB holen
 			
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
 			this.endPO = this.startPO;
 			this.startPO = point;
 			this.absolutEndPosition = point;
+			getKmFromStartPOToEndPO(endPO, startPO);
 			//Berechung Where -> KM aus der DB holen
 		}
 	}
