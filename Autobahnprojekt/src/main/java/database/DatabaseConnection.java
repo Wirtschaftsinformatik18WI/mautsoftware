@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.UUID;
 
 import Backend.Position;
+import Backend.Vehicle;
 
 public class DatabaseConnection {
 
@@ -37,9 +38,23 @@ public class DatabaseConnection {
 		
 // alle Fahrezuge abrufen die zu einem Benutzer gehören - Rückgabe bitte als Arraylist oder ähnliches
 		
-		public void getVehicle(String vehucleID) {
+		public void getVehicle(String vehicleID) {
 			
 		}
+		
+// Fahrzeug erstellen
+		
+		public void createVehicle(Vehicle newVehicle) {
+			
+		}
+		
+// Fahrzeug löschen
+		
+		public void deleteVehicle(String vehicleID) {
+			
+		}
+		
+		
 	
 // Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
 		
