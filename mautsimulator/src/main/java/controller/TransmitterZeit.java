@@ -2,9 +2,8 @@ package controller;
 
 import java.util.TimerTask;
 import model.TransmitterData;
-import model.TransmitterTyp;
 
-public class Task extends TimerTask{
+public class TransmitterZeit extends TimerTask{
 
 	@Override
 	public void run() {
@@ -12,6 +11,8 @@ public class Task extends TimerTask{
 		TransmitterData data = new TransmitterData();
 		Simulationszeit simulationszeit = new Simulationszeit();
 		Generator gen = new Generator();
+		
+		String zeit = simulationszeit.getSimulTime();
 		
 		//Zeitdaten
 		data.setTime(simulationszeit.getSimulTime());
@@ -30,7 +31,7 @@ public class Task extends TimerTask{
 		System.out.println("Auto passiert Mautsäule");
 		System.out.println("Standortdaten:");
 		System.out.println("Location:");
-		System.out.println("Zeit: " + data.getTime());
+		System.out.println("Zeit: " + simulationszeit.getSimulTime());
 		System.out.println("Datum: " + data.getDate());
 		System.out.println("Kennzeichen: " + data.getRegistrationNumber());
 		System.out.println("Herkunftsland: " + data.getOrigin());
@@ -38,11 +39,13 @@ public class Task extends TimerTask{
 		System.out.println("------------------------------");
 		
 		
+		/*
 		//Test ob eine Abfahrt passiert wurde
 		if(data.getTyp().equals(TransmitterTyp.Abfahrt)){
 			System.out.println("Auto abgefahren!");
 			//Task canceln
 		}
+		*/
 				
 		
 	}
