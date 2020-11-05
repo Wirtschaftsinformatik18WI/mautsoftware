@@ -27,6 +27,12 @@ public class testclassforProgramm {
 	private Transit transit1 = new Transit(point1, date1);
 	
 	
+	private void createAvehicle() {
+		testfahrzeug.setAcuallPos(point1);
+	}
+	
+	
+	
 	
 	
 	
