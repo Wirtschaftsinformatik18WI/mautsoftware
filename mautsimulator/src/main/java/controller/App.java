@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Timer;
 import model.Vehicle;
 import model.Zeit;
+import controller.Generator;
 
 public class App {
 
@@ -22,6 +23,9 @@ public class App {
 		System.out.println("");
 		Zeit zeit = new Zeit();
 		System.out.println("Das erste Auto mit dem Kennzeichen: " + gen.generateVehicle().get(0).getRegistrationNumber() + " fährt um " + zeit.getAktualTime() + " los!");
+	
+		Generator gen1 = new Generator();
+		
 	}
 	
 	
