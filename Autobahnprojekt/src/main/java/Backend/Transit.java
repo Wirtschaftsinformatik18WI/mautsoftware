@@ -23,17 +23,20 @@ public class Transit {
 		this.startDate = LocalDate.parse(startDate.toString(), dateTimeFormatter);
 	}
 
-	private void filterPoint(Position point) {
+	private void filterPoint(Position point, Vehicle vehicle) {
 		if(startPO == null) {
 			if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
 				//TODO  Fehlermeldung
 			}else {
+				vehicle.setLastPos(point);
 				this.startPO = point;
 				this.absolutStartPosition = point;
 			} 
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("D")) {
 			this.endPO = this.startPO;
 			this.startPO = point;
+			vehicle.setLastPos(startPO);
+			vehicle.setAcuallPos(endPO);
 			getKmFromStartPOToEndPO(endPO, startPO);
 			//Berechung Where -> KM aus der DB holen
 			
@@ -41,6 +44,8 @@ public class Transit {
 			this.endPO = this.startPO;
 			this.startPO = point;
 			this.absolutEndPosition = point;
+			vehicle.setLastPos(startPO);
+			vehicle.setAcuallPos(endPO);
 			getKmFromStartPOToEndPO(endPO, startPO);
 			//Berechung Where -> KM aus der DB holen
 		}

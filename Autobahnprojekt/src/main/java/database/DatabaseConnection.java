@@ -10,6 +10,7 @@ import java.sql.Statement;
 import java.util.UUID;
 
 import Backend.Position;
+import Backend.User;
 import Backend.Vehicle;
 
 public class DatabaseConnection {
@@ -35,6 +36,18 @@ public class DatabaseConnection {
 				}
 			}
 		}
+		
+//Nutzer erstellen
+		
+		public void createUser(User newUser) {
+			
+		}
+		
+//Nutzer bearbeiten
+		public void editUser (User User) {
+			
+		}
+		
 		
 // alle Fahrezuge abrufen die zu einem Benutzer gehören - Rückgabe bitte als Arraylist oder ähnliches
 		
