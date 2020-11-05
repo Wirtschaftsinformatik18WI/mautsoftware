@@ -1,19 +1,16 @@
 package controller;
 
-import java.util.Calendar;
 import java.util.Timer;
 import model.Vehicle;
-import model.Zeit;
-import controller.Generator;
 
 public class App {
 
 	public static void main(String[] args) {
 		
-		
 		System.out.println("Simulation startet");
 		System.out.println("");
 		System.out.println("Folgende Autos werden generiert:");
+		System.out.println("");
 		
 		Generator gen = new Generator();
 		for (Vehicle v : gen.generateVehicle()) {
@@ -21,18 +18,23 @@ public class App {
 		}
 		
 		System.out.println("");
-		Zeit zeit = new Zeit();
-		System.out.println("Das erste Auto mit dem Kennzeichen: " + gen.generateVehicle().get(0).getRegistrationNumber() + " fährt um " + zeit.getAktualTime() + " los!");
-	
-		Generator gen1 = new Generator();
 		
-	}
-	
-	
-}
+		//Simulationszeit starten
+		Timer simulTimer = new Timer();
+		Simulationszeit simulationszeit = new Simulationszeit();
+		simulationszeit.setHour(12);
+		simulationszeit.setMinute(00);
+		simulationszeit.setSecond(00);
+		System.out.println("Startzeit: " + simulationszeit.getSimulTime());
+		System.out.println("");
+		simulTimer.schedule(simulationszeit, 0, 500);
 		
 		
-		/*Timer timer = new Timer();
+		//Fahrt der Autos starten und Standortdaten sammeln
+		Timer transmitterTimer = new Timer();
+		TransmitterZeit transmitterZeit = new TransmitterZeit();
+		System.out.println("Abfrage der Transmitterdaten startet!");
+		transmitterTimer.schedule(transmitterZeit, 2000, 4000);
 		
-		timer.schedule(new Task(), 2000, 5000);*/
-		
+	}				
+}	

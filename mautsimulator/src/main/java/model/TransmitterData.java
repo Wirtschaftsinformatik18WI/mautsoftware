@@ -3,18 +3,18 @@ package model;
 
 public class TransmitterData {
 	
-	private String location;
+	private Location location;
 	private String registrationNumber;
-	private String origin;
+	private Origin origin;
 	private String date;
 	private String time;
 	private TransmitterTyp typ;
 	
 	
-	public String getLocation() {
+	public Location getLocation() {
 		return location;
 	}
-	public void setLocation(String location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
 	public String getRegistrationNumber() {
@@ -23,10 +23,10 @@ public class TransmitterData {
 	public void setRegistrationNumber(String registrationNumber) {
 		this.registrationNumber = registrationNumber;
 	}
-	public String getOrigin() {
+	public Origin getOrigin() {
 		return origin;
 	}
-	public void setOrigin(String origin) {
+	public void setOrigin(Origin origin) {
 		this.origin = origin;
 	}
 	public String getDate() {
