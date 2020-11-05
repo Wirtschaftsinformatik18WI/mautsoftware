@@ -28,8 +28,6 @@ public class App {
 }
 		
 		
-	
-		
 		/*Timer timer = new Timer();
 		
 		timer.schedule(new Task(), 2000, 5000);*/
