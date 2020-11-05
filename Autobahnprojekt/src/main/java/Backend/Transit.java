@@ -12,7 +12,7 @@ public class Transit {
 	private Position endPO;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	private double km;
+	private double km = 0;
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - hh:mm");
 	private Position absolutStartPosition;
 	private Position absolutEndPosition;
@@ -56,7 +56,7 @@ public class Transit {
 	
 	private double getKmFromStartPOToEndPO(Position startPO, Position endPO) {
 		
-		km = dbconnection.getKM(startPO, endPO);
+		km += dbconnection.getKM(startPO, endPO);
 		return km;
 	}
 	
