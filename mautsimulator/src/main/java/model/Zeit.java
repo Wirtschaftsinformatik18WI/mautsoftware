@@ -24,6 +24,16 @@ public class Zeit {
 		return time;
 	}
 	
+	public String getAktualDate() {
+		calendar = Calendar.getInstance();
+		day = calendar.get(Calendar.DAY_OF_MONTH);
+		month = calendar.get(Calendar.MONTH) + 1;
+		year = calendar.get(Calendar.YEAR);
+		String date = day + "." + month + "." + year;
+		return date;
+		
+	}
+	
 	public void startSimulationTime(int hour, int minute, int second) {
 		
 		//Schleife
