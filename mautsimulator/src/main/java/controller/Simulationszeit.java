@@ -53,11 +53,9 @@ public class Simulationszeit extends TimerTask {
 	
 	
 	public String getSimulTime() {
-		return simulTime;
+		return hour + ":" + minute + ":" + second;
 	}
-	public void setSimulTime(String simulTime) {
-		this.simulTime = simulTime;
-	}
+	
 	public int getHour() {
 		return hour;
 	}

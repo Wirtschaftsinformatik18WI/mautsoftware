@@ -3,20 +3,18 @@ package controller;
 import java.util.TimerTask;
 import model.TransmitterData;
 import model.TransmitterTyp;
-import model.Zeit;
 
 public class Task extends TimerTask{
 
 	@Override
 	public void run() {
 		
-		Zeit zeit = new Zeit();
 		TransmitterData data = new TransmitterData();
+		Simulationszeit simulationszeit = new Simulationszeit();
 		Generator gen = new Generator();
 		
 		//Zeitdaten
-		data.setTime(zeit.getAktualTime());
-		data.setDate(zeit.getAktualDate());
+		data.setTime(simulationszeit.getSimulTime());
 		
 		//KFZ Daten
 		data.setRegistrationNumber(gen.generateVehicle().get(0).getRegistrationNumber());
