@@ -8,13 +8,11 @@ public class Vehicle {
     private String registrationNumber = new String();
     private ArrayList<String> transitList = new ArrayList<>();
     private String lastPos;
-    private String acuallPos;
-    private User user;
+    private String actuallPos;
     
-    public Vehicle (Origin origin, String registrationNumber, User user) {
+    public Vehicle (Origin origin, String registrationNumber) {
         this.origin = origin;
         this.registrationNumber = registrationNumber;
-        this.user = user;
     }
 
 	public Origin getOrigin() {
@@ -50,11 +48,11 @@ public class Vehicle {
 	}
 
 	public String getAcuallPos() {
-		return acuallPos;
+		return actuallPos;
 	}
 
 	public void setAcuallPos(String acuallPos) {
-		this.acuallPos = acuallPos;
+		this.actuallPos = acuallPos;
 	}
 
 }
