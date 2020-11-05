@@ -1,5 +1,5 @@
 package controller;
 
-public class Senden {
+public class Send {
 
 }
