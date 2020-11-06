@@ -60,7 +60,8 @@ public class DatabaseConnection {
 				while ( rs.next() ) {
 					Origin origin = null;
 					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user);
-					vehicle.setAcuallPos(new Position(java.util.UUID.fromString(rs.getString("currentPosition")),getDecriptionFromPositionID(rs.getString("currentPosition"))));
+					//Local Time nicht in db für die Position
+					//vehicle.setAcuallPos(new Position(java.util.UUID.fromString(rs.getString("currentPosition")),rs.getTime(columnLabel))));
 					vehicle.setLastPos(new Position(java.util.UUID.fromString(rs.getString("lastPosition")),getDecriptionFromPositionID(rs.getString("lastPosition"))));
 				}
 				
@@ -196,14 +197,6 @@ public String getDecriptionFromPositionID(String id) {
 			return description;
 		}
 
-//holen aller Fahrzeuge von einem Nutzer - Rückgabe bitte als vehicle[]
-
-		public Vehicle[] getAllVehicleFromUser(User user) {
-			Vehicle[] vehicle = null;
-			
-			return vehicle;
-		}
-		
 		// Ein Fahrzeug mit dem Kennzeichen holen und zurückgeben
 				public Vehicle getVehicleByRegistrationNr(Origin origin, String registrationNr) {
 					Vehicle v = null;
@@ -228,17 +221,17 @@ public String getDecriptionFromPositionID(String id) {
 				}
 				
 				
-		// Get alle Daten von einer Person - Rückgabe einer Person bitte
-				
-			/*	public void getUserData(String userID) {
-					
-				}*/
-				
 		// Neuen Nutzer erstellen
 				
 				public void createNewUser(User user) {
 					
 				}
+				
+		// die Gebühren holen
+				
+		//die Steuer holen
+				
+		//die Gebühren für Live holen
 		
 //Testfunktion:________________________________________________________________________________
 		public boolean addFeeTest(String feename, UUID feeid, double d) {

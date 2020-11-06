@@ -56,7 +56,7 @@ public class TestclassforProgramm {
 		
 		// Rechnung aufbauen und Daten liefern
 		
-		Vehicle[] allvehicle = con.getAllVehicleFromUser(user);
+		//Vehicle[] allvehicle = con.getAllVehicleFromUser(user);
 		ArrayList<Transit> alltransit = new ArrayList<>();
 		
 		for(Vehicle v : allvehicle ) {
