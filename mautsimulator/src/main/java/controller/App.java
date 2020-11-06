@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.Timer;
-import model.DrivingTime;
 import model.Vehicle;
 
 public class App {
@@ -25,30 +24,17 @@ public class App {
 		Simulationszeit simulationszeit = new Simulationszeit();
 		simulationszeit.setHour(12);
 		simulationszeit.setMinute(00);
-		simulationszeit.setSecond(45);
+		simulationszeit.setSecond(00);
 		System.out.println("Startzeit: " + simulationszeit.getSimulTime());
+		System.out.println("");
 		simulTimer.schedule(simulationszeit, 0, 500);
 		
 		
-		System.out.println("");
-		System.out.println("Das erste Auto mit dem Kennzeichen: " + gen.generateVehicle().get(0).getRegistrationNumber() + " fährt um " + simulationszeit.getSimulTime() + " los!");
-		System.out.println("");
+		//Fahrt der Autos starten und Standortdaten sammeln
+		Timer transmitterTimer = new Timer();
+		TransmitterZeit transmitterZeit = new TransmitterZeit();
+		System.out.println("Abfrage der Transmitterdaten startet!");
+		transmitterTimer.schedule(transmitterZeit, 2000, 4000);
 		
-		
-				
-		Timer timer = new Timer();
-		
-		
-		DrivingTime time = new DrivingTime();
-		Task task = new Task();
-		
-		
-		timer.schedule(task, 3000, 1000);
-		task.cancel();
-		
-		
-		
-		
-
 	}				
 }	

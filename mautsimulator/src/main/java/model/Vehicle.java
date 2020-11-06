@@ -7,14 +7,12 @@ public class Vehicle {
 	private Origin origin;
     private String registrationNumber = new String();
     private ArrayList<String> transitList = new ArrayList<>();
-    private Position lastPos;
-    private Position acuallPos;
-    private User user;
+    private String lastPos;
+    private String actuallPos;
     
-    public Vehicle (Origin origin, String registrationNumber, User user) {
+    public Vehicle (Origin origin, String registrationNumber) {
         this.origin = origin;
         this.registrationNumber = registrationNumber;
-        this.user = user;
     }
 
 	public Origin getOrigin() {
@@ -41,20 +39,20 @@ public class Vehicle {
 		this.transitList = transitList;
 	}
 
-	public Position getLastPos() {
+	public String getLastPos() {
 		return lastPos;
 	}
 
-	public void setLastPos(Position lastPos) {
+	public void setLastPos(String lastPos) {
 		this.lastPos = lastPos;
 	}
 
-	public Position getAcuallPos() {
-		return acuallPos;
+	public String getAcuallPos() {
+		return actuallPos;
 	}
 
-	public void setAcuallPos(Position acuallPos) {
-		this.acuallPos = acuallPos;
+	public void setAcuallPos(String acuallPos) {
+		this.actuallPos = acuallPos;
 	}
 
 }

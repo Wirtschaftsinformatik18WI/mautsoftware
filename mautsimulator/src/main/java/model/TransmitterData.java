@@ -11,6 +11,19 @@ public class TransmitterData {
 	private TransmitterTyp typ;
 	
 	
+	public TransmitterData(Location location, String reg, Origin origin, String date, String time, TransmitterTyp typ) {
+		this.location = location;
+		this.registrationNumber = reg;
+		this.origin = origin;
+		this.date = date;
+		this.time = time;
+		this.typ = typ;
+	}
+	
+	public TransmitterData() {
+		
+	}
+	
 	public Location getLocation() {
 		return location;
 	}

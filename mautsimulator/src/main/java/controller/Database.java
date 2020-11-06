@@ -15,7 +15,7 @@ public class Database {
 	public void DatabaseConnection () {
 		try {
 			Class.forName("org.postgresql.Driver");
-			conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MotorwayToll","postgres", "postgres");
+			conn = DriverManager.getConnection("jdbc:postgresql://ssabautzen3.ba-bautzen.de:5433/Simulator","postgres", "postgres");
 			conn.setAutoCommit(true);
 		} 
 		catch ( Exception e ) {
@@ -31,33 +31,7 @@ public class Database {
 			}
 		}
 	}
-	
-//alle Fahrezuge abrufen die zu einem Benutzer gehören - Rückgabe bitte als Arraylist oder ähnliches
-	
-	public void getVehicle(String vehucleID) {
-		
-	}
-
-//Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
-	
-	public void getTransit(String transitID) {
-		
-	}
-//Get alle Daten von einer Person - Rückgabe einer Person bitte
-	
-	public void getUserData(String userID) {
-		
-	}
-	
-//get km aus zwei gegebenen Punkten
-	public double getKM(Position startPO, Position endPO) {
-		
-		double km;
-		km = 250.0;
-		return km;
-	}
-	
-	
+	/*
 	public boolean addFeeTest(String feename, UUID feeid, double d) {
 		if (conn == null) {
 			return false;
@@ -83,5 +57,5 @@ public class Database {
 			return false;
 		}
 	}
-
+	*/
 }
