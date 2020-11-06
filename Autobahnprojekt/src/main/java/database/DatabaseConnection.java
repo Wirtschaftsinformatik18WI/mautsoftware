@@ -200,6 +200,30 @@ public String getDecriptionFromPositionID(String id) {
 		// Ein Fahrzeug mit dem Kennzeichen holen und zurückgeben
 				public Vehicle getVehicleByRegistrationNr(Origin origin, String registrationNr) {
 					Vehicle v = null;
+					 Statement stmt;
+					
+					try {
+						stmt = conn.createStatement();
+						String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE regnumber =  ? AND cid = ? ";
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setObject (1, origin);
+						prepStmt.setObject (2, registrationNr);
+						
+						ResultSet rs = prepStmt.executeQuery();
+						
+						while ( rs.next() ) { 
+							v = new Vehicle(origin, registrationNr, this.getUserData(rs.getString("uid")));
+							v.setKm(rs.getDouble("km"));
+							v.setAcuallPos(rs.getString("currentPosition"));
+						}
+						
+						rs.close();
+						stmt.close();
+					} 
+					catch (SQLException e) {
+						System.err.println( e.toString() );
+					}
 					return v;
 				}
 			
