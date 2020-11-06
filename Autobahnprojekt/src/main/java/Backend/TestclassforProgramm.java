@@ -23,11 +23,14 @@ public class TestclassforProgramm {
 		
 	UUID uuid = UUID.randomUUID();
 	
-	private Position point1 = new Position(standort1, "Bautzen", LocalDate.now());
-	private Position point2 = new Position(standort1, "Dresden", LocalDate.now().plusDays(1));
-	private Position point3 = new Position(standort1, "Berlin", LocalDate.now().plusDays(2));
+	private Position point1 = new Position(standort1, LocalDate.now());
+	private Position point2 = new Position(standort1, LocalDate.now().plusDays(1));
+	private Position point3 = new Position(standort1, LocalDate.now().plusDays(2));
 
 	private User user = new User(uuid, "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636");
+	
+	
+	LocalDate monatsbetrachtung = LocalDate.now();
 	
 	
 	
@@ -38,8 +41,8 @@ public class TestclassforProgramm {
 		
 		// aufbau des Use-Case der Annahme von Punkten eines Fahrzeugs und speichern dieser Punkte in der Datenbank
 		
-		vehicle testfahrzeug = con.getVehicleByRegistrationNr(origin, registrationNr);
-		Transit transit = new Transit(point1);
+		Vehicle testfahrzeug = con.getVehicleByRegistrationNr(origin, registrationNr);
+		Transit transit = new Transit(point1, LocalDate.now());
 		
 		transit.filterPoint(point1, testfahrzeug);
 		transit.filterPoint(point2, testfahrzeug);
@@ -49,14 +52,22 @@ public class TestclassforProgramm {
 		
 		
 		
+		
+		
 		// Rechnung aufbauen und Daten liefern
 		
-		vehicle[] allvehicle = con.getAllVehicleFromUser(user);
+		Vehicle[] allvehicle = con.getAllVehicleFromUser(user);
 		ArrayList<Transit> alltransit = new ArrayList<>();
 		
-		for(vehicle v : allvehicle ) {
-			alltransit.addAll(con.getAllTransitFromVehicle(v));
+		for(Vehicle v : allvehicle ) {
+			alltransit.addAll(con.getAllTransitFromVehicle(v,monatsbetrachtung));
 		}
+		
+		//TODO LF: fancy function to build up a bill and send via Mail
+		
+		
+		
+		// 
 		
 		
 		

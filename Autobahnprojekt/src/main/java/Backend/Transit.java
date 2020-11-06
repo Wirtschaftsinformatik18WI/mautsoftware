@@ -13,10 +13,6 @@ public class Transit {
 	private Position position;
 	private LocalDate positionDate;
 
-	private Position startPO;
-	private Position endPO;
-	private LocalDate startDate;
-	private LocalDate endDate;
 	private double km;
 	
 	private DatabaseConnection dbconnection = new DatabaseConnection();
@@ -27,10 +23,9 @@ public class Transit {
 		this.positionDate = LocalDate.parse(positionDate.toString(), dateTimeFormatter);
 	}
 
-	public Transit(Position startPO) {
-		this.startPO = startPO;
-		this.startDate = startPO.getTime();
-	}
+//	public Transit(Position startPO) {
+//		this.startPO = startPO;
+//	}
 
 	public void filterPoint(Position point , Vehicle vehicle) {
 		if(vehicle.getLastPos() == null) {
@@ -67,9 +62,7 @@ public class Transit {
 	
 	
 	
-	public Position getStartPO() {
-		return startPO;
-	}
+	
 	public Position getPosition() {
 		return position;
 	}
@@ -79,21 +72,11 @@ public class Transit {
 	public LocalDate getPositionDate() {
 		return positionDate;
 	}
-	public LocalDate getStartDate() {
-		return startDate;
-	}
+
 	public void setPositionDate(LocalDate positionDate) {
 		this.positionDate = positionDate;
 }
-	public void setStartDate(LocalDate startDate) {
-		this.startDate = startDate;
-	}
-	public LocalDate getEndDate() {
-		return endDate;
-	}
-	public void setEndDate(LocalDate endDate) {
-		this.endDate = endDate;
-	}
+
 	public double getKm() {
 		return km;
 	}

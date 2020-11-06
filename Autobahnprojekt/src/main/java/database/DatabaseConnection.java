@@ -7,6 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -211,7 +212,7 @@ public String getDecriptionFromPositionID(String id) {
 			
 		// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
 				
-				public ArrayList<Transit> getAllTransitFromVehicle(Vehicle vehicle) {
+				public ArrayList<Transit> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
 					ArrayList<Transit> transitlist = new ArrayList<>();
 					return transitlist;
 				}
