@@ -1,9 +1,11 @@
 package Backend;
 
+import java.util.UUID;
+
 public class User {
 	private String name;
 	private String surname;
-	private String ID;
+	private UUID ID;
 	private String street;
 	private String postcode;
 	private String hnumber;
@@ -13,7 +15,7 @@ public class User {
 	private boolean firma;
 	
 	
-	public User (String ID, String name, String surname, String street, String postcode,
+	public User (UUID ID, String name, String surname, String street, String postcode,
 			String hnumber, String city, String telephone) {
 		
 		this.ID = ID;
@@ -26,7 +28,7 @@ public class User {
 		this.telephone = telephone;
 		this.firma = false;
 		}
-	public User (String ID, String name, String street, String postcode,
+	public User (UUID ID, String name, String street, String postcode,
 			String hnumber, String city, String telephone) {
 		this.ID = ID;
 		this.name = name;
@@ -91,7 +93,7 @@ public class User {
 	public void setFirma(boolean firma) {
 		this.firma = firma;
 	}
-	public String getID() {
+	public UUID getID() {
 		return ID;
 	}
 	public String geteMail() {
