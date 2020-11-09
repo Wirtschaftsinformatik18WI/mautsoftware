@@ -27,7 +27,7 @@ public class TestclassforProgramm {
 	private Position point2 = new Position(standort1, LocalDate.now().plusDays(1));
 	private Position point3 = new Position(standort1, LocalDate.now().plusDays(2));
 
-	private User user = new User(uuid, "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636", "password");
+	private User user = new User(uuid, "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636", "password", "Deutschland");
 	
 	
 	LocalDate monatsbetrachtung = LocalDate.now();

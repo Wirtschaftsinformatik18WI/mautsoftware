@@ -114,6 +114,18 @@ public class User {
 	public void setPasswort(String passwort) {
 		this.password = passwort;
 	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	public String getCountry() {
+		return country;
+	}
+	public void setCountry(String country) {
+		this.country = country;
+	}
 	
 	
 }
