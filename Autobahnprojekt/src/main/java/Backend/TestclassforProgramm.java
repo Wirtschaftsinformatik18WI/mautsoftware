@@ -40,6 +40,8 @@ public class TestclassforProgramm {
 		
 		// aufbau des Use-Case der Annahme von Punkten eines Fahrzeugs und speichern dieser Punkte in der Datenbank
 		
+		// includes the function to filter traffic jam 
+		
 		Vehicle testfahrzeug = con.getVehicleByRegistrationNr(origin, registrationNr);
 		Transit transit = new Transit(point1, LocalDate.now());
 		
