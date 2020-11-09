@@ -12,6 +12,10 @@ public class Position {
 		this.time = time;
 	}
 
+	public Position(String positionID) {
+		this.positionID = positionID;
+	}
+	
 	public String getPositionID() {
 		return positionID;
 	}
