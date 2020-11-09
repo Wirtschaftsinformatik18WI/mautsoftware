@@ -5,7 +5,6 @@ import java.util.UUID;
 public class User {
 	private String name;
 	private String surname;
-	private UUID ID;
 	private String street;
 	private String postcode;
 	private String hnumber;
@@ -17,10 +16,10 @@ public class User {
 	private String country;
 	
 	
-	public User (UUID ID, String name, String surname, String street, String postcode,
+	public User (String eMail, String name, String surname, String street, String postcode,
 			String hnumber, String city, String telephone, String password, String country) {
 		
-		this.ID = ID;
+		this.eMail = eMail;
 		this.name = name;
 		this.surname = surname;
 		this.street = street;
@@ -32,9 +31,9 @@ public class User {
 		this.password = password;
 		this.country = country;
 		}
-	public User (UUID ID, String name, String street, String postcode,
+	public User (String eMail, String name, String street, String postcode,
 			String hnumber, String city, String telephone, String password, String country) {
-		this.ID = ID;
+		this.eMail = eMail;
 		this.name = name;
 		this.street = street;
 		this.postcode = postcode;
@@ -99,9 +98,7 @@ public class User {
 	public void setFirma(boolean firma) {
 		this.firma = firma;
 	}
-	public UUID getID() {
-		return ID;
-	}
+
 	public String geteMail() {
 		return eMail;
 	}

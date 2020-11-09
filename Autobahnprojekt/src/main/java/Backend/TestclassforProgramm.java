@@ -21,13 +21,12 @@ public class TestclassforProgramm {
 	String registrationNr = "K407";
 	DatabaseConnection con; //TODO would fail
 		
-	UUID uuid = UUID.randomUUID();
 	
 	private Position point1 = new Position(standort1, LocalDate.now());
 	private Position point2 = new Position(standort1, LocalDate.now().plusDays(1));
 	private Position point3 = new Position(standort1, LocalDate.now().plusDays(2));
 
-	private User user = new User(uuid, "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636", "password", "Deutschland");
+	private User user = new User("yahoo.com", "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636", "password", "Deutschland");
 	
 	
 	LocalDate monatsbetrachtung = LocalDate.now();
