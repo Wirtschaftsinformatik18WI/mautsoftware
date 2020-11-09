@@ -13,10 +13,11 @@ public class User {
 	private String telephone;
 	private String eMail;
 	private boolean firma;
+	private String password;
 	
 	
 	public User (UUID ID, String name, String surname, String street, String postcode,
-			String hnumber, String city, String telephone) {
+			String hnumber, String city, String telephone, String password) {
 		
 		this.ID = ID;
 		this.name = name;
@@ -27,9 +28,10 @@ public class User {
 		this.city = city;
 		this.telephone = telephone;
 		this.firma = false;
+		this.password = password;
 		}
 	public User (UUID ID, String name, String street, String postcode,
-			String hnumber, String city, String telephone) {
+			String hnumber, String city, String telephone, String password) {
 		this.ID = ID;
 		this.name = name;
 		this.street = street;
@@ -38,6 +40,7 @@ public class User {
 		this.city = city;
 		this.telephone = telephone;
 		this.firma = true;
+		this.password = password;
 	}
 	
 	
@@ -101,6 +104,12 @@ public class User {
 	}
 	public void seteMail(String eMail) {
 		this.eMail = eMail;
+	}
+	public String getPasswort() {
+		return password;
+	}
+	public void setPasswort(String passwort) {
+		this.password = passwort;
 	}
 	
 	
