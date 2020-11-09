@@ -5,11 +5,10 @@ import java.util.ArrayList;
 public class Vehicle {
     private Origin origin;
     private String registrationNumber = new String();
-    private ArrayList<Transit> transitList = new ArrayList<>();
+    private ArrayList<FinishedTransits> transitList = new ArrayList<>();
     private Position lastPos;
     private Position acuallPos;
-    private Position absolutStartPosition;
-    private Position absolutEndPosition;
+    
     private User user;
     private double km = 0;
     
@@ -22,7 +21,7 @@ public class Vehicle {
     
     
     
-    public void addToArrayList(Transit transit) {
+    public void addToArrayList(FinishedTransits transit) {
     	transitList.add(transit);
     }
     
@@ -42,11 +41,11 @@ public class Vehicle {
 		this.registrationNumber = registrationNumber;
 	}
 
-	public ArrayList<Transit> getTransitList() {
+	public ArrayList<FinishedTransits> getTransitList() {
 		return transitList;
 	}
 
-	public void setTransitList(ArrayList<Transit> transitList) {
+	public void setTransitList(ArrayList<FinishedTransits> transitList) {
 		this.transitList = transitList;
 	}
 
@@ -66,55 +65,9 @@ public class Vehicle {
 		this.acuallPos = acuallPos;
 	}
 
-
-
-
-
-
-	public Position getAbsolutStartPosition() {
-		return absolutStartPosition;
-	}
-
-
-
-
-
-
-	public void setAbsolutStartPosition(Position absolutStartPosition) {
-		this.absolutStartPosition = absolutStartPosition;
-	}
-
-
-
-
-
-
-	public Position getAbsolutEndPosition() {
-		return absolutEndPosition;
-	}
-
-
-
-
-
-
-	public void setAbsolutEndPosition(Position absolutEndPosition) {
-		this.absolutEndPosition = absolutEndPosition;
-	}
-
-
-
-
-
-
 	public double getKm() {
 		return km;
 	}
-
-
-
-
-
 
 	public void setKm(double km) {
 		this.km = km;

@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import Backend.FinishedTransits;
 import Backend.Origin;
 import Backend.Position;
 import Backend.Transit;
@@ -229,8 +230,8 @@ public String getDecriptionFromPositionID(String id) {
 			
 		// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
 				
-				public ArrayList<Transit> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
-					ArrayList<Transit> transitlist = new ArrayList<>();
+				public ArrayList<FinishedTransits> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
+					ArrayList<FinishedTransits> transitlist = new ArrayList<>();
 					return transitlist;
 				}
 				
@@ -241,6 +242,13 @@ public String getDecriptionFromPositionID(String id) {
 				
 		// Speichern eines beendeten Transits zu einem Auto
 				public void saveFullTransit(Vehicle vehicle) {
+					
+				}
+				
+		// Return bitte die höchste Zeit die zwischen den erreichbaren strecken möglich ist, ich gebe dir einen Punkt rein
+				public LocalDate getBiggestTraficTimeFromPoint(Position position) {
+					
+					return LocalDate.now();
 					
 				}
 				
