@@ -42,21 +42,22 @@ public class Transit {
 				vehicle.setLastPos(point);
 				setAbsolutStartPosition(point);
 				setAbsolutStartTime(point.getTime());
-				dbconnection.saveFirstPointOfTransit(vehicle);
+				dbconnection.saveFirstPointOfTransit(vehicle, point, 0, true);
 				this.runingTransit = true;
 			}
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("D")) {
 			vehicle.setAcuallPos(vehicle.getLastPos());
 			vehicle.setLastPos(point);
-			getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle);
-			//Berechung Where -> KM aus der DB holen
+			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
+			dbconnection.saveFirstPointOfTransit(vehicle,vehicle.getLastPos() , getKm(), true);
+			dbconnection.saveFirstPointOfTransit(vehicle, vehicle.getAcuallPos(), getKm(), false);
 			
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
 			vehicle.setAcuallPos(vehicle.getLastPos());
 			vehicle.setLastPos(point);
 			setAbsolutEndPosition(point);
 			// get full km
-			getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle);
+			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
 			
 			// create the final transit from the start point/Time and end point/time
 			FinishedTransits finishedTransit = 
@@ -64,6 +65,7 @@ public class Transit {
 							getAbsolutEndPosition(), getAbsolutEndTime(), getKm());
 			vehicle.addToArrayList(finishedTransit);
 			dbconnection.saveFullTransit(vehicle);
+			dbconnection.deleteStartedTransit(vehicle.getLastPos(), vehicle.getAcuallPos());
 			
 		}
 		return this.runingTransit;

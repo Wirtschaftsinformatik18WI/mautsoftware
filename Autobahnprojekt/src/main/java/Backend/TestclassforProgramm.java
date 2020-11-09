@@ -54,15 +54,15 @@ public class TestclassforProgramm {
 		transit.filterPoint(point3, testfahrzeug);
 		
 		//Promise lösung
-		while(transit.getAbsolutEndPosition()== null 
-				|| LocalDate.now().equals(transit.getAbsolutStartTime().plusDays(2))) {
+//		while(transit.getAbsolutEndPosition()== null 
+//				|| LocalDate.now().equals(transit.getAbsolutStartTime().plusDays(2))) {
 			
-			CompletableFuture<Transit> completableFuture = CompletableFuture.supplyAsync(() -> 
+			CompletableFuture<Transit> filterPointFuture = CompletableFuture.supplyAsync(() -> 
 				{
 					transit.filterPoint(point1, testfahrzeug);
 					return transit;
 				});
-		}
+//		}
 		
 		//Aufruf des CF mit name.get();
 		
@@ -93,18 +93,16 @@ public class TestclassforProgramm {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
+	
+	private void startThatShit() {
+		for(String value : con.getAllPointsAndVehiclesFromArrivingSpot()) {
+			
+		}
+	}
+	
+	
+	
 	
 	
 	

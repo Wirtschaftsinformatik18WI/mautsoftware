@@ -236,7 +236,14 @@ public String getDecriptionFromPositionID(String id) {
 				}
 				
 		// Speichern der ersten Punkte in der Datenbank zu einem Auto
-				public void saveFirstPointOfTransit(Vehicle vehicle) {
+				//True -> first Point | False -> second Point
+				public void saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
+					
+				}
+				
+		// change firste Point of a vehicle
+				
+				public void changeFirstPointOfTransit(Vehicle vehicle, Position lastPosition,Position acualPosition, double km) {
 					
 				}
 				
@@ -245,11 +252,25 @@ public String getDecriptionFromPositionID(String id) {
 					
 				}
 				
+		// Delete started Transit
+				
+				public void deleteStartedTransit(Position lastPosition,Position acualPosition) {
+					
+				}
+				
+				
 		// Return bitte die höchste Zeit die zwischen den erreichbaren strecken möglich ist, ich gebe dir einen Punkt rein
 				public LocalDate getBiggestTraficTimeFromPoint(Position position) {
 					
 					return LocalDate.now();
 					
+				}
+				
+		// get all Points who are into the arriving spot  
+				//badest case... all Strings and on a Arraylist from one vehicle etc etc... REDEBEDARF F
+				public ArrayList<String> getAllPointsAndVehiclesFromArrivingSpot(){
+					ArrayList<String> arrivedPoints = new ArrayList<>();
+					return arrivedPoints;
 				}
 				
 				
