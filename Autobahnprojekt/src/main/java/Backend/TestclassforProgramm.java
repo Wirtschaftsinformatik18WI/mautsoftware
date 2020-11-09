@@ -27,7 +27,7 @@ public class TestclassforProgramm {
 	private Position point2 = new Position(standort1, LocalDate.now().plusDays(1));
 	private Position point3 = new Position(standort1, LocalDate.now().plusDays(2));
 
-	private User user = new User(uuid, "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636");
+	private User user = new User(uuid, "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636", "password");
 	
 	
 	LocalDate monatsbetrachtung = LocalDate.now();
@@ -58,6 +58,9 @@ public class TestclassforProgramm {
 		
 		//Vehicle[] allvehicle = con.getAllVehicleFromUser(user);
 		ArrayList<Transit> alltransit = new ArrayList<>();
+		ArrayList<Vehicle> allvehicle = new ArrayList<>();
+		
+		allvehicle.addAll(con.getVehicle(user));
 		
 		for(Vehicle v : allvehicle ) {
 			alltransit.addAll(con.getAllTransitFromVehicle(v,monatsbetrachtung));

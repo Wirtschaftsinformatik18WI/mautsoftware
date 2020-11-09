@@ -14,10 +14,11 @@ public class User {
 	private String eMail;
 	private boolean firma;
 	private String password;
+	private String country;
 	
 	
 	public User (UUID ID, String name, String surname, String street, String postcode,
-			String hnumber, String city, String telephone, String password) {
+			String hnumber, String city, String telephone, String password, String country) {
 		
 		this.ID = ID;
 		this.name = name;
@@ -29,9 +30,10 @@ public class User {
 		this.telephone = telephone;
 		this.firma = false;
 		this.password = password;
+		this.country = country;
 		}
 	public User (UUID ID, String name, String street, String postcode,
-			String hnumber, String city, String telephone, String password) {
+			String hnumber, String city, String telephone, String password, String country) {
 		this.ID = ID;
 		this.name = name;
 		this.street = street;
@@ -41,6 +43,7 @@ public class User {
 		this.telephone = telephone;
 		this.firma = true;
 		this.password = password;
+		this.country = country;
 	}
 	
 	
