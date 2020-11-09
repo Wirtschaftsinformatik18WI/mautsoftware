@@ -247,8 +247,37 @@ public String getDecriptionFromPositionID(String id) {
 				
 		// Neuen Nutzer erstellen
 				
-				public void createNewUser(User user) {
-					
+				public boolean createNewUser(User user) {
+					if (conn == null) {
+						return false;
+					}
+					try {
+						String queryString = "INSERT INTO  Public.\"User\" (name,surname,street, postcode, hnumber, city, telephone, iscompany, email, password)" +
+								" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+						System.out.println(queryString);
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setString (1, user.getName());
+						prepStmt.setString (2, user.getSurname());
+						prepStmt.setString (3, user.getStreet());
+						prepStmt.setString (4, user.getPostcode());
+						prepStmt.setString (5, user.getHnumber());
+						prepStmt.setString (6, user.getCity());
+						prepStmt.setString (7, user.getTelephone());
+						prepStmt.setBoolean(8, user.isFirma());
+						prepStmt.setString (9, user.geteMail());
+						prepStmt.setString (10, user.getPassword); //Password fehlt in User-Klasse
+
+						prepStmt.execute();
+						prepStmt.close();
+
+						System.out.println("Entry created successfully");
+						return true;
+					} 
+					catch ( Exception e ) {
+						System.err.println( e.toString() );
+						return false;
+					}
 				}
 				
 		// die Gebühren holen
