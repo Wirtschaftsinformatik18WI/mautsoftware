@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
+import java.util.logging.Logger;
 
 import database.DatabaseConnection;
 
@@ -14,6 +15,11 @@ public class TestclassforProgramm {
 	
 	//erstellen eines Fahrzeugs wir hier simuliert - normalerweise werden die daten aus der Datenbank abgerufen
 	//  oder via der Webanwendung erstellt und dan hier bereit erstellt.
+	
+	
+	public static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+//	LOGGER.setLevel(Level.ALL);
+
 
 	String standort1 = "D-BZ";
 	String standort2 = "D-DD";
@@ -41,6 +47,40 @@ public class TestclassforProgramm {
 	
 	private void createAProcess() {
 		
+		long time = 1;
+		
+		while(time >0) {
+			if (time % 5 == 0) {
+				ArrayList<DBInputVehicleAndPoint> dbInputVehicleAndPoint 
+				= con.getAllPointsAndVehiclesFromArrivingSpot();
+				for (DBInputVehicleAndPoint dbInput : dbInputVehicleAndPoint) {
+					Vehicle vehicle = dbInput.getVehicle();
+					Position point = dbInput.getPosition();
+					Transit transit = new Transit(point, point.getTime());
+					
+					CompletableFuture<Transit> filterPointFuture = CompletableFuture.supplyAsync(() -> 
+					{
+						transit.filterPoint(point, vehicle);
+						return transit;
+					});
+				}
+				
+			}
+			try {
+				Thread.sleep(60);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				LOGGER.severe("Could not ");
+				e.printStackTrace();
+			}
+			time++;
+		}
+		
+		
+		
+		
+		
+		
 		// aufbau des Use-Case der Annahme von Punkten eines Fahrzeugs und speichern dieser Punkte in der Datenbank
 		
 		// includes the function to filter traffic jam 
@@ -57,11 +97,7 @@ public class TestclassforProgramm {
 //		while(transit.getAbsolutEndPosition()== null 
 //				|| LocalDate.now().equals(transit.getAbsolutStartTime().plusDays(2))) {
 			
-			CompletableFuture<Transit> filterPointFuture = CompletableFuture.supplyAsync(() -> 
-				{
-					transit.filterPoint(point1, testfahrzeug);
-					return transit;
-				});
+			
 //		}
 		
 		//Aufruf des CF mit name.get();
@@ -94,16 +130,6 @@ public class TestclassforProgramm {
 		
 		
 	}
-	
-	private void startThatShit() {
-		for(String value : con.getAllPointsAndVehiclesFromArrivingSpot()) {
-			
-		}
-	}
-	
-	
-	
-	
 	
 	
 }
