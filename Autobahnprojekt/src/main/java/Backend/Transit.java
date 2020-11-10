@@ -44,27 +44,36 @@ public class Transit {
 				+ " coudn not be regristed as a driving vehicle.");
 				LOGGER.severe("POLICE WILL BE INFORMED - VEHICLE IS BLIND SIDER");
 				
-				//TODO  Fehlermeldung
+				//TODO  EMail an de Police
 			}else {
-				vehicle.setLastPos(point);
+				vehicle.setAcuallPos(point);
 				setAbsolutStartPosition(point);
 				setAbsolutStartTime(point.getTime());
 				dbconnection.saveFirstPointOfTransit(vehicle, point, 0, true);
 				lFVehicle(vehicle, dbconnection.getBiggestTraficTimeFromPoint(point));
+				
+				LOGGER.fine("Point: " + vehicle.getAcuallPos().getPositionID() + " with Timestamp " + 
+				vehicle.getAcuallPos().getTime() + " was added in Vehicle " + vehicle.getOrigin().toString() 
+				+ "-" + vehicle.getRegistrationNumber() + " -> First Point of Transit");
 			}
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("D")) {
-			vehicle.setAcuallPos(vehicle.getLastPos());
-			vehicle.setLastPos(point);
+			vehicle.setLastPos(vehicle.getAcuallPos());
+			vehicle.setAcuallPos(point);
+						
 			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
 			dbconnection.saveFirstPointOfTransit(vehicle,vehicle.getLastPos() , getKm(), true);
 			dbconnection.saveFirstPointOfTransit(vehicle, vehicle.getAcuallPos(), getKm(), false);
 			runingTransit = true;
 			lFVehicle(vehicle, dbconnection.getBiggestTraficTimeFromPoint(vehicle.getAcuallPos()));
 			
+			LOGGER.fine("Point: " + vehicle.getAcuallPos().getPositionID() + " with Timestamp " + 
+					vehicle.getAcuallPos().getTime() + " was added as AcuallPosition Point in Vehicle " + vehicle.getOrigin().toString() 
+					+ "-" + vehicle.getRegistrationNumber() + " and Point: " + vehicle.getLastPos().getPositionID() + " with Timestamp " + 
+							vehicle.getLastPos().getTime() + " is now LastPosition" );
 			
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
-			vehicle.setAcuallPos(vehicle.getLastPos());
-			vehicle.setLastPos(point);
+			vehicle.setLastPos(vehicle.getAcuallPos());
+			vehicle.setAcuallPos(point);
 			setAbsolutEndPosition(point);
 			// get full km
 			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
@@ -78,12 +87,19 @@ public class Transit {
 			dbconnection.deleteStartedTransit(vehicle.getLastPos(), vehicle.getAcuallPos());
 			runingTransit = false;
 			
+			LOGGER.fine("Point: " + vehicle.getAcuallPos().getPositionID() + " with Timestamp " + 
+					vehicle.getAcuallPos().getTime() + " was added as AcuallPosition Point in Vehicle " + vehicle.getOrigin().toString() 
+					+ "-" + vehicle.getRegistrationNumber() + " and Point: " + vehicle.getLastPos().getPositionID() + " with Timestamp " + 
+							vehicle.getLastPos().getTime() + " is now LastPosition" );
+			
 		}
 	}
 	
 	private double getKmFromStartPOToEndPO(Position startPO, Position endPO, Vehicle vehicle) {
 		vehicle.setKm(vehicle.getKm() + dbconnection.getKM(startPO, endPO));
 		km = dbconnection.getKM(startPO, endPO);
+		LOGGER.fine("Saving done for km in Vehicle: " + vehicle.getOrigin().toString() 
+				+ "-" + vehicle.getRegistrationNumber());
 		return km;
 	}
 	

@@ -66,12 +66,65 @@ public class TestclassforProgramm {
 				}
 				
 			}
+			
+			if(time % 24 == 0) {
+				ArrayList<Vehicle> dbInputTraficJamTrafics = con.getAllTransitsWithTraficJamFlag();
+				int zaehler = 0;
+				ArrayList<Vehicle> allTraficJamRouts = new ArrayList<>();
+				ArrayList<Vehicle> allOtherTraficsWithoutJam = new ArrayList<>();
+//				ArrayList<Vehicle>
+				
+				for(Vehicle vehicle : dbInputTraficJamTrafics) {
+					for (int i = 0; i<=zaehler; i++) {
+						if(vehicle.getAcuallPos().equals(dbInputTraficJamTrafics.get(i+1).getAcuallPos()) &&
+								vehicle.getLastPos().equals(dbInputTraficJamTrafics.get(i+1).getLastPos())){
+//							Wenn beide den gleichen anfangs und endpunkt haben wir der punkt in die 
+//							tabelle reingenommen
+							if(vehicle.getAcuallPos().getTime().isBefore(dbInputTraficJamTrafics.get(i+1).getAcuallPos().getTime())) {
+								//ehere Zeit in der gegeben 
+							}else {
+								vehicle.setAcuallPos(dbInputTraficJamTrafics.get(i+1).getAcuallPos());
+							}
+							if(vehicle.getLastPos().getTime().isAfter(dbInputTraficJamTrafics.get(i+1).getLastPos().getTime())) {
+								//spätere Zeit in der gegebenen
+							}else {
+								vehicle.setLastPos(dbInputTraficJamTrafics.get(i+1).getLastPos());
+							}
+							if(allTraficJamRouts.isEmpty()) {
+								allTraficJamRouts.add(vehicle);
+							}else {
+								for(Vehicle StuckedVehicle : allTraficJamRouts) {
+									if(vehicle.getAcuallPos().equals(StuckedVehicle.getAcuallPos()) &&
+											vehicle.getLastPos().equals(StuckedVehicle.getLastPos())){
+										StuckedVehicle.setAcuallPos(vehicle.getAcuallPos());
+										StuckedVehicle.setLastPos(vehicle.getLastPos());
+									}else {
+										allTraficJamRouts.add(vehicle);
+									}
+								}
+							}
+						}
+						
+					}
+					zaehler++;
+				}
+				
+				// Hier muss die Prüfung aller anderen Fahrzeuge erfolgen, ob diese Verkehrssünder sind
+				allOtherTraficsWithoutJam.addAll(con.getAllTransitsWithoutTraficJamFlag());
+				
+				
+			}
+			
+			if(time % 168 == 0) {
+				
 			try {
-				Thread.sleep(60);
+				Thread.sleep(1000*60); // 1 min Thread sleep
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				LOGGER.severe("Could not ");
+				LOGGER.severe("Could not pause Thread");
 				e.printStackTrace();
+			}
+			
 			}
 			time++;
 		}

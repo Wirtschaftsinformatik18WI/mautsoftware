@@ -236,7 +236,7 @@ public String getDecriptionFromPositionID(String id) {
 					return transitlist;
 				}
 				
-		// Speichern der ersten Punkte in der Datenbank zu einem Auto
+		// Speichern der ersten Punkte in der Datenbank zu einem Auto und in der Tabelle TransitStation damit ich die abends auswerten kann
 				//True -> first Point | False -> second Point
 				public void saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
 					
@@ -270,6 +270,18 @@ public String getDecriptionFromPositionID(String id) {
 		// set Trafic Jam Flag on DB in table vehicle
 				public void setTraficJamFlag(Vehicle vehicle) {
 					
+				}
+			
+		// get all Transits with Trafic Jam Flag inside a vehicle Object
+				public ArrayList<Vehicle> getAllTransitsWithTraficJamFlag() {
+					ArrayList<Vehicle> transitListWithTraficJam = new ArrayList <>();
+					return transitListWithTraficJam;
+				}
+				
+		// get all Transits without Trafic Jam Frlag inside a vehicle Object
+				public ArrayList<Vehicle> getAllTransitsWithoutTraficJamFlag(){
+					ArrayList<Vehicle> transitListWithTraficJam = new ArrayList <>();
+					return transitListWithTraficJam;
 				}
 				
 		// get all Points who are into the arriving spot  
