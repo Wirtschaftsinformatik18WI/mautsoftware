@@ -13,7 +13,7 @@
 
 <header>
     <a class="ribbon" tabindex="-1" title="zurück zur Startseite!" href="index.html">
-	   <img src="logo.png" alt="Logo" style="width:120px;height:100px;float:left;"> 
+	   <img src="logotransparent.png" alt="Logo" style="width:120px;height:100px;float:left;"> 
 	   <h1 id="headline">Mautilus 18</h1>
        <p>Mercurius IT GmbH</span></p>
     </a>  
@@ -24,11 +24,11 @@
 	<nav id="navigation">
 	<ul>
 		<li><a aria-current="page">Home</a></li>
-		<li><a href="./Statistics">Login</a></li>
-		<li><a href="ProjectIntroducion.html">Projektvorstellung</a></li>
+		<li><a href="Autobahnprojekt/Statistics">Login</a></li>
+		<li><a href="WebContent/ProjectIntroducion.html">Projektvorstellung</a></li>
 		<li><a href="./Statistics">Statistik</a></li>
-		<li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
-		<li><a href="Impressum.html">Impressum</a></li>
+		<li><a href="WebContent/PrivacyPolicy.html">Privacy Policy</a></li>
+		<li><a href="WebContent/Impressum.html">Impressum</a></li>
 	</ul>
 	</nav>
      	
