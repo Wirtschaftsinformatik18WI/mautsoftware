@@ -3,6 +3,16 @@ package Backend;
 import java.time.LocalDate;
 import java.util.UUID;
 
+/**
+ * 
+ * class to:
+ * 		~ create a Point with time 
+ * 		 
+ * 
+ * @author luisa.thiel Mail: luisa.thiel@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ */
 public class Position {
 	private String positionID;
 	private LocalDate time;

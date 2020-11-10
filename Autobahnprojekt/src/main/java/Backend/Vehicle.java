@@ -2,6 +2,17 @@ package Backend;
 
 import java.util.ArrayList;
 
+
+/**
+ * 
+ * class to:
+ * 		~ create a vehicle with points 
+ * 		 
+ * 
+ * @author luisa.thiel Mail: luisa.thiel@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ */
 public class Vehicle {
     private Origin origin;
     private String registrationNumber = new String();
@@ -18,8 +29,11 @@ public class Vehicle {
         this.user = user;
     }
 
-    
-    
+    /**
+     * method created a string of the vehicle
+     * 
+     * @return return of a String from that vehicle with RegNR + Orign + the points and time
+     */
     @Override
     public String toString() {
     	String vehicleString = "RegristationNR: " + origin.toString() + "-" + registrationNumber + " | Traffic: From " + 

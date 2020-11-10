@@ -1,38 +1,43 @@
 package Backend;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import database.DatabaseConnection;
 
-public class TestclassforProgramm {
+/**
+ * 
+ * Main class to:
+ * 		~ check all given Point 
+ * 		~ create a User 
+ * 		~ Edit a User
+ * 		~ create a police report of treffic offender
+ * 		~ create a monthly report for user of there transits 
+ * 
+ * @author luisa.thiel Mail: luisa.thiel@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ *
+ */
+
+//TODO need to change that stupid name -.-
+
+public class MainMethodes {
 	
 	Vehicle vehicle;
 	Position point;
-
-	// in dieser Klasse wird der Ablauf imitiert und soll dazu dienen, eine leitfaden für das Programm zu sein
-	
-	//erstellen eines Fahrzeugs wir hier simuliert - normalerweise werden die daten aus der Datenbank abgerufen
-	//  oder via der Webanwendung erstellt und dan hier bereit erstellt.
-	
 	
 	public static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-//	LOGGER.setLevel(Level.ALL);
 
 	DatabaseConnection con; //TODO would fail
 	
-	
-	
-	// create private Transit transit1 = new Transit();
-	
-	
-	
-	private void createAProcess() {
+	/**
+	 * main method to iterate throw the vehicles and points
+	 * 
+	 */
+	private void startProcess() {
 		
 		long time = 1;
 		
@@ -43,8 +48,10 @@ public class TestclassforProgramm {
 				for (DBInputVehicleAndPoint dbInput : dbInputVehicleAndPoint) {
 					this.vehicle = dbInput.getVehicle();
 					this.point = dbInput.getPosition();
-					Transit transit = new Transit(point, point.getTime());
 					
+					/**
+					 * outsourced method  thread, so it would be possible to do a better performance
+					 */
 					CompletableFuture<Transit> filterPointFuture = CompletableFuture.supplyAsync(() -> 
 					{
 						Transit transit1 = new Transit(point, point.getTime());
@@ -53,7 +60,7 @@ public class TestclassforProgramm {
 					});
 					
 					try {
-						transit = filterPointFuture.get();
+						Transit transit = filterPointFuture.get();
 					} catch (InterruptedException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -75,27 +82,41 @@ public class TestclassforProgramm {
 				int zaehler = 0;
 				ArrayList<Vehicle> allTraficJamRouts = new ArrayList<>();
 				ArrayList<Vehicle> allOtherTraficsWithoutJam = new ArrayList<>();
-//				ArrayList<Vehicle>
 				
+				/**
+				 * Organize all traffic jams to a Arraylist 
+				 */
 				for(Vehicle vehicle : dbInputTraficJamTrafics) {
 					for (int i = 0; i<=zaehler; i++) {
+						/**
+						 * check if vehicle Position are the same as a other position of the dbInputTraficJamTrafics array
+						 */
 						if(vehicle.getAcuallPos().equals(dbInputTraficJamTrafics.get(i+1).getAcuallPos()) &&
 								vehicle.getLastPos().equals(dbInputTraficJamTrafics.get(i+1).getLastPos())){
-//							Wenn beide den gleichen anfangs und endpunkt haben wir der punkt in die 
-//							tabelle reingenommen
+							/**
+							 * check for the right span of time and change to the lower Time
+							 */
 							if(vehicle.getAcuallPos().getTime().isBefore(dbInputTraficJamTrafics.get(i+1).getAcuallPos().getTime())) {
-								//ehere Zeit in der gegeben 
 							}else {
 								vehicle.setAcuallPos(dbInputTraficJamTrafics.get(i+1).getAcuallPos());
 							}
+							/**
+							 * check for the right span of time and change to the higher Time
+							 */
 							if(vehicle.getLastPos().getTime().isAfter(dbInputTraficJamTrafics.get(i+1).getLastPos().getTime())) {
 								//spätere Zeit in der gegebenen
 							}else {
 								vehicle.setLastPos(dbInputTraficJamTrafics.get(i+1).getLastPos());
 							}
+							/**
+							 * add that vehicle to the allTraficJamRouts
+							 */
 							if(allTraficJamRouts.isEmpty()) {
 								allTraficJamRouts.add(vehicle);
 							}else {
+								/**
+								 * check existing list to avoid duplicate values
+								 */
 								for(Vehicle StuckedVehicle : allTraficJamRouts) {
 									if(vehicle.getAcuallPos().equals(StuckedVehicle.getAcuallPos()) &&
 											vehicle.getLastPos().equals(StuckedVehicle.getLastPos())){
@@ -111,8 +132,9 @@ public class TestclassforProgramm {
 					}
 					zaehler++;
 				}
-				
-				// Hier muss die Prüfung aller anderen Fahrzeuge erfolgen, ob diese Verkehrssünder sind
+				/**
+				 * check all vehicle which have not been in a traffic jam for traffic offenders
+				 */
 				allOtherTraficsWithoutJam.addAll(con.getAllTransitsWithoutTraficJamFlag());
 				for(Vehicle noJamVehicle : allOtherTraficsWithoutJam) {
 					for(Vehicle jamVehicles : allTraficJamRouts) {

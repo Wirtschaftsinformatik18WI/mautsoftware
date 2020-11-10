@@ -1,7 +1,15 @@
 package Backend;
 
-import java.util.UUID;
-
+/**
+ * 
+ * class to:
+ * 		~ create a User 
+ * 		~ edit a user 
+ * 
+ * @author luisa.thiel Mail: luisa.thiel@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ */
 public class User {
 	private String name;
 	private String surname;
