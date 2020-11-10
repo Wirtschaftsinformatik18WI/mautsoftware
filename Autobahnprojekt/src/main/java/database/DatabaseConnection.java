@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import Backend.FinishedTransits;
 import Backend.Origin;
 import Backend.Position;
 import Backend.Transit;
@@ -229,19 +230,47 @@ public String getDecriptionFromPositionID(String id) {
 			
 		// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
 				
-				public ArrayList<Transit> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
-					ArrayList<Transit> transitlist = new ArrayList<>();
+				public ArrayList<FinishedTransits> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
+					ArrayList<FinishedTransits> transitlist = new ArrayList<>();
 					return transitlist;
 				}
 				
 		// Speichern der ersten Punkte in der Datenbank zu einem Auto
-				public void saveFirstPointOfTransit(Vehicle vehicle) {
+				//True -> first Point | False -> second Point
+				public void saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
+					
+				}
+				
+		// change firste Point of a vehicle
+				
+				public void changeFirstPointOfTransit(Vehicle vehicle, Position lastPosition,Position acualPosition, double km) {
 					
 				}
 				
 		// Speichern eines beendeten Transits zu einem Auto
 				public void saveFullTransit(Vehicle vehicle) {
 					
+				}
+				
+		// Delete started Transit
+				
+				public void deleteStartedTransit(Position lastPosition,Position acualPosition) {
+					
+				}
+				
+				
+		// Return bitte die höchste Zeit die zwischen den erreichbaren strecken möglich ist, ich gebe dir einen Punkt rein
+				public LocalDate getBiggestTraficTimeFromPoint(Position position) {
+					
+					return LocalDate.now();
+					
+				}
+				
+		// get all Points who are into the arriving spot  
+				//badest case... all Strings and on a Arraylist from one vehicle etc etc... REDEBEDARF F
+				public ArrayList<String> getAllPointsAndVehiclesFromArrivingSpot(){
+					ArrayList<String> arrivedPoints = new ArrayList<>();
+					return arrivedPoints;
 				}
 				
 				

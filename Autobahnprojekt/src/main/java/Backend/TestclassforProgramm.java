@@ -3,6 +3,8 @@ package Backend;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Supplier;
 
 import database.DatabaseConnection;
 
@@ -36,6 +38,7 @@ public class TestclassforProgramm {
 	// create private Transit transit1 = new Transit();
 	
 	
+	
 	private void createAProcess() {
 		
 		// aufbau des Use-Case der Annahme von Punkten eines Fahrzeugs und speichern dieser Punkte in der Datenbank
@@ -45,9 +48,24 @@ public class TestclassforProgramm {
 		Vehicle testfahrzeug = con.getVehicleByRegistrationNr(origin, registrationNr);
 		Transit transit = new Transit(point1, LocalDate.now());
 		
+		
 		transit.filterPoint(point1, testfahrzeug);
 		transit.filterPoint(point2, testfahrzeug);
 		transit.filterPoint(point3, testfahrzeug);
+		
+		//Promise lösung
+//		while(transit.getAbsolutEndPosition()== null 
+//				|| LocalDate.now().equals(transit.getAbsolutStartTime().plusDays(2))) {
+			
+			CompletableFuture<Transit> filterPointFuture = CompletableFuture.supplyAsync(() -> 
+				{
+					transit.filterPoint(point1, testfahrzeug);
+					return transit;
+				});
+//		}
+		
+		//Aufruf des CF mit name.get();
+		
 		
 		System.out.println(testfahrzeug.getKm()); // es sollten 256Km sein
 		
@@ -58,7 +76,7 @@ public class TestclassforProgramm {
 		// Rechnung aufbauen und Daten liefern
 		
 		//Vehicle[] allvehicle = con.getAllVehicleFromUser(user);
-		ArrayList<Transit> alltransit = new ArrayList<>();
+		ArrayList<FinishedTransits> alltransit = new ArrayList<>();
 		ArrayList<Vehicle> allvehicle = new ArrayList<>();
 		
 		allvehicle.addAll(con.getVehicle(user));
@@ -75,15 +93,16 @@ public class TestclassforProgramm {
 		
 		
 		
-		
-		
-		
-		
-		
-		
-		
-		
 	}
+	
+	private void startThatShit() {
+		for(String value : con.getAllPointsAndVehiclesFromArrivingSpot()) {
+			
+		}
+	}
+	
+	
+	
 	
 	
 	

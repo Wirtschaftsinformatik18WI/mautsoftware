@@ -24,9 +24,9 @@
 	<nav id="navigation">
 	<ul>
 		<li><a aria-current="page">Home</a></li>
-		<li><a href="/Statistics">Login</a></li>
+		<li><a href="./Statistics">Login</a></li>
 		<li><a href="ProjectIntroducion.html">Projektvorstellung</a></li>
-		<li><a href="/Statistics">Statistik</a></li>
+		<li><a href="./Statistics">Statistik</a></li>
 		<li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
 		<li><a href="Impressum.html">Impressum</a></li>
 	</ul>

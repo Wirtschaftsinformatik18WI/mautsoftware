@@ -12,6 +12,13 @@ public class Transit {
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - hh:mm");
 	private Position position;
 	private LocalDate positionDate;
+	
+	private boolean runingTransit;
+	
+	private Position absolutStartPosition;
+	private LocalDate absolutStartTime;
+	private Position absolutEndPosition;
+	private LocalDate absolutEndTime; 
 
 	private double km;
 	
@@ -27,31 +34,41 @@ public class Transit {
 //		this.startPO = startPO;
 //	}
 
-	public void filterPoint(Position point , Vehicle vehicle) {
+	public boolean filterPoint(Position point , Vehicle vehicle) {
 		if(vehicle.getLastPos() == null) {
 			if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
 				//TODO  Fehlermeldung
 			}else {
 				vehicle.setLastPos(point);
-				vehicle.setAbsolutStartPosition(point);
-				dbconnection.saveFirstPointOfTransit(vehicle);
+				setAbsolutStartPosition(point);
+				setAbsolutStartTime(point.getTime());
+				dbconnection.saveFirstPointOfTransit(vehicle, point, 0, true);
+				this.runingTransit = true;
 			}
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("D")) {
 			vehicle.setAcuallPos(vehicle.getLastPos());
 			vehicle.setLastPos(point);
-			getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle);
-			//Berechung Where -> KM aus der DB holen
+			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
+			dbconnection.saveFirstPointOfTransit(vehicle,vehicle.getLastPos() , getKm(), true);
+			dbconnection.saveFirstPointOfTransit(vehicle, vehicle.getAcuallPos(), getKm(), false);
 			
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
 			vehicle.setAcuallPos(vehicle.getLastPos());
 			vehicle.setLastPos(point);
-			vehicle.setAbsolutEndPosition(point);
+			setAbsolutEndPosition(point);
+			// get full km
+			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
 			
-			getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle);
-			//Berechung Where -> KM aus der DB holen
-			vehicle.addToArrayList(this);
+			// create the final transit from the start point/Time and end point/time
+			FinishedTransits finishedTransit = 
+					new FinishedTransits(getAbsolutStartPosition(), getAbsolutStartTime(), 
+							getAbsolutEndPosition(), getAbsolutEndTime(), getKm());
+			vehicle.addToArrayList(finishedTransit);
 			dbconnection.saveFullTransit(vehicle);
+			dbconnection.deleteStartedTransit(vehicle.getLastPos(), vehicle.getAcuallPos());
+			
 		}
+		return this.runingTransit;
 	}
 	
 	private double getKmFromStartPOToEndPO(Position startPO, Position endPO, Vehicle vehicle) {
@@ -61,6 +78,10 @@ public class Transit {
 	}
 	
 	
+	private LocalDate getBiggestTravelTime(Position position) {
+		return dbconnection.getBiggestTraficTimeFromPoint(position);
+		
+	}
 	
 	
 	public Position getPosition() {
@@ -82,6 +103,38 @@ public class Transit {
 	}
 	public void setKm(double km) {
 		this.km = km;
+	}
+
+	public Position getAbsolutStartPosition() {
+		return absolutStartPosition;
+	}
+
+	public void setAbsolutStartPosition(Position absolutStartPosition) {
+		this.absolutStartPosition = absolutStartPosition;
+	}
+
+	public Position getAbsolutEndPosition() {
+		return absolutEndPosition;
+	}
+
+	public void setAbsolutEndPosition(Position absolutEndPosition) {
+		this.absolutEndPosition = absolutEndPosition;
+	}
+
+	public LocalDate getAbsolutStartTime() {
+		return absolutStartTime;
+	}
+
+	public void setAbsolutStartTime(LocalDate absolutStartTime) {
+		this.absolutStartTime = absolutStartTime;
+	}
+
+	public LocalDate getAbsolutEndTime() {
+		return absolutEndTime;
+	}
+
+	public void setAbsolutEndTime(LocalDate absolutEndTime) {
+		this.absolutEndTime = absolutEndTime;
 	}
 	
 	
