@@ -27,7 +27,7 @@ public class StatisticsServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setContentType("text/html");
-		getServletContext().getRequestDispatcher("/Statistics.jsp").forward(request, response);
+		getServletContext().getRequestDispatcher("/WebContent/Statistics.jsp").forward(request, response);
 	}
 
 	/**
