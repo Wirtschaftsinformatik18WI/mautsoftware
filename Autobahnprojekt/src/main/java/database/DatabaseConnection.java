@@ -62,9 +62,9 @@ public class DatabaseConnection {
 				while ( rs.next() ) {
 					Origin origin = null;
 					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user);
-					//Local Time nicht in db für die Position
-					//vehicle.setAcuallPos(new Position(java.util.UUID.fromString(rs.getString("currentPosition")),rs.getTime(columnLabel))));
-					vehicle.setLastPos(new Position(java.util.UUID.fromString(rs.getString("lastPosition")),getDecriptionFromPositionID(rs.getString("lastPosition"))));
+					vehicle.setLastPos(new Position (rs.getString("lastPosition")));
+					vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
+					vehicle.setKm(rs.getDouble("km"));
 				}
 				
 				rs.close();
@@ -76,7 +76,7 @@ public class DatabaseConnection {
 			return allvehicle;
 		}
 	
-// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
+// Alle Strecken abrufen die zu einem Fahrzeug gehören - Rückgabe bitte als Arraylist oder ähnliches
 		
 			public ArrayList<Transit> getfinishedTransit(String vehicleID) {
 				ArrayList<Transit> allfinishedTransits = new ArrayList<>();
@@ -96,7 +96,7 @@ public class DatabaseConnection {
 						Transit transit = new Transit(new Position(java.util.UUID.fromString(rs.getString("startPosition")), this.getDecriptionFromPositionID(rs.getString("startposition"))),rs.getDate("startdate"));
 						transit.setEndDate(rs.getDate("enddate"));
 						//transit.setKm(rs.getString("km"));
-						transit.setEndPO(new Position(java.util.UUID.fromString(rs.getString("toid")),this.getDecriptionFromPositionID("toid")));
+						transit.set(new Position(rs.getString("toid"));
 					}
 					
 					rs.close();
@@ -125,7 +125,7 @@ public class DatabaseConnection {
 				ResultSet rs = prepStmt.executeQuery();
 				
 				while ( rs.next() ) {
-					user = new User(rs.getString("name"),rs.getString("surname"),rs.getString("street"),rs.getString("postcode"),rs.getString("hnumber"),rs.getString("city"),rs.getString("telephone"));
+					user = new User(email ,rs.getString("name"),rs.getString("surname"),rs.getString("street"),rs.getString("postcode"),rs.getString("hnumber"),rs.getString("city"),rs.getString("telephone"), rs.getString("password"), rs.getString("country"));
 					user.seteMail(email);
 					user.setFirma(rs.getBoolean("iscompany"));
 				}
@@ -217,7 +217,7 @@ public String getDecriptionFromPositionID(String id) {
 						while ( rs.next() ) { 
 							v = new Vehicle(origin, registrationNr, this.getUserData(rs.getString("uid")));
 							v.setKm(rs.getDouble("km"));
-							v.setAcuallPos(rs.getString("currentPosition"));
+							v.setAcuallPos(new Position(rs.getString("currentPosition")));
 						}
 						
 						rs.close();
@@ -301,7 +301,7 @@ public String getDecriptionFromPositionID(String id) {
 						prepStmt.setString (7, user.getTelephone());
 						prepStmt.setBoolean(8, user.isFirma());
 						prepStmt.setString (9, user.geteMail());
-						prepStmt.setString (10, user.getPassword); //Password fehlt in User-Klasse
+						prepStmt.setString (10, user.getPassword()); 
 
 						prepStmt.execute();
 						prepStmt.close();
@@ -316,10 +316,88 @@ public String getDecriptionFromPositionID(String id) {
 				}
 				
 		// die Gebühren holen
+				public double getFee() {
+					double fee = 0;
+					 Statement stmt;
+					
+					 // Gebühren-Daten aus der Datenbank laden
+					try {
+						stmt = conn.createStatement();
+						String queryString = "SELECT *  FROM Public.\"Fees\" WHERE description =  ?  ";
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setObject (1, "basic");
+						
+						ResultSet rs = prepStmt.executeQuery();
+						
+						while ( rs.next() ) {
+							fee= rs.getDouble("fee");
+						}
+						
+						rs.close();
+						stmt.close();
+					} 
+					catch (SQLException e) {
+						System.err.println( e.toString() );
+					}
+					return fee;
+				}		
 				
 		//die Steuer holen
+				public double getTax() {
+					double tax = 0;
+					 Statement stmt;
+					
+					 // Steuer-Daten aus der Datenbank laden
+					try {
+						stmt = conn.createStatement();
+						String queryString = "SELECT *  FROM Public.\"Tax\" WHERE description =  ?  ";
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setObject (1, "basictax");
+						
+						ResultSet rs = prepStmt.executeQuery();
+						
+						while ( rs.next() ) {
+							tax= rs.getDouble("amount");
+						}
+						
+						rs.close();
+						stmt.close();
+					} 
+					catch (SQLException e) {
+						System.err.println( e.toString() );
+					}
+					return tax;
+				}
 				
 		//die Gebühren für Live holen
+				public double getLiveFee() {
+					double livefee = 0;
+					 Statement stmt;
+					
+					 // Gebühren- Daten aus der Datenbank laden
+					try {
+						stmt = conn.createStatement();
+						String queryString = "SELECT *  FROM Public.\"Fees\" WHERE description =  ?  ";
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setObject (1, "livefee");
+						
+						ResultSet rs = prepStmt.executeQuery();
+						
+						while ( rs.next() ) {
+							livefee= rs.getDouble("fee");
+						}
+						
+						rs.close();
+						stmt.close();
+					} 
+					catch (SQLException e) {
+						System.err.println( e.toString() );
+					}
+					return livefee;
+				}		
 		
 //Testfunktion:________________________________________________________________________________
 		public boolean addFeeTest(String feename, UUID feeid, double d) {
