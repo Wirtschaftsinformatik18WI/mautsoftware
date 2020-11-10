@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import Backend.DBInputVehicleAndPoint;
 import Backend.FinishedTransits;
 import Backend.Origin;
 import Backend.Position;
@@ -260,16 +261,21 @@ public String getDecriptionFromPositionID(String id) {
 				
 				
 		// Return bitte die höchste Zeit die zwischen den erreichbaren strecken möglich ist, ich gebe dir einen Punkt rein
-				public LocalDate getBiggestTraficTimeFromPoint(Position position) {
+				public int getBiggestTraficTimeFromPoint(Position position) {
 					
-					return LocalDate.now();
+					return 2;
+					
+				}
+				
+		// set Trafic Jam Flag on DB in table vehicle
+				public void setTraficJamFlag(Vehicle vehicle) {
 					
 				}
 				
 		// get all Points who are into the arriving spot  
 				//badest case... all Strings and on a Arraylist from one vehicle etc etc... REDEBEDARF F
-				public ArrayList<String> getAllPointsAndVehiclesFromArrivingSpot(){
-					ArrayList<String> arrivedPoints = new ArrayList<>();
+				public ArrayList<DBInputVehicleAndPoint> getAllPointsAndVehiclesFromArrivingSpot(){
+					ArrayList<DBInputVehicleAndPoint> arrivedPoints = new ArrayList<>();
 					return arrivedPoints;
 				}
 				

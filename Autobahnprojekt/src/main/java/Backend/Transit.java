@@ -3,17 +3,20 @@ package Backend;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
+import java.util.logging.Logger;
 
 import database.DatabaseConnection;
 
 public class Transit {
 
-
+	public static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
+	
 	private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - hh:mm");
 	private Position position;
 	private LocalDate positionDate;
 	
-	private boolean runingTransit;
+	private boolean runingTransit = false; // true -> 
 	
 	private Position absolutStartPosition;
 	private LocalDate absolutStartTime;
@@ -34,16 +37,20 @@ public class Transit {
 //		this.startPO = startPO;
 //	}
 
-	public boolean filterPoint(Position point , Vehicle vehicle) {
+	public void filterPoint(Position point , Vehicle vehicle) {
 		if(vehicle.getLastPos() == null) {
 			if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
+				LOGGER.severe("Vehicle " + vehicle.getOrigin().toString() + "-" + vehicle.getRegistrationNumber()
+				+ " coudn not be regristed as a driving vehicle.");
+				LOGGER.severe("POLICE WILL BE INFORMED - VEHICLE IS BLIND SIDER");
+				
 				//TODO  Fehlermeldung
 			}else {
 				vehicle.setLastPos(point);
 				setAbsolutStartPosition(point);
 				setAbsolutStartTime(point.getTime());
 				dbconnection.saveFirstPointOfTransit(vehicle, point, 0, true);
-				this.runingTransit = true;
+				lFVehicle(vehicle, dbconnection.getBiggestTraficTimeFromPoint(point));
 			}
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("D")) {
 			vehicle.setAcuallPos(vehicle.getLastPos());
@@ -51,6 +58,9 @@ public class Transit {
 			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
 			dbconnection.saveFirstPointOfTransit(vehicle,vehicle.getLastPos() , getKm(), true);
 			dbconnection.saveFirstPointOfTransit(vehicle, vehicle.getAcuallPos(), getKm(), false);
+			runingTransit = true;
+			lFVehicle(vehicle, dbconnection.getBiggestTraficTimeFromPoint(vehicle.getAcuallPos()));
+			
 			
 		}else if(point.getPositionID().substring(1, point.getPositionID().length()).equals("A")) {
 			vehicle.setAcuallPos(vehicle.getLastPos());
@@ -66,9 +76,9 @@ public class Transit {
 			vehicle.addToArrayList(finishedTransit);
 			dbconnection.saveFullTransit(vehicle);
 			dbconnection.deleteStartedTransit(vehicle.getLastPos(), vehicle.getAcuallPos());
+			runingTransit = false;
 			
 		}
-		return this.runingTransit;
 	}
 	
 	private double getKmFromStartPOToEndPO(Position startPO, Position endPO, Vehicle vehicle) {
@@ -78,9 +88,28 @@ public class Transit {
 	}
 	
 	
-	private LocalDate getBiggestTravelTime(Position position) {
+	private int getBiggestTravelTime(Position position) {
 		return dbconnection.getBiggestTraficTimeFromPoint(position);
+	}
+	
+	private boolean lFVehicle(Vehicle vehicle, int minutes) {
 		
+		CompletableFuture<Boolean> filterPointFuture = CompletableFuture.supplyAsync(() -> 
+		{
+			Position point1 = vehicle.getAcuallPos();
+			try {
+				Thread.sleep(minutes * 60);
+				if(point1.equals(vehicle.getAcuallPos())) {
+					dbconnection.setTraficJamFlag(vehicle);
+					return false;
+				}
+			}catch (InterruptedException e) {
+            	e.printStackTrace();				
+			}
+			return runingTransit;
+		});
+		
+		return runingTransit;
 	}
 	
 	
