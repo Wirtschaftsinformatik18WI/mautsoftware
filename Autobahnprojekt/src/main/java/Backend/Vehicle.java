@@ -20,6 +20,14 @@ public class Vehicle {
 
     
     
+    @Override
+    public String toString() {
+    	String vehicleString = "RegristationNR: " + origin.toString() + "-" + registrationNumber + " | Traffic: From " + 
+    			lastPos.getPositionID() + " : " + lastPos.getTime() + " To " + acuallPos.getPositionID() + " : " + acuallPos.getTime();
+    	
+    	return vehicleString;
+    }
+    
     
     public void addToArrayList(FinishedTransits transit) {
     	transitList.add(transit);

@@ -22,6 +22,13 @@ public class FinishedTransits {
 		
 	}
 
+	@Override
+	public String toString() {
+		String finishedTransit = "";
+		
+		return finishedTransit;
+	}
+	
 	public Position getStartPosition() {
 		return startPosition;
 	}

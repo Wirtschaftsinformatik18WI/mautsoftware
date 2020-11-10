@@ -231,7 +231,7 @@ public String getDecriptionFromPositionID(String id) {
 			
 		// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
 				
-				public ArrayList<FinishedTransits> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
+				public ArrayList<FinishedTransits> getAllTransitFromVehicle(Vehicle vehicle, int month) {
 					ArrayList<FinishedTransits> transitlist = new ArrayList<>();
 					return transitlist;
 				}
@@ -289,6 +289,17 @@ public String getDecriptionFromPositionID(String id) {
 				public ArrayList<DBInputVehicleAndPoint> getAllPointsAndVehiclesFromArrivingSpot(){
 					ArrayList<DBInputVehicleAndPoint> arrivedPoints = new ArrayList<>();
 					return arrivedPoints;
+				}
+				
+		// Add Flag trafficOffender
+				public void addFlagTrafficOffender(Vehicle vehicle) {
+					
+				}
+				
+		// Get all Vehicle with Traffic offender Flag
+				public ArrayList<Vehicle> getAllVehicleWithTrafficOffenderFlag() {
+						ArrayList<Vehicle> vehiclesWithTrafficOffenderFlag = new ArrayList <>();
+						return vehiclesWithTrafficOffenderFlag;
 				}
 				
 				

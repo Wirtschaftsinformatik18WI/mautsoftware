@@ -4,12 +4,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import database.DatabaseConnection;
 
 public class TestclassforProgramm {
+	
+	Vehicle vehicle;
+	Position point;
 
 	// in dieser Klasse wird der Ablauf imitiert und soll dazu dienen, eine leitfaden für das Programm zu sein
 	
@@ -20,24 +24,7 @@ public class TestclassforProgramm {
 	public static Logger LOGGER = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
 //	LOGGER.setLevel(Level.ALL);
 
-
-	String standort1 = "D-BZ";
-	String standort2 = "D-DD";
-	String standort3 = "A-B";
-	
-	Origin origin = Origin.D;
-	String registrationNr = "K407";
 	DatabaseConnection con; //TODO would fail
-		
-	
-	private Position point1 = new Position(standort1, LocalDate.now());
-	private Position point2 = new Position(standort1, LocalDate.now().plusDays(1));
-	private Position point3 = new Position(standort1, LocalDate.now().plusDays(2));
-
-	private User user = new User("yahoo.com", "Luisa", "Thiel", "Dresdner Strasse","01877" , "3", "03591530636", "password", "Deutschland");
-	
-	
-	LocalDate monatsbetrachtung = LocalDate.now();
 	
 	
 	
@@ -54,20 +41,36 @@ public class TestclassforProgramm {
 				ArrayList<DBInputVehicleAndPoint> dbInputVehicleAndPoint 
 				= con.getAllPointsAndVehiclesFromArrivingSpot();
 				for (DBInputVehicleAndPoint dbInput : dbInputVehicleAndPoint) {
-					Vehicle vehicle = dbInput.getVehicle();
-					Position point = dbInput.getPosition();
+					this.vehicle = dbInput.getVehicle();
+					this.point = dbInput.getPosition();
 					Transit transit = new Transit(point, point.getTime());
 					
 					CompletableFuture<Transit> filterPointFuture = CompletableFuture.supplyAsync(() -> 
 					{
-						transit.filterPoint(point, vehicle);
-						return transit;
+						Transit transit1 = new Transit(point, point.getTime());
+						transit1.filterPoint(point, vehicle);
+						return transit1;
 					});
+					
+					try {
+						transit = filterPointFuture.get();
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 				
 			}
-			
-			if(time % 24 == 0) {
+			/**
+			 * Every Day *
+			 * 
+			 * Checks all Traffic Jams and sollect them to iterate throw the non traffic jam vehicle to
+			 * get the traffic offender
+			 */
+			if(time % 1440 == 0) { 
 				ArrayList<Vehicle> dbInputTraficJamTrafics = con.getAllTransitsWithTraficJamFlag();
 				int zaehler = 0;
 				ArrayList<Vehicle> allTraficJamRouts = new ArrayList<>();
@@ -111,11 +114,38 @@ public class TestclassforProgramm {
 				
 				// Hier muss die Prüfung aller anderen Fahrzeuge erfolgen, ob diese Verkehrssünder sind
 				allOtherTraficsWithoutJam.addAll(con.getAllTransitsWithoutTraficJamFlag());
-				
+				for(Vehicle noJamVehicle : allOtherTraficsWithoutJam) {
+					for(Vehicle jamVehicles : allTraficJamRouts) {
+						if(noJamVehicle.getAcuallPos().getPositionID().equals(jamVehicles.getAcuallPos().getPositionID()) &&
+								noJamVehicle.getLastPos().getPositionID().equals(jamVehicles.getLastPos().getPositionID())) {
+							if((noJamVehicle.getLastPos().getTime().isEqual(jamVehicles.getLastPos().getTime())|| 
+									noJamVehicle.getLastPos().getTime().isAfter(jamVehicles.getLastPos().getTime())) && (
+									noJamVehicle.getAcuallPos().getTime().isEqual(jamVehicles.getAcuallPos().getTime()) || 
+									noJamVehicle.getAcuallPos().getTime().isBefore(jamVehicles.getAcuallPos().getTime()))){
+										con.addFlagTrafficOffender(noJamVehicle);
+									}
+						}
+					}
+				}
 				
 			}
 			
-			if(time % 168 == 0) {
+			/**
+			 * Every Week *
+			 * 
+			 * Get all traffic offender to sent a Report-Mail to police to check if that vehicle was allowed to 
+			 * pass the traffic jam
+			 * 
+			 */
+			if(time % 10080 == 0) { 
+				ArrayList<Vehicle> vehicleWithTrafficOffenderFlag = con.getAllVehicleWithTrafficOffenderFlag();
+				String policeReport = "The possible traffic offender: /n";
+				int number = 1;
+				for(Vehicle vehicleTrafficOffender : vehicleWithTrafficOffenderFlag) {
+					policeReport = policeReport + number + vehicleTrafficOffender.toString()+"/n";
+				}
+				
+				//TODO Mail to police
 				
 			try {
 				Thread.sleep(1000*60); // 1 min Thread sleep
@@ -126,61 +156,37 @@ public class TestclassforProgramm {
 			}
 			
 			}
+			
+			
 			time++;
 		}
 		
+	}
+	
+	/**
+	 * method create a Bill for all vehicle of a given User for a given month
+	 * 
+	 * @param user acuall User who would like to get his bill
+	 * @param month month who are the user looking for
+	 */
+	
+	public void createBillOfAMonth(User user, int month) {
 		
-		
-		
-		
-		
-		// aufbau des Use-Case der Annahme von Punkten eines Fahrzeugs und speichern dieser Punkte in der Datenbank
-		
-		// includes the function to filter traffic jam 
-		
-		Vehicle testfahrzeug = con.getVehicleByRegistrationNr(origin, registrationNr);
-		Transit transit = new Transit(point1, LocalDate.now());
-		
-		
-		transit.filterPoint(point1, testfahrzeug);
-		transit.filterPoint(point2, testfahrzeug);
-		transit.filterPoint(point3, testfahrzeug);
-		
-		//Promise lösung
-//		while(transit.getAbsolutEndPosition()== null 
-//				|| LocalDate.now().equals(transit.getAbsolutStartTime().plusDays(2))) {
-			
-			
-//		}
-		
-		//Aufruf des CF mit name.get();
-		
-		
-		System.out.println(testfahrzeug.getKm()); // es sollten 256Km sein
-		
-		
-		
-		
-		
-		// Rechnung aufbauen und Daten liefern
-		
-		//Vehicle[] allvehicle = con.getAllVehicleFromUser(user);
 		ArrayList<FinishedTransits> alltransit = new ArrayList<>();
-		ArrayList<Vehicle> allvehicle = new ArrayList<>();
+		ArrayList<Vehicle> allvehicleFromAUser = new ArrayList<>();
+		String allTransitsForBill = "All Transits of " + month + "/n";
 		
-		allvehicle.addAll(con.getVehicle(user));
-		
-		for(Vehicle v : allvehicle ) {
-			alltransit.addAll(con.getAllTransitFromVehicle(v,monatsbetrachtung));
+		allvehicleFromAUser.addAll(con.getVehicle(user));
+		for(Vehicle userVehicle : allvehicleFromAUser ) {
+			alltransit.addAll(con.getAllTransitFromVehicle(userVehicle, month));
+		}
+		for(FinishedTransits finishedTransit : alltransit) {
+			allTransitsForBill = allTransitsForBill + finishedTransit.toString() + "/n";
 		}
 		
-		//TODO LF: fancy function to build up a bill and send via Mail
 		
-		
-		
-		// 
-		
-		
+		//TODO send via Mail to User
+				
 		
 	}
 	
