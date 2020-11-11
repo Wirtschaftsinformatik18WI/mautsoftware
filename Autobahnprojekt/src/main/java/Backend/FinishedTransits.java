@@ -2,6 +2,16 @@ package Backend;
 
 import java.time.LocalDate;
 
+/**
+ * 
+ * class to:
+ * 		~ create a finished Transit with the main used facts 
+ * 		 
+ * 
+ * @author luisa.thiel Mail: luisa.thiel@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ */
 public class FinishedTransits {
 
 	private Position startPosition;
@@ -22,6 +32,15 @@ public class FinishedTransits {
 		
 	}
 
+	//TODO Funktion fertig bauen und dann Kommentar noch
+	
+	@Override
+	public String toString() {
+		String finishedTransit = "";
+		
+		return finishedTransit;
+	}
+	
 	public Position getStartPosition() {
 		return startPosition;
 	}
