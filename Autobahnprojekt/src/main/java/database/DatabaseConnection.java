@@ -271,6 +271,11 @@ public String getDecriptionFromPositionID(String id) {
 				public void setTraficJamFlag(Vehicle vehicle) {
 					
 				}
+				
+		// set LostVehicle Flag
+				public void setLostVehicleFlag(Vehicle vehicle) {
+					
+				}
 			
 		// get all Transits with Trafic Jam Flag inside a vehicle Object
 				public ArrayList<Vehicle> getAllTransitsWithTraficJamFlag() {

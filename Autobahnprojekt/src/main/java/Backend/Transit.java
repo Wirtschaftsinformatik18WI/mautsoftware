@@ -175,10 +175,10 @@ public class Transit {
 		{
 			Position point1 = vehicle.getAcuallPos();
 			try {
-				Thread.sleep(minutes * 60);
+				Thread.sleep(minutes * 60 * 1000);
 				if(point1.equals(vehicle.getAcuallPos())) {
 					dbconnection.setTraficJamFlag(vehicle);
-					//TODO Counter for Vehicle LOST
+					vehicleLost(vehicle, point1);
 					return false;
 				}
 			}catch (InterruptedException e) {
@@ -190,15 +190,36 @@ public class Transit {
 		try {
 			runingTransit = filterPointFuture.get();
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return runingTransit;
 	}
 	
+	
+	/**
+	 * set a counter if vehicle are lost
+	 * 
+	 * @param vehicle actual vehicle
+	 * @param position actual position
+	 */
+	private void vehicleLost(Vehicle vehicle,Position position) {
+		CompletableFuture<Boolean> lostVehicleFuture = CompletableFuture.supplyAsync(() -> 
+		{
+			Position point1 = position;
+			try {
+				Thread.sleep(1000 * 60 * 120);
+				if(point1.equals(vehicle.getAcuallPos())) {
+					dbconnection.setLostVehicleFlag(vehicle);
+				}
+			}catch (InterruptedException e) {
+            	e.printStackTrace();				
+			}
+			return false;
+		});
+		
+	}
 	
 	public Position getPosition() {
 		return position;
