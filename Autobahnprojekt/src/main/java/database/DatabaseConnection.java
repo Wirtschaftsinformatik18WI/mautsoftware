@@ -398,7 +398,59 @@ public String getDecriptionFromPositionID(String id) {
 					}
 					return livefee;
 				}		
-		
+	// Passwort und Nutzername holen
+				public String getPasswordFromEmail(String email) {
+					String password=null;
+					 Statement stmt;
+					
+					 // Userspezifische Daten aus der Datenbank laden
+					try {
+						stmt = conn.createStatement();
+						String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setObject (1, email);
+						
+						ResultSet rs = prepStmt.executeQuery();
+						
+						while ( rs.next() ) {
+							password= rs.getString("password");
+						}
+						
+						rs.close();
+						stmt.close();
+					} 
+					catch (SQLException e) {
+						System.err.println( e.toString() );
+					}
+					return password;
+				}
+	//ist User in DB?
+				public boolean doesUserExist(String email) {
+					 Statement stmt;
+					 boolean doesExist = false;
+					
+					 // Userspezifische Daten aus der Datenbank laden
+					try {
+						stmt = conn.createStatement();
+						String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
+
+						PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						prepStmt.setObject (1, email);
+						
+						ResultSet rs = prepStmt.executeQuery();
+						 doesExist = rs.next();
+						
+						rs.close();
+						stmt.close();
+					} 
+					catch (SQLException e) {
+						System.err.println( e.toString() );
+					}
+					return doesExist;
+				}	
+				
+				
 //Testfunktion:________________________________________________________________________________
 		public boolean addFeeTest(String feename, UUID feeid, double d) {
 			if (conn == null) {

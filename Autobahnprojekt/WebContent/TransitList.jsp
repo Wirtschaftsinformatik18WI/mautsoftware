@@ -19,9 +19,10 @@
 </header>
 
 <main>
-<%
+
+	<%
 	session.getAttribute("username");
-	
+	System.out.println(session.getAttribute("username"));
 	DatabaseConnection database = new DatabaseConnection();
 	User currentUser = database.getUserData(session.getAttribute("username").toString());
 	%>
@@ -48,22 +49,14 @@
 			out.print("<td  align=\"center\"> <a href=\"UserDataLink.jsp?username=" + currentUser.geteMail() + "&content=transit"+"\" ><font size=\"4\"> <span style=\"margin-left:2em\">Strecken</span></font></a></td>");
 			out.print("<td  align=\"center\"> <a href=\"UserDataLink.jsp?username=" + currentUser.geteMail() + "&content=logout"+"\" ><font size=\"4\"> <span style=\"margin-left:2em\">Logout</span></font></a></td>");
 				%>
-				</tr>
+			</tr>
 		</table>
 		<br/>
 	</nav>
-	
-	<% 
-	if (!(currentUser.isFirma())){
-		out.print("<p><b>Hallo " + currentUser.getName()+ " "  +currentUser.getSurname() + "!</b></br></br>");
-	}
-	else {
-		out.print("<p><b>Hallo " + currentUser.getName()+ "!</b></br></br>");
-	}
+	<p font size="3"><b>Meine Strecken </b></p>
+	<%
+	out.print("Transit: " + session.getAttribute("username"));
 	%>
-	In dieser Benutzerübersicht erhältst Du einen Überblick über Deine aktuellen Kontoinformationen.  Hier kannst Du die gespeicherten Informationen zu Deinem Konto einsehen und diese aktualisieren.</p></br></br>
-	<img src="UserStartPage.jpg" alt="Autobahn-Bild" style="width:90%;height:90%;float:center;">
-	
 	</section>
 	</main>
 	</body>

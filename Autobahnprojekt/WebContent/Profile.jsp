@@ -19,9 +19,9 @@
 </header>
 
 <main>
-<%
+
+	<%
 	session.getAttribute("username");
-	
 	DatabaseConnection database = new DatabaseConnection();
 	User currentUser = database.getUserData(session.getAttribute("username").toString());
 	%>
@@ -48,22 +48,26 @@
 			out.print("<td  align=\"center\"> <a href=\"UserDataLink.jsp?username=" + currentUser.geteMail() + "&content=transit"+"\" ><font size=\"4\"> <span style=\"margin-left:2em\">Strecken</span></font></a></td>");
 			out.print("<td  align=\"center\"> <a href=\"UserDataLink.jsp?username=" + currentUser.geteMail() + "&content=logout"+"\" ><font size=\"4\"> <span style=\"margin-left:2em\">Logout</span></font></a></td>");
 				%>
-				</tr>
+			</tr>
 		</table>
 		<br/>
 	</nav>
+	<p font size="3"><b>Mein Profil </b></p>
+	<%
+	out.print("<b>Vorname: </b>" + currentUser.getName() + "</br>");
+	if(!(currentUser.isFirma())){
+	out.print("<b>Nachname: </b>" + currentUser.getSurname()+ "</br>");}
+	out.print("<b>Straße: </b>" + currentUser.getStreet() + " " +currentUser.getHnumber()+ "</br>");
+	out.print("<b>Ort: </b>" + currentUser.getPostcode() + " " + currentUser.getCity()+ "</br>");
+	out.print("<b>Land: </b>" + currentUser.getCountry()+ "</br>");
+	out.print("<b>E-Mail: </b>" + currentUser.geteMail()+ "</br>");
+	out.print("<b>Telefon: </b>" + currentUser.getTelephone()+ "</br>");
+	if(currentUser.isFirma()){
+	out.print("<b>Benutzerart: </b>" + "gewerblicher Nutzer"+ "</br>");}
+	else {out.print("<b>Benutzerart: </b>" + "privater Nutzer"+ "</br>");}
 	
-	<% 
-	if (!(currentUser.isFirma())){
-		out.print("<p><b>Hallo " + currentUser.getName()+ " "  +currentUser.getSurname() + "!</b></br></br>");
-	}
-	else {
-		out.print("<p><b>Hallo " + currentUser.getName()+ "!</b></br></br>");
-	}
+	
 	%>
-	In dieser Benutzerübersicht erhältst Du einen Überblick über Deine aktuellen Kontoinformationen.  Hier kannst Du die gespeicherten Informationen zu Deinem Konto einsehen und diese aktualisieren.</p></br></br>
-	<img src="UserStartPage.jpg" alt="Autobahn-Bild" style="width:90%;height:90%;float:center;">
-	
 	</section>
 	</main>
 	</body>
