@@ -16,10 +16,12 @@ import java.util.UUID;
 public class Position {
 	private String positionID;
 	private LocalDate time;
+	private String description;
 	
-	public Position(String positionID, LocalDate time) {
+	public Position(String positionID, LocalDate time, String description) {
 		this.positionID = positionID;
 		this.time = time;
+		this.description = description;
 	}
 
 	public Position(String positionID) {
@@ -32,6 +34,10 @@ public class Position {
 
 	public LocalDate getTime() {
 		return time;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	

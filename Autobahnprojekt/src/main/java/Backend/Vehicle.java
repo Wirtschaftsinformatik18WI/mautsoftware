@@ -18,15 +18,19 @@ public class Vehicle {
     private String registrationNumber = new String();
     private ArrayList<FinishedTransits> transitList = new ArrayList<>();
     private Position lastPos;
+    private Position absolutStartPos;
     private Position acuallPos;
+    private Position absolutEndPos;
+    private String vid;
     
     private User user;
     private double km = 0;
     
-    public Vehicle (Origin origin, String registrationNumber, User user) {
+    public Vehicle (Origin origin, String registrationNumber, User user, String vid) {
         this.origin = origin;
         this.registrationNumber = registrationNumber;
         this.user = user;
+        this.vid = vid;
     }
 
     /**
@@ -95,6 +99,31 @@ public class Vehicle {
 		this.km = km;
 	}
 
+	public String getVid() {
+		return vid;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public Position getAbsolutStartPos() {
+		return absolutStartPos;
+	}
+
+	public void setAbsolutStartPos(Position absolutStartPos) {
+		this.absolutStartPos = absolutStartPos;
+	}
+
+	public Position getAbsolutEndPos() {
+		return absolutEndPos;
+	}
+
+	public void setAbsolutEndPos(Position absolutEndPos) {
+		this.absolutEndPos = absolutEndPos;
+	}
+
+	
     
     
     

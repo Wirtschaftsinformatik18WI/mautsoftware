@@ -81,6 +81,7 @@ public class Transit {
 			 */
 			}else {
 				vehicle.setAcuallPos(point);
+				vehicle.setAbsolutStartPos(point);
 				setAbsolutStartPosition(point);
 				setAbsolutStartTime(point.getTime());
 				dbconnection.saveFirstPointOfTransit(vehicle, point, 0, true);
@@ -115,6 +116,7 @@ public class Transit {
 			vehicle.setLastPos(vehicle.getAcuallPos());
 			vehicle.setAcuallPos(point);
 			setAbsolutEndPosition(point);
+			vehicle.setAbsolutEndPos(point);
 			// get full km
 			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
 			
@@ -124,7 +126,7 @@ public class Transit {
 							getAbsolutEndPosition(), getAbsolutEndTime(), getKm());
 			vehicle.addToArrayList(finishedTransit);
 			dbconnection.saveFullTransit(vehicle);
-			dbconnection.deleteStartedTransit(vehicle.getLastPos(), vehicle.getAcuallPos());
+//			dbconnection.deleteStartedTransit(vehicle.getLastPos(), vehicle.getAcuallPos());
 			runingTransit = false;
 			
 			LOGGER.fine("Point: " + vehicle.getAcuallPos().getPositionID() + " with Timestamp " + 
