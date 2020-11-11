@@ -289,6 +289,12 @@ public String getDecriptionFromPositionID(String id) {
 					return transitListWithTraficJam;
 				}
 				
+		// get Total number of vehicle by origin - origin shall be given
+				public long getTotalNumberOfVehicleByOrigin(Origin origin) {
+					long dingsda = 0;
+					return dingsda;
+				}
+				
 		// get all Points who are into the arriving spot  
 				//badest case... all Strings and on a Arraylist from one vehicle etc etc... REDEBEDARF F
 				public ArrayList<DBInputVehicleAndPoint> getAllPointsAndVehiclesFromArrivingSpot(){

@@ -209,8 +209,40 @@ public class MainMethodes {
 		
 		//TODO send via Mail to User
 				
-		
 	}
+	
+	public ArrayList<StatisticView> getTotalNumberOfVehicleByOrigin(){
+		ArrayList<StatisticView> totalNumberOfVehicleByOrigin = new ArrayList<>();
+		Origin bsporigin = Origin.CH;
+		ArrayList<Origin> allOrigins = bsporigin.getAllOrigins();
+		
+		CompletableFuture<ArrayList<StatisticView>> numberofVehicleByOriginFuture = CompletableFuture.supplyAsync(() -> 
+		{
+			ArrayList<StatisticView> acualList = new ArrayList<>();
+			
+			for(Origin origin : allOrigins) {
+				long number = con.getTotalNumberOfVehicleByOrigin(origin);
+				StatisticView sV = new StatisticView(origin, number);
+				acualList.add(sV);
+			}
+			return acualList;
+			
+		});
+				
+		
+		try {
+			totalNumberOfVehicleByOrigin = numberofVehicleByOriginFuture.get();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return totalNumberOfVehicleByOrigin;
+	}
+	
 	
 	
 }
