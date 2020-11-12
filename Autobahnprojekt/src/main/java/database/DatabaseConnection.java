@@ -490,7 +490,7 @@ public class DatabaseConnection {
 		 * @param registrationNr regNR of that vehicle
 		 * @param user owner of that vehicle
 		 */
-		public void createVehicle(String description, Origin origin, String registrationNr, User user) {
+		public void createVehicle(String description, String origin, String registrationNr, String email) {
 			
 			try {
 				String queryString = "INSERT INTO  Public.\"Vehicle\" (vid, cid, regnumber, uid, description)" +
@@ -500,9 +500,9 @@ public class DatabaseConnection {
 				
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
 				prepStmt.setString (1, UUID.randomUUID().toString());
-				prepStmt.setString (2, origin.toString());
+				prepStmt.setString (2, origin);
 				prepStmt.setString (3, registrationNr);
-				prepStmt.setString (4, user.geteMail());
+				prepStmt.setString (4, email);
 				prepStmt.setString (5, description);
 
 				prepStmt.execute();
