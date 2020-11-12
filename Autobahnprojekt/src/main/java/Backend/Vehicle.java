@@ -23,6 +23,7 @@ public class Vehicle {
     private Position absolutEndPos;
     private String vid;
     private String TransitID;
+    private String description;
     
     private User user;
     private double km = 0;
@@ -130,6 +131,14 @@ public class Vehicle {
 
 	public void setTransitID(String transitID) {
 		TransitID = transitID;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	

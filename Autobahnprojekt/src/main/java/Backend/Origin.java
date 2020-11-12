@@ -34,6 +34,17 @@ public enum Origin {
     	return allOrigins;
     }
 
+    public Origin changeToCorrectOrigin(String origin) {
+    	ArrayList<Origin> allOrigins = new ArrayList<>();
+    	for(Origin o : allOrigins) {
+    		if(o.toString().equals(origin)) {
+    			return o;
+    		}
+    	}
+    	return Origin.D;
+    }
+    
+    
 }
 
 // wenn das Objekt als String ausgegeben werden soll einfach  Origin.D.toString() anwählen o/

@@ -34,9 +34,11 @@ public class FinishedTransits {
 
 	//TODO Funktion fertig bauen und dann Kommentar noch
 	
-	@Override
-	public String toString() {
+	public String toString(double tax, double fee) {
 		String finishedTransit = "";
+		finishedTransit = "Strecke von " + startPosition.getDescription() + " - " + startPosition.getTime() + " nach " +
+				endPosition.getDescription() + " - " + endPosition.getTime() + " kostet " + (km*fee*(100+tax))/100 + " Euro";
+		
 		
 		return finishedTransit;
 	}

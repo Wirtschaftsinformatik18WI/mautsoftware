@@ -89,10 +89,12 @@ public class DatabaseConnection {
 				 * create a vehicle object out of the given information from the DB
 				 */
 				while ( rs.next() ) {
-					Origin origin = null;
+					Origin origin = Origin.D;
+					origin = origin.changeToCorrectOrigin(rs.getString("origin"));
 					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user, rs.getString("vid"));
 					vehicle.setLastPos(new Position (rs.getString("lastPosition")));
 					vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
+					vehicle.setDescription(rs.getString("description"));
 					vehicle.setKm(rs.getDouble("km"));
 				}
 				
