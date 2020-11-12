@@ -31,17 +31,25 @@
 		</ul>
 		</nav>
 	<section>
-		<h1>Login</h1>
-		 <center>
-		 <form action="LoginCheck.jsp" method="post"><br/>
-		 E-Mail:<input type="text" name="username"><br/>
-		 Passwort:<input type="password" name="password"> <br/>
-		 <input type="submit" value="Login">
+	<h1>Registrieren</h1>
+	</br>
+ <center>
+		 <form action="Registration.jsp" method="post"><br/>
+		Name:<input type="text" name="name"><br/>
+		Nachname:<input type="text" name="surname"> <br/>
+		Straﬂe:<input type="text" name="street"> <br/>
+		Hausnummer:<input type="text" name="hnumber"> <br/>
+		Postleitzahl:<input type="text" name="postcode"> <br/>
+		Ort:<input type="text" name="city"> <br/>
+		Land:<input type="text" name="country"> <br/>
+		Telefon:<input type="text" name="telephone"> <br/>
+		Gewerbe?:<input type="checkbox" name="iscompany"> <br/>
+		E-Mail:<input type="text" name="email"> <br/>
+		Passwort:<input type="password" name="password"> <br/>
+		 <input type="submit" value="Registrieren">
 		  </form> 
 		  </center>
-		  <a href="RegistrationPage.jsp">Registrieren</a></li>
 	</section>
-	
 	</main>
 </body>
 </html>

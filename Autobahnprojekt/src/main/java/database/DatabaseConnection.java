@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import Backend.DBInputVehicleAndPoint;
 import Backend.FinishedTransits;
 import Backend.Origin;
 import Backend.Position;
@@ -89,10 +88,12 @@ public class DatabaseConnection {
 				 * create a vehicle object out of the given information from the DB
 				 */
 				while ( rs.next() ) {
-					Origin origin = null;
+					Origin origin = Origin.D;
+					origin = origin.changeToCorrectOrigin(rs.getString("origin"));
 					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user, rs.getString("vid"));
 					vehicle.setLastPos(new Position (rs.getString("lastPosition")));
 					vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
+					vehicle.setDescription(rs.getString("description"));
 					vehicle.setKm(rs.getDouble("km"));
 				}
 				
@@ -339,25 +340,20 @@ public class DatabaseConnection {
 			}
 			return allfinishedTransits;
 		}
-				
+		
 		/**
-		 * save the points of a transit inside of a vehicle and as a startedTransit 
-		 * @category !ATTANTION! Transit is finally finished when vehicle reach a A-Point, so a 2. D point could get saved too here
+		 * save the first Point of a vehicle
 		 * 
-		 * @param vehicle actual driving vehicle
-		 * @param point point who got reached
-		 * @param km driven km, can be 0 or more
-		 * @param firstPoint true -> first Point | false -> second Point
+		 * @param vehicle actual vehicle
+		 * @param point first point of that vehicle
 		 */
-		public boolean saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
-			 Statement stmt;
+		public void saveFirstPointTransit(Vehicle vehicle, Position point) {
+			Statement stmt;
 			try {
 				//TODO überarbeiten
 				stmt = conn.createStatement();
-				if(firstPoint) {
 				String queryString = "INSERT INTO Public.\"startedTransit\" (toid, startposition, startdate, starttransid, vid) "
 						+ "VALUES (?,?,?,?,?) ";
-				}
 				
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
 				prepStmt.setObject (1, point.getPositionID());
@@ -372,15 +368,122 @@ public class DatabaseConnection {
 				stmt.close();
 
 				System.out.println("Entry created successfully");
-				return true;
+				
 			} 
 			catch ( Exception e ) {
 				System.err.println( e.toString() );
-				return false;
+				
 			}
 		}
+		/**
+		 * Save the 2 Point to save the Transit
+		 * 
+		 * @param vehicle actual vehicle
+		 * @param point1 LastPoint
+		 * @param point2 AcualPoint
+		 * @param km calculated km
+		 * @return TransitID for following transitpoints
+		 */
+		public String savePointsAsFirstAbsolvedTransit(Vehicle vehicle, Position point1 ,Position point2, double km) {
+			
+			Statement stmt;
+			String transitID = UUID.randomUUID().toString();
+			String queryString = "INSERT INTO Public.\"TransitStration\" ( TransitID, Point1, Pont1Time, Point2, Point2Time, vid, km) "
+					+ "VALUES (?,?,?,?,?,?,?) ";
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, transitID);
+				prepStmt.setObject (2, point1.getDescription());
+				prepStmt.setObject (3, point1.getTime());
+				prepStmt.setObject (4, point2.getDescription());
+				prepStmt.setObject (5, point2.getTime());
+				prepStmt.setObject (6, vehicle.getVid());
+				prepStmt.setObject (7, km);
 				
-		// Speichern eines beendeten Transits zu einem Auto
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+				
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+			return transitID;
+		}
+		
+		
+		/**
+		 * save the actual point of a started transit ( in TransitStations table)
+		 * 
+		 * @param TransitID ID from started Transit
+		 * @param point point to get changed
+		 * @param km drove km
+		 */
+		public void saveAcualPointOfTransit(String TransitID, Position point, double km) {
+			 Statement stmt;
+			 String queryString = "";
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				queryString = "UPDATE Public.\"TransitStration\" SET ( Point2, Point2Time,km) "
+							+ "VALUES (?,?,?) WHERE Transit ID = ? ";
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, point.getPositionID());
+				prepStmt.setObject (2, point.getTime());
+				prepStmt.setObject (3, km);
+				prepStmt.setObject (4, TransitID);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+		}
+		
+		/**
+		 * save the Last point of a started transit ( in TransitStations table)
+		 * 
+		 * @param TransitID ID from started Transit
+		 * @param point point to get changed
+		 */
+		public void saveLastPointOfTransit(String TransitID, Position point) {
+			 Statement stmt;
+			 String queryString = "";
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				queryString = "UPDATE Public.\"TransitStration\" SET ( Point1, Pont1Time)  "
+						+ "VALUES (?,?) WHERE Transit ID = ?";
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, point.getPositionID());
+				prepStmt.setObject (2, point.getTime());
+				prepStmt.setObject (3, TransitID);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+		}
+		
 		/**
 		 * function save a finished Transit into Table finishedTransit
 		 * 
@@ -418,10 +521,7 @@ public class DatabaseConnection {
 				return false;
 			}		
 		}
-				
-//		/s
-				
-		// Return bitte die höchste Zeit die zwischen den erreichbaren strecken möglich ist, ich gebe dir einen Punkt rein
+			
 		/**
 		 * calculates the biggest time of all available points next to the given point
 		 * 
@@ -454,7 +554,6 @@ public class DatabaseConnection {
 			return biggestTrafficTime;
 		}
 				
-		// set Trafic Jam Flag on DB in table vehicle
 		/**
 		 * set the flag TraficJam in table transitStation for that vehicle with his points
 		 * 
@@ -560,6 +659,7 @@ public class DatabaseConnection {
 				vehicle = new Vehicle (origin, rs.getString("regnumber"),getUserData(rs.getString("uid")), rs.getString("vid"));
 				vehicle.setLastPos(new Position (rs.getString("lastPosition")));
 				vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
+				vehicle.setDescription(rs.getString("description"));
 				vehicle.setKm(rs.getDouble("km"));
 				
 				rs.close();
@@ -573,8 +673,6 @@ public class DatabaseConnection {
 			return vehicle;
 		}
 		
-				
-		// get all Transits without Trafic Jam Frlag inside a vehicle Object
 		/**
 		 * get alltransits as a vehicle who dont have the TrafficJamFlag
 		 * 
@@ -637,8 +735,6 @@ public class DatabaseConnection {
 			return originnumber;
 		}
 				
-		// get all Points who are into the arriving spot  
-				//badest case... all Strings and on a Arraylist from one vehicle etc etc... REDEBEDARF F
 		/**
 		 * get all Point from Simulation as a Vehicle
 		 * 
@@ -711,7 +807,6 @@ public class DatabaseConnection {
 			
 		}
 		
-		// Add Flag trafficOffender
 		/**
 		 * add Flag TrafficOffender to a vehicle in TransitStations
 		 * 
@@ -731,7 +826,6 @@ public class DatabaseConnection {
 			}	
 		}
 				
-		// Get all Vehicle with Traffic offender Flag
 		/**
 		 * get all Vehicle with the TrafficOffender Flag
 		 * 
@@ -765,177 +859,201 @@ public class DatabaseConnection {
 			return vehiclesWithTrafficOffenderFlag;
 		}
 				
+		/**
+		 * create a new User on DB
+		 * 		
+		 * @param user schema of a User on Database
+		 * @return true if it's successful ,false if not
+		 */
+		public boolean createNewUser(User user) {
+			if (conn == null) {
+				return false;
+			}
+			try {
+				String queryString = "INSERT INTO  Public.\"User\" (name,surname,street, postcode, hnumber, city, telephone, iscompany, email, password)" +
+						" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				System.out.println(queryString);
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setString (1, user.getName());
+				prepStmt.setString (2, user.getSurname());
+				prepStmt.setString (3, user.getStreet());
+				prepStmt.setString (4, user.getPostcode());
+				prepStmt.setString (5, user.getHnumber());
+				prepStmt.setString (6, user.getCity());
+				prepStmt.setString (7, user.getTelephone());
+				prepStmt.setBoolean(8, user.isFirma());
+				prepStmt.setString (9, user.geteMail());
+				prepStmt.setString (10, user.getPassword()); 
+
+				prepStmt.execute();
+				prepStmt.close();
+				System.out.println("Entry created successfully");
+				return true;
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+				return false;
+			}
+		}
+			
+		/**
+		 * Get the actual Fee out of Database
+		 * 
+		 * @return actual fee
+		 */
+		public double getFee() {
+			double fee = 0;
+			 Statement stmt;
+			
+			 // Gebühren-Daten aus der Datenbank laden
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"Fees\" WHERE description =  ?  ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, "basic");
 				
-		// Neuen Nutzer erstellen
-				
-				public boolean createNewUser(User user) {
-					if (conn == null) {
-						return false;
-					}
-					try {
-						String queryString = "INSERT INTO  Public.\"User\" (name,surname,street, postcode, hnumber, city, telephone, iscompany, email, password)" +
-								" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-						System.out.println(queryString);
-
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setString (1, user.getName());
-						prepStmt.setString (2, user.getSurname());
-						prepStmt.setString (3, user.getStreet());
-						prepStmt.setString (4, user.getPostcode());
-						prepStmt.setString (5, user.getHnumber());
-						prepStmt.setString (6, user.getCity());
-						prepStmt.setString (7, user.getTelephone());
-						prepStmt.setBoolean(8, user.isFirma());
-						prepStmt.setString (9, user.geteMail());
-						prepStmt.setString (10, user.getPassword()); 
-
-						prepStmt.execute();
-						prepStmt.close();
-
-						System.out.println("Entry created successfully");
-						return true;
-					} 
-					catch ( Exception e ) {
-						System.err.println( e.toString() );
-						return false;
-					}
+				ResultSet rs = prepStmt.executeQuery();
+						
+				while ( rs.next() ) {
+					fee= rs.getDouble("fee");
 				}
-				
-		// die Gebühren holen
-				public double getFee() {
-					double fee = 0;
-					 Statement stmt;
 					
-					 // Gebühren-Daten aus der Datenbank laden
-					try {
-						stmt = conn.createStatement();
-						String queryString = "SELECT *  FROM Public.\"Fees\" WHERE description =  ?  ";
-
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setObject (1, "basic");
-						
-						ResultSet rs = prepStmt.executeQuery();
-						
-						while ( rs.next() ) {
-							fee= rs.getDouble("fee");
-						}
-						
-						rs.close();
-						stmt.close();
-					} 
-					catch (SQLException e) {
-						System.err.println( e.toString() );
-					}
-					return fee;
-				}		
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return fee;
+		}		
 				
-		//die Steuer holen
-				public double getTax() {
-					double tax = 0;
-					 Statement stmt;
+		/**
+		 * Get the actual tax out of Database
+		 * 
+		 * @return actual tax
+		 */
+		public double getTax() {
+			double tax = 0;
+			 Statement stmt;
 					
-					 // Steuer-Daten aus der Datenbank laden
-					try {
-						stmt = conn.createStatement();
-						String queryString = "SELECT *  FROM Public.\"Tax\" WHERE description =  ?  ";
-
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setObject (1, "basictax");
+			 // Steuer-Daten aus der Datenbank laden
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"Tax\" WHERE description =  ?  ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, "basictax");
+					
+				ResultSet rs = prepStmt.executeQuery();
 						
-						ResultSet rs = prepStmt.executeQuery();
-						
-						while ( rs.next() ) {
-							tax= rs.getDouble("amount");
-						}
-						
-						rs.close();
-						stmt.close();
-					} 
-					catch (SQLException e) {
-						System.err.println( e.toString() );
-					}
-					return tax;
+				while ( rs.next() ) {
+					tax= rs.getDouble("amount");
 				}
-				
-		//die Gebühren für Live holen
-				public double getLiveFee() {
-					double livefee = 0;
-					 Statement stmt;
 					
-					 // Gebühren- Daten aus der Datenbank laden
-					try {
-						stmt = conn.createStatement();
-						String queryString = "SELECT *  FROM Public.\"Fees\" WHERE description =  ?  ";
-
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setObject (1, "livefee");
-						
-						ResultSet rs = prepStmt.executeQuery();
-						
-						while ( rs.next() ) {
-							livefee= rs.getDouble("fee");
-						}
-						
-						rs.close();
-						stmt.close();
-					} 
-					catch (SQLException e) {
-						System.err.println( e.toString() );
-					}
-					return livefee;
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return tax;
+		}
+				
+		/**
+		 * Get the live tax out of Database
+		 * 
+		 * @return live tax
+		 */
+		public double getLiveFee() {
+			double livefee = 0;
+			 Statement stmt;
+			
+			 // Gebühren- Daten aus der Datenbank laden
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"Fees\" WHERE description =  ?  ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, "livefee");
+				
+				ResultSet rs = prepStmt.executeQuery();
+					
+				while ( rs.next() ) {
+					livefee= rs.getDouble("fee");
 				}
+					
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return livefee;
+		}
 				
 				// Passwort und Nutzername holen
-				public String getPasswordFromEmail(String email) {
-					String password=null;
-					 Statement stmt;
+		/**
+		 * get passwort from a given user by his email
+		 * 
+		 * @param email user email
+		 * @return passwort as a String
+		 */
+		public String getPasswordFromEmail(String email) {
+			String password=null;
+			 Statement stmt;
+				
+			 // Userspezifische Daten aus der Datenbank laden
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, email);
 					
-					 // Userspezifische Daten aus der Datenbank laden
-					try {
-						stmt = conn.createStatement();
-						String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
-
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setObject (1, email);
+				ResultSet rs = prepStmt.executeQuery();
 						
-						ResultSet rs = prepStmt.executeQuery();
-						
-						while ( rs.next() ) {
-							password= rs.getString("password");
-						}
-						
-						rs.close();
-						stmt.close();
-					} 
-					catch (SQLException e) {
-						System.err.println( e.toString() );
-					}
-					return password;
+				while ( rs.next() ) {
+					password= rs.getString("password");
 				}
-	//ist User in DB?
-				public boolean doesUserExist(String email) {
-					 Statement stmt;
-					 boolean doesExist = false;
 					
-					 // Userspezifische Daten aus der Datenbank laden
-					try {
-						stmt = conn.createStatement();
-						String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return password;
+		}
+	
+		//ist User in DB?
+		/**
+		 * check if User exist
+		 * 
+		 * @param email given User email
+		 * @return true if user exists, false if not
+		 */
+		public boolean doesUserExist(String email) {
+			 Statement stmt;
+			 boolean doesExist = false;
+					
+			 // Userspezifische Daten aus der Datenbank laden
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
 
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setObject (1, email);
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, email);
+					
+				ResultSet rs = prepStmt.executeQuery();
+				 doesExist = rs.next();
 						
-						ResultSet rs = prepStmt.executeQuery();
-						 doesExist = rs.next();
-						
-						rs.close();
-						stmt.close();
-					} 
-					catch (SQLException e) {
-						System.err.println( e.toString() );
-					}
-					return doesExist;
-				}
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return doesExist;
+		}
+		
+		
 		
 //Testfunktion:________________________________________________________________________________
 		public boolean addFeeTest(String feename, UUID feeid, double d) {
