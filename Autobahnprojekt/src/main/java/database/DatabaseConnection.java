@@ -339,25 +339,20 @@ public class DatabaseConnection {
 			}
 			return allfinishedTransits;
 		}
-				
+		
 		/**
-		 * save the points of a transit inside of a vehicle and as a startedTransit 
-		 * @category !ATTANTION! Transit is finally finished when vehicle reach a A-Point, so a 2. D point could get saved too here
+		 * save the first Point of a vehicle
 		 * 
-		 * @param vehicle actual driving vehicle
-		 * @param point point who got reached
-		 * @param km driven km, can be 0 or more
-		 * @param firstPoint true -> first Point | false -> second Point
+		 * @param vehicle actual vehicle
+		 * @param point first point of that vehicle
 		 */
-		public boolean saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
-			 Statement stmt;
+		public void saveFirstPointTransit(Vehicle vehicle, Position point) {
+			Statement stmt;
 			try {
 				//TODO überarbeiten
 				stmt = conn.createStatement();
-				if(firstPoint) {
 				String queryString = "INSERT INTO Public.\"startedTransit\" (toid, startposition, startdate, starttransid, vid) "
 						+ "VALUES (?,?,?,?,?) ";
-				}
 				
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
 				prepStmt.setObject (1, point.getPositionID());
@@ -372,13 +367,118 @@ public class DatabaseConnection {
 				stmt.close();
 
 				System.out.println("Entry created successfully");
-				return true;
+				
 			} 
 			catch ( Exception e ) {
 				System.err.println( e.toString() );
-				return false;
+				
 			}
 		}
+		/**
+		 * Save the 2 Point to save the Transit
+		 * 
+		 * @param vehicle
+		 * @param point1
+		 * @param point2
+		 * @param km
+		 * @return
+		 */
+		public String savePointsAsFirstAbsolvedTransit(Vehicle vehicle, Position point1 ,Position point2, double km) {
+			
+			Statement stmt;
+			String transitID = UUID.randomUUID().toString();
+			String queryString = "INSERT INTO Public.\"TransitStration\" ( TransitID, Point1, Pont1Time, Point2, Point2Time, vid, km) "
+					+ "VALUES (?,?,?,?,?,?,?) ";
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, transitID);
+				prepStmt.setObject (2, point1.getDescription());
+				prepStmt.setObject (3, point1.getTime());
+				prepStmt.setObject (4, point2.getDescription());
+				prepStmt.setObject (5, point2.getTime());
+				prepStmt.setObject (6, vehicle.getVid());
+				prepStmt.setObject (7, km);
+				
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+				
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+			return transitID;
+		}
+		
+		
+		/**
+		 * save the points of a transit inside of a vehicle and as a startedTransit 
+		 * @category !ATTANTION! Transit is finally finished when vehicle reach a A-Point, so a 2. D point could get saved too here
+		 * 
+		 * @param vehicle actual driving vehicle
+		 * @param point point who got reached
+		 * @param km driven km, can be 0 or more
+		 * @param firstPoint true -> lastPosition | false -> actualPosition
+		 */
+		public void saveAcualPointOfTransit(String TransitID, Position point, double km) {
+			 Statement stmt;
+			 String queryString = "";
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				queryString = "UPDATE Public.\"TransitStration\" SET ( Point2, Point2Time,km) "
+							+ "VALUES (?,?,?) WHERE Transit ID = ? ";
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, point.getPositionID());
+				prepStmt.setObject (2, point.getTime());
+				prepStmt.setObject (3, km);
+				prepStmt.setObject (4, TransitID);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+		}
+		
+		public void saveLastPointOfTransit(String TransitID, Position point) {
+			 Statement stmt;
+			 String queryString = "";
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				queryString = "UPDATE Public.\"TransitStration\" SET ( Point1, Pont1Time)  "
+						+ "VALUES (?,?) WHERE Transit ID = ?";
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, point.getPositionID());
+				prepStmt.setObject (2, point.getTime());
+				prepStmt.setObject (3, TransitID);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+		}
+		
 				
 		// Speichern eines beendeten Transits zu einem Auto
 		/**

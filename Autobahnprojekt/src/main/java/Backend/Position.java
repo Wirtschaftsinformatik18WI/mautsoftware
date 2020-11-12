@@ -23,6 +23,17 @@ public class Position {
 		this.time = time;
 		this.description = description;
 	}
+	
+	@Override
+	public String toString() {
+		String description = "";
+		if(positionID.substring(1, positionID.length()).equals("A")) {
+			description = "Abfahrt -" + positionID.substring(1, positionID.length());
+		}else {
+			description = "Durchfahrt -" + positionID.substring(1, positionID.length());
+		}
+		return description;
+	}
 
 	public Position(String positionID) {
 		this.positionID = positionID;
