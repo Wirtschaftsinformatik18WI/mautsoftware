@@ -198,6 +198,7 @@ public class MainMethodes {
 		String allTransitsForBill = "All Transits of " + month + "/n";
 		double fee = con.getFee();
 		double tax = con.getTax();
+		
 		allvehicleFromAUser.addAll(con.getVehicle(user));
 		
 		for(Vehicle userVehicle : allvehicleFromAUser ) {
