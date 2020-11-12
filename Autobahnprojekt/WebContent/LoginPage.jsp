@@ -33,6 +33,7 @@
 		</nav>
 	<section>
 		<h1>Login</h1>
+<<<<<<< HEAD
 		 <br/>
 		 <form action="LoginCheck.jsp" method="post">
 		 <br/>
@@ -47,8 +48,19 @@
 		 <input type="submit" value="Login">
 		 </form> 
 		  
+=======
+		 <center>
+		 <form action="LoginCheck.jsp" method="post"><br/>
+		 E-Mail:<input type="text" name="username"><br/>
+		 Passwort:<input type="password" name="password"> <br/>
+		 <input type="submit" value="Login">
+		  </form> 
+		  </center>
+		  <a href="RegistrationPage.jsp">Registrieren</a></li>
+>>>>>>> refs/remotes/origin/master
 	</section>
 	
+<<<<<<< HEAD
 	<section>
 	<h1>Registrieren</h1>
 	<br/>
@@ -87,30 +99,8 @@
 				<button id="submitbutton"  onclick="submitFunction(event)"> Registrieren  </button>  <br/>
 			</form>
 	</section>
+=======
+>>>>>>> refs/remotes/origin/master
 	</main>
-	<script>
-function submitFunction(event) { 
-	let name=document.getElementById("firstname").value;
-	let surname=document.getElementById("surname").value;
-	let street=document.getElementById("street").value;
-	let hnumber=document.getElementById("hnumber").value;
-	let postcode=document.getElementById("postcode").value;
-	let city=document.getElementById("city").value;
-	let telephone=document.getElementById("telephone").value;
-	let email=document.getElementById("email").value;
-	let password=document.getElementById("password").value;
-	let iscompany=document.getElementById("iscompany").value;
-	
-	
-//Request:------------------------
-	
-	var xhttp = new XMLHttpRequest();
-	 var url = "Registration.jsp?name=" + name + "&surname=" + surname + "&street=" + street +"&city=" + city +"&telephone=" + telephone +"&email=" + email+"&postcode="+ postcode +"&hnumber=" + hnumber+"&password=" + password+"&iscompany=" + iscompany ;
-	 xhttp.open("POST", url, true);
-	 xhttp.send(); 
-	 
-	}
-	
-</script>
 </body>
 </html>

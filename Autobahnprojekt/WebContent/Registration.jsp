@@ -1,25 +1,56 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
+<%@page contentType="text/html" pageEncoding="UTF-8"%> 
 <%@ page import="Backend.*" %>
 <%@ page import="database.*" %>
 <html>
-<head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-<%
-User newUser= null;
-boolean iscompany=Boolean.valueOf(request.getAttribute("iscompany").toString());
-if(iscompany){
-	newUser = new User(request.getAttribute("email").toString(),request.getAttribute("name").toString(),request.getAttribute("street").toString(),request.getAttribute("postcode").toString(),request.getAttribute("hnumber").toString(),request.getAttribute("city").toString(),request.getAttribute("telephone").toString(),request.getAttribute("password").toString(),request.getAttribute("country").toString());
-}
-else{
-	newUser = new User(request.getAttribute("email").toString(),request.getAttribute("name").toString(),request.getAttribute("surname").toString(),request.getAttribute("street").toString(),request.getAttribute("postcode").toString(),request.getAttribute("hnumber").toString(),request.getAttribute("city").toString(),request.getAttribute("telephone").toString(),request.getAttribute("password").toString(),request.getAttribute("country").toString());
-}
-DatabaseConnection database = new DatabaseConnection();
-database.createNewUser(newUser);
-%>
-</body>
+	<head> 
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+		<title>JSP Page</title> 
+	</head> 
+	<body> 
+		<% 
+		String name="";
+		String surname="";
+		String street="";
+		String hnumber="";
+		String postcode="";
+		String city="";
+		String country="";
+		String telephone="";
+		String email="";
+		String password="";
+		boolean iscompany=false;
+		name=request.getParameter("name"); 
+		surname=request.getParameter("surname");
+		street=request.getParameter("street");
+		hnumber=request.getParameter("hnumber");
+		postcode=request.getParameter("postcode");
+		city=request.getParameter("city");
+		country=request.getParameter("country");
+		telephone=request.getParameter("telephone");
+		email=request.getParameter("email");
+		password=request.getParameter("password");
+		iscompany=Boolean.valueOf(request.getParameter("iscompany").toString());
+		System.out.println(name);
+		System.out.println(iscompany);
+		
+		DatabaseConnection database = new DatabaseConnection();
+		
+		if (database.doesUserExist(email)){
+			//Nutzer gibt es schon - kann sich nicht 2 mal registrieren
+		}
+		else {
+			if (iscompany){
+				User newUser = new User (email, name, street,postcode,hnumber,city,telephone,password,country);
+				database.createNewUser(newUser);
+				out.print("created: companyUser");
+			}
+			else {
+				User newUser = new User (email, name, surname, street,postcode,hnumber,city,telephone,password,country);
+				database.createNewUser(newUser);
+				out.print("created: privateUser");
+			}
+		}
+		
+		%> 
+	</body> 
 </html>

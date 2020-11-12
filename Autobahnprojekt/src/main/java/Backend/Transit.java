@@ -84,7 +84,7 @@ public class Transit {
 				vehicle.setAbsolutStartPos(point);
 				setAbsolutStartPosition(point);
 				setAbsolutStartTime(point.getTime());
-				dbconnection.saveFirstPointOfTransit(vehicle, point, 0, true);
+				dbconnection.saveFirstPointTransit(vehicle, point);
 				lFVehicle(vehicle, dbconnection.getBiggestTraficTimeFromPoint(point));
 				
 				LOGGER.fine("Point: " + vehicle.getAcuallPos().getPositionID() + " with Timestamp " + 
@@ -100,8 +100,11 @@ public class Transit {
 			vehicle.setAcuallPos(point);
 						
 			setKm(getKmFromStartPOToEndPO(vehicle.getAcuallPos(), vehicle.getLastPos(), vehicle));
-			dbconnection.saveFirstPointOfTransit(vehicle,vehicle.getLastPos() , getKm(), true);
-			dbconnection.saveFirstPointOfTransit(vehicle, vehicle.getAcuallPos(), getKm(), false);
+			if(vehicle.getTransitID().isEmpty()) {
+				vehicle.setTransitID(dbconnection.savePointsAsFirstAbsolvedTransit(vehicle, vehicle.getAcuallPos(), vehicle.getLastPos(), getKm()));
+			}else {
+			dbconnection.saveLastPointOfTransit(vehicle.getTransitID(),vehicle.getLastPos());
+			dbconnection.saveAcualPointOfTransit(vehicle.getTransitID(), vehicle.getAcuallPos(), getKm());}
 			runingTransit = true;
 			lFVehicle(vehicle, dbconnection.getBiggestTraficTimeFromPoint(vehicle.getAcuallPos()));
 			
