@@ -54,40 +54,45 @@
 	<section>
 	<h1>Registrieren</h1>
 	<br/>
-	<form> 
-				<br/>
-				<label for="name">Name: </label><br/><input id="name" name="name">  
-				<br/>
-				<br/>
-				<label for="surname">Nachname: </label><br/><input id="surname" name="surname">  
-				<br/>
-				<br/>
-				<label for="street">Straﬂe: </label><br/><input id="street" name="street">  
-				<br/>
-				<br/>
-				<label for="hnumber">Hausnummer: </label><br/><input id="hnumber" name="hnumber">  
-				<br/>
-				<br/>
-				<label for="postcode">Postleitzahl: </label><br/><input id="postcode" name="postcode">  
-				<br/>
-				<br/>
-				<label for="city">Ort: </label><br/><input id="city" name="city">  
-				<br/>
-				<br/>
-				<label for="telephone">Telefon: </label><br/><input id="telephone" name="telephone">
-				<br/>
-				<br/>
-				<label for="email">E-Mail: </label><br/><input id="email" name="email"> 
-				<br/>
-				<br/>
-				<label for="iscompany">Gewerblich: </label><br/><input id="iscompany" name="iscompany" type="checkbox"> 
-				<br/>
-				<br/>
-				<label for="password">Passwort: </label><br/><input id="password" name="password" type="password">  
-				<br/>
-				<br/>
-				<button id="submitbutton"  onclick="submitFunction(event)"> Registrieren  </button>  <br/>
-			</form>
+	
+		 <form action="Registration.jsp" method="post">
+		 	<br/>
+			<label for="name">Name: </label><br/><input type="text" name="name">
+			<br/>
+			<br/>
+			<label for="surname">Nachname: </label><br/><input type="text" name="surname">
+			<br/>
+			<br/>
+			<label for="street">Straﬂe: </label><br/><input type="text" name="street">
+			<br/>
+			<br/>
+			<label for="hnumber">Hausnummer: </label><br/><input type="text" name="hnumber">
+			<br/>
+			<br/>
+			<label for="postcode">Postleitzahl: </label><br/><input type="text" name="postcode">
+			<br/>
+			<br/>
+			<label for="city">Ort: </label><br/><input type="text" name="city">
+			<br/>
+			<br/>
+			<label for="land">Land: </label><br/><input type="text" name="country">
+			<br/>
+			<br/>
+			<label for="telephone">Telefon: </label><br/><input type="text" name="telephone">
+			<br/>
+			<br/>
+			<label for="iscompany">Gewerblich: </label><br/><input type="checkbox" name="iscompany">
+			<br/>
+			<br/>
+			<label for="email">E-Mail: </label><br/><input type="text" name="email">
+			<br/>
+			<br/>
+			<label for="password">Passwort: </label><br/><input type="password" name="password">
+			<br/>
+			<br/>
+		 	<input type="submit" value="Registrieren">
+		 </form>
+		  
 	</section>
 	</main>
 </body>
