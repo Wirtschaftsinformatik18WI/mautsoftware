@@ -187,7 +187,7 @@ public class MainMethodes {
 	/**
 	 * method create a Bill for all vehicle of a given User for a given month
 	 * 
-	 * @param user acuall User who would like to get his bill
+	 * @param user actual User who would like to get his bill
 	 * @param month month who are the user looking for
 	 */
 	
@@ -196,13 +196,15 @@ public class MainMethodes {
 		ArrayList<FinishedTransits> alltransit = new ArrayList<>();
 		ArrayList<Vehicle> allvehicleFromAUser = new ArrayList<>();
 		String allTransitsForBill = "All Transits of " + month + "/n";
-		
+		double fee = con.getFee();
+		double tax = con.getTax();
 		allvehicleFromAUser.addAll(con.getVehicle(user));
+		
 		for(Vehicle userVehicle : allvehicleFromAUser ) {
 			alltransit.addAll(con.getAllTransitFromVehicle(userVehicle, month));
 		}
 		for(FinishedTransits finishedTransit : alltransit) {
-			allTransitsForBill = allTransitsForBill + finishedTransit.toString() + "/n";
+			allTransitsForBill = allTransitsForBill + finishedTransit.toString(tax, fee) + " Price: " + "/n";
 		}
 		
 		

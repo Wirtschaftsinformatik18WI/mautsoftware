@@ -22,6 +22,8 @@ public class Vehicle {
     private Position acuallPos;
     private Position absolutEndPos;
     private String vid;
+    private String TransitID;
+    private String description;
     
     private User user;
     private double km = 0;
@@ -121,6 +123,22 @@ public class Vehicle {
 
 	public void setAbsolutEndPos(Position absolutEndPos) {
 		this.absolutEndPos = absolutEndPos;
+	}
+
+	public String getTransitID() {
+		return TransitID;
+	}
+
+	public void setTransitID(String transitID) {
+		TransitID = transitID;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	
