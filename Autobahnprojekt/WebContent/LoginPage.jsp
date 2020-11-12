@@ -90,22 +90,45 @@
 				<button id="submitbutton"  onclick="submitFunction(event)"> Registrieren  </button>  <br/>
 			</form>
 	 -->
-	 <center>
-		 <form action="Registration.jsp" method="post"><br/>
-		Name:<input type="text" name="name"><br/>
-		Nachname:<input type="text" name="surname"> <br/>
-		Straﬂe:<input type="text" name="street"> <br/>
-		Hausnummer:<input type="text" name="hnumber"> <br/>
-		Postleitzahl:<input type="text" name="postcode"> <br/>
-		Ort:<input type="text" name="city"> <br/>
-		Land:<input type="text" name="country"> <br/>
-		Telefon:<input type="text" name="telephone"> <br/>
-		Gewerbe?:<input type="checkbox" name="iscompany"> <br/>
-		E-Mail:<input type="text" name="email"> <br/>
-		Passwort:<input type="password" name="password"> <br/>
-		 <input type="submit" value="Registrieren">
-		  </form> 
-		  </center>
+	
+		 <form action="Registration.jsp" method="post">
+		 	<br/>
+			<label for="name">Name: </label><br/><input type="text" name="name">
+			<br/>
+			<br/>
+			<label for="surname">Nachname: </label><br/><input type="text" name="surname">
+			<br/>
+			<br/>
+			<label for="street">Straﬂe: </label><br/><input type="text" name="street">
+			<br/>
+			<br/>
+			<label for="hnumber">Hausnummer: </label><br/><input type="text" name="hnumber">
+			<br/>
+			<br/>
+			<label for="postcode">Postleitzahl: </label><br/><input type="text" name="postcode">
+			<br/>
+			<br/>
+			<label for="city">Ort: </label><br/><input type="text" name="city">
+			<br/>
+			<br/>
+			<label for="land">Land: </label><br/><input type="text" name="country">
+			<br/>
+			<br/>
+			<label for="telephone">Telefon: </label><br/><input type="text" name="telephone">
+			<br/>
+			<br/>
+			<label for="iscompany">Gewerblich: </label><br/><input type="checkbox" name="iscompany">
+			<br/>
+			<br/>
+			<label for="email">E-Mail: </label><br/><input type="text" name="email">
+			<br/>
+			<br/>
+			<label for="password">Passwort: </label><br/><input type="password" name="password">
+			<br/>
+			<br/>
+		 	<input type="submit" value="Registrieren">
+		 </form>
+		  
 	</section>
 	</main>
 </body>
