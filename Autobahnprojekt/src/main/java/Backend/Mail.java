@@ -7,6 +7,17 @@ import javax.mail.*;
 import javax.mail.internet.*;
 import javax.activation.*;
 
+/**
+ * 
+ * class to:
+ * 		~ create a Email by given Data 
+ * 		 
+ * 
+ * @author luisa.thiel Mail: luisa.thiel@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ */
+
 public class Mail {
     
     String to="";

@@ -24,6 +24,9 @@ public class Position {
 		this.description = description;
 	}
 	
+	/**
+	 * @return return a String with the Abfahrt and Durchfahrt text
+	 */
 	@Override
 	public String toString() {
 		String description = "";

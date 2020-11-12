@@ -32,8 +32,13 @@ public class FinishedTransits {
 		
 	}
 
-	//TODO Funktion fertig bauen und dann Kommentar noch
-	
+	/**
+	 * create a String return value to build up a bill
+	 * 
+	 * @param tax actual or live tax
+	 * @param fee actual or live fee
+	 * @return a nice string of that finished Transit with startposition + time and endposition+ time and the costs of it
+	 */
 	public String toString(double tax, double fee) {
 		String finishedTransit = "";
 		finishedTransit = "Strecke von " + startPosition.getDescription() + " - " + startPosition.getTime() + " nach " +
