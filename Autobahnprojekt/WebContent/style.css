@@ -294,3 +294,9 @@ nav a[aria-current=page]{
      width: 33%;
   } 
 }
+
+.error{
+	display: flex; 
+    justify-content: center; 
+    align-items: center;
+}
