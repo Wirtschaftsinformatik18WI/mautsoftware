@@ -43,11 +43,10 @@ public class MainMethodes {
 		
 		while(time >0) {
 			if (time % 5 == 0) {
-				ArrayList<DBInputVehicleAndPoint> dbInputVehicleAndPoint 
+				ArrayList<Vehicle> dbInputVehicleAndPoint 
 				= con.getAllPointsAndVehiclesFromArrivingSpot();
-				for (DBInputVehicleAndPoint dbInput : dbInputVehicleAndPoint) {
-					this.vehicle = dbInput.getVehicle();
-					this.point = dbInput.getPosition();
+				for (Vehicle dbInput : dbInputVehicleAndPoint) {
+					this.vehicle = dbInput;
 					
 					/**
 					 * outsourced method  thread, so it would be possible to do a better performance
