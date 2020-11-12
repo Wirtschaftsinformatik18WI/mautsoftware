@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,7 +34,8 @@
 	</nav>
 	<section>
 	<h2>Statistik</h2>
-	Hier den Text und das Diagramm einfügen
+	<iframe width="650" height="400" scrolling="no" frameborder="0" 
+	src="http://www.selfhtml5.org/html5-diagramme/saeulendiagramm/index.php?id=16050043789691&%22%3E"></iframe>
 	
 	</section>
 	</main>
