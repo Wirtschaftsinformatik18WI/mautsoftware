@@ -11,7 +11,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import Backend.DBInputVehicleAndPoint;
 import Backend.FinishedTransits;
 import Backend.Origin;
 import Backend.Position;
