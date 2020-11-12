@@ -54,6 +54,7 @@
 	<section>
 	<h1>Registrieren</h1>
 	<br/>
+	<!-- 
 	<form> 
 				<br/>
 				<label for="name">Name: </label><br/><input id="name" name="name">  
@@ -88,6 +89,23 @@
 				<br/>
 				<button id="submitbutton"  onclick="submitFunction(event)"> Registrieren  </button>  <br/>
 			</form>
+	 -->
+	 <center>
+		 <form action="Registration.jsp" method="post"><br/>
+		Name:<input type="text" name="name"><br/>
+		Nachname:<input type="text" name="surname"> <br/>
+		Straﬂe:<input type="text" name="street"> <br/>
+		Hausnummer:<input type="text" name="hnumber"> <br/>
+		Postleitzahl:<input type="text" name="postcode"> <br/>
+		Ort:<input type="text" name="city"> <br/>
+		Land:<input type="text" name="country"> <br/>
+		Telefon:<input type="text" name="telephone"> <br/>
+		Gewerbe?:<input type="checkbox" name="iscompany"> <br/>
+		E-Mail:<input type="text" name="email"> <br/>
+		Passwort:<input type="password" name="password"> <br/>
+		 <input type="submit" value="Registrieren">
+		  </form> 
+		  </center>
 	</section>
 	</main>
 </body>
