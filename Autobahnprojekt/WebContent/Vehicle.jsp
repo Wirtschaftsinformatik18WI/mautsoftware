@@ -89,7 +89,14 @@
 	 
 	  %> 
 	</table>
-	
+	 <center>
+		 <form action="AddVehicle.jsp" method="post"><br/>
+		Beschreibung:<input type="text" name="description"><br/>
+		Länderkennzeichen:<input type="text" name="origin"> <br/>
+		Kennzeichen:<input type="text" name="regnumber"> <br/>
+		 <input type="submit" value="Hinzufügen">
+		  </form> 
+		  </center>
 	
 	</section>
 	</main>
