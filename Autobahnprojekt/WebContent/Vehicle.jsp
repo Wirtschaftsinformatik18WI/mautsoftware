@@ -14,7 +14,7 @@
 </head>
 <body>
 <header>
-    <a class="ribbon" tabindex="-1" title="zurück zur Startseite!" href="index.html">
+    <a class="ribbon" tabindex="-1" title="zurück zur Startseite!" href="Start.jsp">
 	   <img src="logotransparent.png" alt="Logo" style="width:120px;height:100px;float:left;"> 
 	   <h1 id="headline">Mautilus 18</h1>
        <p>Mercurius IT GmbH</span></p>
@@ -89,7 +89,14 @@
 	 
 	  %> 
 	</table>
-	
+	 <center>
+		 <form action="AddVehicle.jsp" method="post"><br/>
+		Beschreibung:<input type="text" name="description"><br/>
+		Länderkennzeichen:<input type="text" name="origin"> <br/>
+		Kennzeichen:<input type="text" name="regnumber"> <br/>
+		 <input type="submit" value="Hinzufügen">
+		  </form> 
+		  </center>
 	
 	</section>
 	</main>

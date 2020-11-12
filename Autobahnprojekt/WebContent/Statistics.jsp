@@ -1,3 +1,7 @@
+
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,10 +10,11 @@
     <meta name="description" content="Beispiel-Design Nr. 03 von SelfHTML.org" />
     <link rel="stylesheet" href="style.css">
 	<title>Autobahnprojekt</title>
+	<link rel="icon" type="image/gif" href="Mauticon.png">
 </head>
 <body>
 <header>
-    <a class="ribbon" tabindex="-1" title="zurück zur Startseite!" href="index.html">
+    <a class="ribbon" tabindex="-1" title="zurück zur Startseite!" href="Start.jsp">
 	   <img src="logotransparent.png" alt="Logo" style="width:120px;height:100px;float:left;"> 
 	   <h1 id="headline">Mautilus 18</h1>
        <p>Mercurius IT GmbH</span></p>
@@ -23,14 +28,15 @@
 		<li><a href="Start.jsp">Home</a></li>
 		<li><a href="LoginPage.jsp">Login</a></li>
 		<li><a href="ProjectIntroduction.html">Projektvorstellung</a></li>
-		<li><a href="Statistics.jsp">Statistik</a></li>
+		<li><a aria-current="page" href="Statistics.jsp">Statistik</a></li>
 		<li><a href="PrivacyPolicy.html">Privacy Policy</a></li>
 		<li><a href="Impressum.html">Impressum</a></li>
 	</ul>
 	</nav>
 	<section>
 	<h2>Statistik</h2>
-	Hier den Text und das Diagramm einfügen
+	<iframe width="650" height="400" scrolling="no" frameborder="0" 
+	src="http://www.selfhtml5.org/html5-diagramme/saeulendiagramm/index.php?id=16050043789691&%22%3E"></iframe>
 	
 	</section>
 	</main>
