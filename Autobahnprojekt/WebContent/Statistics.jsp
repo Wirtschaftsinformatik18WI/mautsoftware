@@ -33,9 +33,9 @@
 	</ul>
 	</nav>
 	<section>
-	<h2>Statistik</h2>
-	<iframe width="650" height="400" scrolling="no" frameborder="0" 
-	src="http://www.selfhtml5.org/html5-diagramme/saeulendiagramm/index.php?id=16050043789691&%22%3E"></iframe>
+	<br/>
+	<h2>Statistik - mautpflichtige Fahzeuge nach Herkunftsländern</h2>
+	<iframe width="880" height="600" scrolling="no" frameborder="0" src="http://www.selfhtml5.org/html5-diagramme/saeulendiagramm/index.php?id=16051857113043&"></iframe>
 	
 	</section>
 	</main>
