@@ -11,12 +11,14 @@
 		String description="";
 		String origin="";
 		String regnumber="";
+		String email = "";
 		description=request.getParameter("description"); 
 		origin=request.getParameter("origin");
 		regnumber=request.getParameter("regnumber");
+		email=request.getParameter("email");
 		
 		DatabaseConnection database = new DatabaseConnection();
-		
+		database.createVehicle(description, origin, regnumber, email);
 		System.out.println(description+ " - " + origin + " - " + regnumber);
 		
 		%> 
