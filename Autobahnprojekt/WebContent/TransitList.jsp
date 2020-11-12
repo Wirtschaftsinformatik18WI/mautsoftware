@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <%@ page import="Backend.*" %>
 <%@ page import="database.*" %>
+<%@ page import ="java.util.ArrayList"%>
+<%@ page import ="java.util.List"%>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -54,9 +56,28 @@
 		<br/>
 	</nav>
 	<p font size="3"><b>Meine Strecken </b></p>
-	<%
-	out.print("Transit: " + session.getAttribute("username"));
-	%>
+	<table border="1" id="AddressBookTable" class="table table-hover">
+	   <tr id="headline" class="table"> <!--  class=table makes row unselectable -->
+	      <td><b><span style=\"margin-left:2em,margin-right:2em \">Fahrzeug</span></b></td>
+	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Startpunkt</span></b></td>
+	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Startzeit</span></b></td>
+	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Endpunkt</span></b></td>
+	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Ankunftszeit</span></b></td>
+	      <td><b><span style=\"margin-left:2em,margin-right:2em\">mautpflichtige Strecke</span></b></td>
+	   </tr>
+	   
+	   <% 
+	   List<Transit> transits= null;//hier muss die Methode aufgerufen werden, die  alle Transits holt
+	    
+		for(Transit t: transits) {
+			   out.print("<td>" + "Fahrzeug"+ "</td>");//wie komme ich vom transit zum Auto?
+			   out.print("<td>" + t.getAbsolutStartPosition()+ "</td>");
+			   out.print("<td>" + t.getAbsolutStartTime()+ "</td>");
+			   out.print("<td>" + t.getAbsolutEndPosition()+ "</td>");
+			   out.print("<td>" + t.getAbsolutEndTime()+ "</td>");
+			   out.print("<td>" + Double.toString(t.getKm())+ "</td>");   
+	   }
+		%>
 	</section>
 	</main>
 	</body>

@@ -19,10 +19,25 @@ import Backend.Transit;
 import Backend.User;
 import Backend.Vehicle;
 
+/**
+ * 
+ * class to:
+ * 		~ get all Information aut of the DB
+ * 		 
+ * 
+ * @author mariett sauer Mail: mariett.sauer@cideon.com
+ * Company: Cideon Software & Services GmbH & Co. KG.
+ * created at 04.11.2020
+ * 
+ * edit by luisa thiel Mail: luisa.thiel@cideon.com
+ */
 public class DatabaseConnection {
 
 		Connection conn = null; 
 
+		/**
+		 * Contructor to create a DB - Connection
+		 */
 		public DatabaseConnection () {
 			try {
 				Class.forName("org.postgresql.Driver");
@@ -33,6 +48,10 @@ public class DatabaseConnection {
 				System.err.println( e.toString() );
 			}
 		}
+		
+		/**
+		 * function to check the actual DB connection
+		 */
 		protected void finalize() {
 			if (conn != null) {
 				try {
@@ -43,25 +62,35 @@ public class DatabaseConnection {
 			}
 		}
 		
-// alle Fahrezuge abrufen die zu einem Benutzer gehören - Rückgabe bitte als Arraylist oder ähnliches
 		
+		/**
+		 * get all vehicle from a user by given User
+		 * 
+		 * @param user actual user
+		 * @return ArrayList<Vehicle> from a User
+		 */
 		public ArrayList<Vehicle> getVehicle(User user) {
 			ArrayList<Vehicle> allvehicle = new ArrayList<>();
 			 Statement stmt;
 			
-			 // Fahrzeugspezifische Daten aus der Datenbank laden
+			 /**
+			  * get all vehicle by User E-Mail
+			  */
 			try {
 				stmt = conn.createStatement();
 				String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE email =  ?  ";
 
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
 				prepStmt.setObject (1, user.geteMail());
-				
+	
 				ResultSet rs = prepStmt.executeQuery();
 				
+				/**
+				 * create a vehicle object out of the given information from the DB
+				 */
 				while ( rs.next() ) {
 					Origin origin = null;
-					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user);
+					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user, rs.getString("vid"));
 					vehicle.setLastPos(new Position (rs.getString("lastPosition")));
 					vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
 					vehicle.setKm(rs.getDouble("km"));
@@ -76,45 +105,61 @@ public class DatabaseConnection {
 			return allvehicle;
 		}
 	
-// Alle Strecken abrufen die zu einem Fahrzeug gehören - Rückgabe bitte als Arraylist oder ähnliches
-		
-			public ArrayList<Transit> getfinishedTransit(String vehicleID) {
-				ArrayList<Transit> allfinishedTransits = new ArrayList<>();
-				 Statement stmt;
+			/**
+			 * get all finished Transits from a vehicle
+			 * 
+			 * @param vehicleID vehicle ID
+			 * @return ArrayList<FinishedTransits> with all finished transits from a vehicle
+			 */
+		public ArrayList<FinishedTransits> getfinishedTransit(String vehicleID) {
+			ArrayList<FinishedTransits> allfinishedTransits = new ArrayList<>();
+			 Statement stmt;
+			
+			 /**
+			  * get all finished Transity by vehicle ID
+			  */
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"finishedTransit\" WHERE vid =  ?  ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vehicleID);
 				
-				 // Fahrzeugspezifische Streckendaten aus der Datenbank laden
-				try {
-					stmt = conn.createStatement();
-					String queryString = "SELECT *  FROM Public.\"finishedTransit\" WHERE vid =  ?  ";
-
-					PreparedStatement prepStmt = conn.prepareStatement(queryString);
-					prepStmt.setObject (1, vehicleID);
+				ResultSet rs = prepStmt.executeQuery();
+				
+				/**
+				 * create a finished Transit by given Data and add them to the Array
+				 */
+				while ( rs.next() ) {
+					FinishedTransits finishedTransit = new FinishedTransits(
+							new Position(rs.getString("startPosition"), rs.getDate("startdate").toLocalDate(), rs.getString("description")), rs.getDate("startdate").toLocalDate(),
+							new Position(rs.getString("endPosition"), rs.getDate("enddate").toLocalDate(),  rs.getString("description")), rs.getDate("enddate").toLocalDate(),
+							rs.getLong("km"));
 					
-					ResultSet rs = prepStmt.executeQuery();
-					
-					while ( rs.next() ) {
-						Transit transit = new Transit(new Position(java.util.UUID.fromString(rs.getString("startPosition")), this.getDecriptionFromPositionID(rs.getString("startposition"))),rs.getDate("startdate"));
-						transit.setEndDate(rs.getDate("enddate"));
-						//transit.setKm(rs.getString("km"));
-						transit.set(new Position(rs.getString("toid"));
-					}
-					
-					rs.close();
-					stmt.close();
-				} 
-				catch (SQLException e) {
-					System.err.println( e.toString() );
+					allfinishedTransits.add(finishedTransit);
 				}
-				return allfinishedTransits;
+				
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
 			}
+			return allfinishedTransits;
+		}
 		
-// Get alle Daten von einer Person - Rückgabe einer Person bitte
-		
+		/**
+		 * Get all Data from a person by his E-Mail
+		 * 
+		 * @param email EMail from that User to get all User Data
+		 * @return return a completed User
+		 */
 		public User getUserData(String email) {
 			User user = null;
 			 Statement stmt;
 			
-			 // Userspezifische Daten aus der Datenbank laden
+			 /**
+			  * get Userspecific Data
+			  */
 			try {
 				stmt = conn.createStatement();
 				String queryString = "SELECT *  FROM Public.\"User\" WHERE email =  ?  ";
@@ -139,16 +184,20 @@ public class DatabaseConnection {
 			return user;
 		}
 		
-// get km aus zwei gegebenen Punkten
-		public double getKM(Position startPO, Position endPO) {
-			/*double km;
-			km = 250.0;
-			return km;
-			*/
-			double km = 0;
+		/**
+		 * get km from 2 given Points out of the Prosition Overview table
+		 * 
+		 * @param startPO Start Point
+		 * @param endPO End Point
+		 * @return long of the KM from startPO to endPO
+		 */
+		public long getKM(Position startPO, Position endPO) {
+			long km = 0;
 			 Statement stmt;
 			
-			 // Userspezifische Daten aus der Datenbank laden
+			 /**
+			  * get the KM by given points
+			  */
 			try {
 				stmt = conn.createStatement();
 				String queryString = "SELECT *  FROM Public.\"TransitOverview\" WHERE pointA =  ? AND pointB= ? ";
@@ -160,7 +209,7 @@ public class DatabaseConnection {
 				ResultSet rs = prepStmt.executeQuery();
 				
 				while ( rs.next() ) {
-					km= rs.getDouble("km");
+					km= rs.getLong("km");
 				}
 				
 				rs.close();
@@ -171,12 +220,20 @@ public class DatabaseConnection {
 			}
 			return km;
 		}
-		
-//get description from position id
-public String getDecriptionFromPositionID(String id) {
+
+		/**
+		 * get the description from a given PositionID
+		 * 
+		 * @param id ID from a Position
+		 * @return String description from a given Position
+		 */
+		public String getDecriptionFromPositionID(String id) {
 			String description=null;
 			 Statement stmt;
 			
+			 /**
+			  * get the description by ID
+			  */
 			try {
 				stmt = conn.createStatement();
 				String queryString = "SELECT *  FROM Public.\"PositionOverview\" WHERE poid =  ?  ";
@@ -200,84 +257,513 @@ public String getDecriptionFromPositionID(String id) {
 		}
 
 		// Ein Fahrzeug mit dem Kennzeichen holen und zurückgeben
-				public Vehicle getVehicleByRegistrationNr(Origin origin, String registrationNr) {
-					Vehicle v = null;
-					 Statement stmt;
-					
-					try {
-						stmt = conn.createStatement();
-						String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE regnumber =  ? AND cid = ? ";
-
-						PreparedStatement prepStmt = conn.prepareStatement(queryString);
-						prepStmt.setObject (1, origin);
-						prepStmt.setObject (2, registrationNr);
-						
-						ResultSet rs = prepStmt.executeQuery();
-						
-						while ( rs.next() ) { 
-							v = new Vehicle(origin, registrationNr, this.getUserData(rs.getString("uid")));
-							v.setKm(rs.getDouble("km"));
-							v.setAcuallPos(new Position(rs.getString("currentPosition")));
-						}
-						
-						rs.close();
-						stmt.close();
-					} 
-					catch (SQLException e) {
-						System.err.println( e.toString() );
-					}
-					return v;
+		/**
+		 * Get a vehicle by his registration Nummer -> Origin + regristation numer
+		 * 
+		 * @param origin origin of that vehicle
+		 * @param registrationNr regNR of the vehicle
+		 * @return full vehicle mit all points
+		 */
+		public Vehicle getVehicleByRegistrationNr(Origin origin, String registrationNr) {
+			Vehicle v = null;
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE regnumber =  ? AND cid = ? ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, origin);
+				prepStmt.setObject (2, registrationNr);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				while ( rs.next() ) { 
+					v = new Vehicle(origin, registrationNr, this.getUserData(rs.getString("uid")), rs.getString("vid"));
+					v.setKm(rs.getDouble("km"));
+					v.setAcuallPos(new Position(rs.getString("currentPosition")));
 				}
+					
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return v;
+		}
 			
 		// Alle Strecken abrufen die zu einem Fahrezug gehören - Rückgabe bitte als Arraylist oder ähnliches
+		/**
+		 * get all Finished Transits from a given vehicle in the given month
+		 * 	
+		 * @param vehicle actual vehicle
+		 * @param month month under review
+		 * @return ArrayList<FinishedTransits> with all Transits from that given month
+		 */
+		public ArrayList<FinishedTransits> getAllTransitFromVehicle(Vehicle vehicle, int month) {
+			ArrayList<FinishedTransits> allfinishedTransits = new ArrayList<>();
+			 Statement stmt;
+			
+			 /**
+			  * get all finished Transity by vehicle ID
+			  */
+			try {
+				//TODO überprüfen
+				LocalDate firstDayOfGivenMonth = LocalDate.of(2020, month, 1);
+				LocalDate lastDayOfGivenMonth = firstDayOfGivenMonth.withDayOfMonth(firstDayOfGivenMonth.lengthOfMonth());
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"finishedTransit\" WHERE vid =  ? AND startdate "
+						+ "BETWEEN " + firstDayOfGivenMonth.toString() +" AND " + lastDayOfGivenMonth; //TODO 
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vehicle.getRegistrationNumber());
 				
-				public ArrayList<FinishedTransits> getAllTransitFromVehicle(Vehicle vehicle, LocalDate juncture) {
-					ArrayList<FinishedTransits> transitlist = new ArrayList<>();
-					return transitlist;
-				}
+				ResultSet rs = prepStmt.executeQuery();
 				
-		// Speichern der ersten Punkte in der Datenbank zu einem Auto
-				//True -> first Point | False -> second Point
-				public void saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
+				/**
+				 * create a finished Transit by given Data and add them to the Array
+				 */
+				while ( rs.next() ) {
+					FinishedTransits finishedTransit = new FinishedTransits(
+							new Position(rs.getString("startPosition"), rs.getDate("startdate").toLocalDate(), rs.getString("description")), rs.getDate("startdate").toLocalDate(),
+							new Position(rs.getString("endPosition"), rs.getDate("enddate").toLocalDate(),  rs.getString("description")), rs.getDate("enddate").toLocalDate(),
+							rs.getLong("km"));
 					
+					allfinishedTransits.add(finishedTransit);
 				}
 				
-		// change firste Point of a vehicle
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			return allfinishedTransits;
+		}
 				
-				public void changeFirstPointOfTransit(Vehicle vehicle, Position lastPosition,Position acualPosition, double km) {
-					
+		/**
+		 * save the points of a transit inside of a vehicle and as a startedTransit 
+		 * @category !ATTANTION! Transit is finally finished when vehicle reach a A-Point, so a 2. D point could get saved too here
+		 * 
+		 * @param vehicle actual driving vehicle
+		 * @param point point who got reached
+		 * @param km driven km, can be 0 or more
+		 * @param firstPoint true -> first Point | false -> second Point
+		 */
+		public boolean saveFirstPointOfTransit(Vehicle vehicle, Position point, double km, boolean firstPoint) {
+			 Statement stmt;
+			try {
+				//TODO überarbeiten
+				stmt = conn.createStatement();
+				if(firstPoint) {
+				String queryString = "INSERT INTO Public.\"startedTransit\" (toid, startposition, startdate, starttransid, vid) "
+						+ "VALUES (?,?,?,?,?) ";
 				}
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, point.getPositionID());
+				prepStmt.setObject (2, point.getDescription());
+				prepStmt.setObject (3, point.getTime());
+				prepStmt.setObject (4, UUID.randomUUID());
+				prepStmt.setObject (5, vehicle.getVid());
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+				return true;
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+				return false;
+			}
+		}
 				
 		// Speichern eines beendeten Transits zu einem Auto
-				public void saveFullTransit(Vehicle vehicle) {
+		/**
+		 * function save a finished Transit into Table finishedTransit
+		 * 
+		 * @param vehicle finished Transit of that vehicle
+		 * @return true if successful , false if not
+		 */
+		public boolean saveFullTransit(Vehicle vehicle) {
+			 Statement stmt;
+			try {
+				//TODO überprüfen
+				stmt = conn.createStatement();
+				String queryString = "INSERT INTO Public.\"finishedTransit\" (ftransid, description, vid, startposition, endposition, startdate, enddate, km) " //toid fehlt aktuell
+						+ "VALUES (?,?,?,?,?,?,?,?) ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, UUID.randomUUID().toString());
+				prepStmt.setObject (2, vehicle.getRegistrationNumber());
+				prepStmt.setObject (3, vehicle.getVid());
+				prepStmt.setObject (4, vehicle.getAbsolutStartPos());
+				prepStmt.setObject (5, vehicle.getAbsolutEndPos());
+				prepStmt.setObject (6, vehicle.getAbsolutStartPos().getTime());
+				prepStmt.setObject (7, vehicle.getAbsolutEndPos().getTime());
+				prepStmt.setObject (8, vehicle.getKm());
+				
 					
-				}
+				ResultSet rs = prepStmt.executeQuery();
 				
-		// Delete started Transit
+				rs.close();
+				stmt.close();
+
+				System.out.println("Entry created successfully");
+				return true;
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+				return false;
+			}		
+		}
 				
-				public void deleteStartedTransit(Position lastPosition,Position acualPosition) {
-					
-				}
-				
+//		/s
 				
 		// Return bitte die höchste Zeit die zwischen den erreichbaren strecken möglich ist, ich gebe dir einen Punkt rein
-				public int getBiggestTraficTimeFromPoint(Position position) {
+		/**
+		 * calculates the biggest time of all available points next to the given point
+		 * 
+		 * @param position actual given point
+		 * @return biggest Time who can take to another point
+		 */
+		public int getBiggestTraficTimeFromPoint(Position position) {
+			int biggestTrafficTime = 0;
+			Statement stmt;
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT time  FROM Public.\"TransitOverview\" WHERE pointA =  ? ";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, position.getDescription());
+			
+				ResultSet rs = prepStmt.executeQuery();
 					
-					return 2;
-					
+				while ( rs.next() ) {
+					if(biggestTrafficTime<rs.getInt("time")) {
+						biggestTrafficTime = rs.getInt("time");
+					}
 				}
+						
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+					System.err.println( e.toString() );
+			}
+			return biggestTrafficTime;
+		}
 				
 		// set Trafic Jam Flag on DB in table vehicle
-				public void setTraficJamFlag(Vehicle vehicle) {
-					
+		/**
+		 * set the flag TraficJam in table transitStation for that vehicle with his points
+		 * 
+		 * @param vehicle actual vehicle who stuck into traffic jam
+		 */
+		public void setTraficJamFlag(Vehicle vehicle) {
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "UPDATE Public.\"TransitStations\" SET TrafficJam = 1 WHERE vid = ?";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vehicle.getVid());
+			}
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}	
+			
+			//TODO Prüfung
+			
+		}
+				
+		/**
+		 * set Flag lost in table TransitStations
+		 * 
+		 * @param vehicle actual vehicle who is lost in space
+		 */
+		public void setLostVehicleFlag(Vehicle vehicle) {
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "UPDATE Public.\"TransitStations\" SET lost = 1 WHERE vid = ?";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vehicle.getVid());
+			}
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}	
+			
+			//TODO Prüfung
+		}
+			
+		/**
+		 * get alltransits as a vehicle who have the TrafficJamFlag
+		 * 
+		 * @return returns Transits as Vehicles 
+		 */
+		public ArrayList<Vehicle> getAllTransitsWithTraficJamFlag() {
+			ArrayList<Vehicle> transitListWithTraficJam = new ArrayList <>();
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"TransitStations\" WHERE TrafficJam = 1";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				
+				ResultSet rs = prepStmt.executeQuery();
+				
+				while ( rs.next() ) { 
+					Vehicle v = getVehicleByVID(rs.getString("vid"));
+					v.setAcuallPos(new Position(rs.getString("Point1"), rs.getDate("Point1Time").toLocalDate(), rs.getString("Point1")));
+					v.setLastPos(new Position(rs.getString("Point2"), rs.getDate("Point2Time").toLocalDate(), rs.getString("Point2")));
 				}
+					
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			
+			return transitListWithTraficJam;
+		}
+				
+		/**
+		 * get a Vehicle by his vid
+		 * 
+		 * @param vID ID from that vehicle
+		 * @return a vehicle 
+		 */
+		public Vehicle getVehicleByVID(String vID) {
+			Vehicle vehicle = null;
+			 Statement stmt;
+				
+			 /**
+			  * get all vehicle by User E-Mail
+			  */
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE vid =  ?  ";
+
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vID);
+	
+				ResultSet rs = prepStmt.executeQuery();
+				
+				/**
+				 * create a vehicle object out of the given information from the DB
+				 */
+				
+				Origin origin = null;
+				vehicle = new Vehicle (origin, rs.getString("regnumber"),getUserData(rs.getString("uid")), rs.getString("vid"));
+				vehicle.setLastPos(new Position (rs.getString("lastPosition")));
+				vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
+				vehicle.setKm(rs.getDouble("km"));
+				
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			
+			
+			return vehicle;
+		}
+		
+				
+		// get all Transits without Trafic Jam Frlag inside a vehicle Object
+		/**
+		 * get alltransits as a vehicle who dont have the TrafficJamFlag
+		 * 
+		 * @return returns Transits as Vehicles 
+		 */
+		public ArrayList<Vehicle> getAllTransitsWithoutTraficJamFlag(){
+			ArrayList<Vehicle> transitListWithoutTraficJam = new ArrayList <>();
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"TransitStations\" WHERE TrafficJam = 0";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						
+				ResultSet rs = prepStmt.executeQuery();
+					
+				while ( rs.next() ) { 
+					Vehicle v = getVehicleByVID(rs.getString("vid"));
+					v.setAcuallPos(new Position(rs.getString("Point1"), rs.getDate("Point1Time").toLocalDate(), rs.getString("Point1")));
+					v.setLastPos(new Position(rs.getString("Point2"), rs.getDate("Point2Time").toLocalDate(), rs.getString("Point2")));
+					transitListWithoutTraficJam.add(v);
+				}
+					
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+					
+			return transitListWithoutTraficJam;
+		}
+				
+		/**
+		 * calculates the total number of vehicle from a given origin
+		 * 
+		 * @param origin actually origin
+		 * @return return count of that vehicles from that origin
+		 */
+		public long getTotalNumberOfVehicleByOrigin(Origin origin) {
+			long originnumber = 0;
+			Statement stmt;
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE cid = ?";
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, origin.toString());
+				ResultSet rs = prepStmt.executeQuery();
+						
+				while ( rs.next() ) { 
+					originnumber++;
+				}
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}		
+			return originnumber;
+		}
 				
 		// get all Points who are into the arriving spot  
 				//badest case... all Strings and on a Arraylist from one vehicle etc etc... REDEBEDARF F
-				public ArrayList<DBInputVehicleAndPoint> getAllPointsAndVehiclesFromArrivingSpot(){
-					ArrayList<DBInputVehicleAndPoint> arrivedPoints = new ArrayList<>();
-					return arrivedPoints;
+		/**
+		 * get all Point from Simulation as a Vehicle
+		 * 
+		 * @return a ArrayList<Vehicle> with Vehicles and there points
+		 */
+		public ArrayList<Vehicle> getAllPointsAndVehiclesFromArrivingSpot(){
+			ArrayList<Vehicle> arrivedPoints = new ArrayList<>();
+			 Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"transmitterData\"";
+
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+	
+				ResultSet rs = prepStmt.executeQuery();
+				
+				/**
+				 * create a vehicle object out of the given information from the DB
+				 */
+				while ( rs.next() ) {
+					Origin origin = null;
+					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),
+							getUserData(getUserIDByVehicle(rs.getString("vid"))), rs.getString("vid"));
+					if(!rs.getString("lastPosition").isEmpty()) {
+					vehicle.setLastPos(new Position (rs.getString("lastPosition")));}
+					vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
+					vehicle.setKm(rs.getDouble("km"));
 				}
+				
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}					
+					
+			return arrivedPoints;
+		}
+		
+		/**
+		 * Get a User ID by a Vehicle ID
+		 * 
+		 * @param vID Vehicle ID
+		 * @return return the User ID as a String
+		 */
+		public String getUserIDByVehicle(String vID) {
+			String userID = "";
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT uid FROM Public.\"Vehicle\" WHERE vid = ?";
+
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vID);
+	
+				ResultSet rs = prepStmt.executeQuery();
+				
+				userID = rs.getString("uid");				
+				
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+			
+			return userID;
+			
+		}
+		
+		// Add Flag trafficOffender
+		/**
+		 * add Flag TrafficOffender to a vehicle in TransitStations
+		 * 
+		 * @param vehicle specific vehicle
+		 */
+		public void addFlagTrafficOffender(Vehicle vehicle) {
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "UPDATE Public.\"TransitStations\" SET TrafficOffender = 1 WHERE vid = ?";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setObject (1, vehicle.getVid());
+			}
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}	
+		}
+				
+		// Get all Vehicle with Traffic offender Flag
+		/**
+		 * get all Vehicle with the TrafficOffender Flag
+		 * 
+		 * @return ArrayList<Vehicle> with all vehicle who got the TrafficOffender Flag
+		 */
+		public ArrayList<Vehicle> getAllVehicleWithTrafficOffenderFlag() {
+			ArrayList<Vehicle> vehiclesWithTrafficOffenderFlag = new ArrayList <>();
+			Statement stmt;
+			
+			try {
+				stmt = conn.createStatement();
+				String queryString = "SELECT *  FROM Public.\"TransitStations\" WHERE TrafficJam = 0";
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+						
+				ResultSet rs = prepStmt.executeQuery();
+					
+				while ( rs.next() ) { 
+					Vehicle v = getVehicleByVID(rs.getString("vid"));
+					v.setAcuallPos(new Position(rs.getString("Point1"), rs.getDate("Point1Time").toLocalDate(), rs.getString("Point1")));
+					v.setLastPos(new Position(rs.getString("Point2"), rs.getDate("Point2Time").toLocalDate(), rs.getString("Point2")));
+					vehiclesWithTrafficOffenderFlag.add(v);
+				}
+					
+				rs.close();
+				stmt.close();
+			} 
+			catch (SQLException e) {
+				System.err.println( e.toString() );
+			}
+					
+			return vehiclesWithTrafficOffenderFlag;
+		}
 				
 				
 		// Neuen Nutzer erstellen
@@ -397,8 +883,9 @@ public String getDecriptionFromPositionID(String id) {
 						System.err.println( e.toString() );
 					}
 					return livefee;
-				}		
-	// Passwort und Nutzername holen
+				}
+				
+				// Passwort und Nutzername holen
 				public String getPasswordFromEmail(String email) {
 					String password=null;
 					 Statement stmt;
@@ -448,9 +935,8 @@ public String getDecriptionFromPositionID(String id) {
 						System.err.println( e.toString() );
 					}
 					return doesExist;
-				}	
-				
-				
+				}
+		
 //Testfunktion:________________________________________________________________________________
 		public boolean addFeeTest(String feename, UUID feeid, double d) {
 			if (conn == null) {

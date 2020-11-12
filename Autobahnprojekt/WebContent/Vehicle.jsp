@@ -3,7 +3,7 @@
 <%@ page import="database.*" %>
 <%@ page import ="java.util.ArrayList"%>
 <%@ page import ="java.util.List"%>
-<%@ page import ="static org.apache.commons.lang.StringEscapeUtils.escapeHtml" %>
+<% //@ page import ="static org.apache.commons.lang.StringEscapeUtils.escapeHtml" %>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -68,15 +68,22 @@
 	   
 	   <% 
 	   List<Vehicle> vehicles = database.getVehicle(currentUser);
-	   for(Vehicle v: vehicles) {
+	  /* for(Vehicle v: vehicles) {
 		   //out.print("<td>" + escapeHtml(v.getDescription())+ "</td>");
 		   out.print("<td>" + escapeHtml(v.getOrigin().toString())+ "</td>");
 		   out.print("<td>" + escapeHtml(v.getRegistrationNumber())+ "</td>");
 		   //out.print("<td>" + escapeHtml(v.getLastPos().get)+ "</td>");
 		   //out.print("<td>" + escapeHtml(v.getAcuallPos())+ "</td>");
-		   out.print("<td>" + escapeHtml(Double. toString(v.getKm()))+ "</td>");
-		   
-		   
+		   out.print("<td>" + escapeHtml(Double. toString(v.getKm()))+ "</td>");}
+		*/   
+		for(Vehicle v: vehicles) {
+			   //out.print("<td>" + v.getDescription()+ "</td>");
+			   out.print("<td>" + "test"+ "</td>");
+			   out.print("<td>" + v.getOrigin().toString()+ "</td>");
+			   out.print("<td>" + v.getRegistrationNumber()+ "</td>");
+			   out.print("<td>" + v.getLastPos().toString()+ "</td>");
+			   out.print("<td>" + v.getAcuallPos().toString()+ "</td>");
+			   out.print("<td>" + Double.toString(v.getKm())+ "</td>");   
 	   }
 		
 	 
