@@ -18,7 +18,7 @@
 		email=request.getParameter("email");
 		
 		DatabaseConnection database = new DatabaseConnection();
-		database.createVehicle(description, origin, regnumber, email);
+		database.createVehicle(description,  , regnumber, email);
 		System.out.println(description+ " - " + origin + " - " + regnumber);
 		
 		%> 
