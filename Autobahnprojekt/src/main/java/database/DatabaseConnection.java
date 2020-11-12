@@ -1,7 +1,6 @@
 package database;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +13,6 @@ import java.util.UUID;
 import Backend.FinishedTransits;
 import Backend.Origin;
 import Backend.Position;
-import Backend.Transit;
 import Backend.User;
 import Backend.Vehicle;
 
@@ -482,6 +480,39 @@ public class DatabaseConnection {
 			catch ( Exception e ) {
 				System.err.println( e.toString() );
 			}
+		}
+		
+		/**
+		 * created a vehicle 
+		 * 
+		 * @param description description of that vehicle
+		 * @param origin origin of that vehicle
+		 * @param registrationNr regNR of that vehicle
+		 * @param user owner of that vehicle
+		 */
+		public void createVehicle(String description, Origin origin, String registrationNr, String email) {
+			
+			try {
+				String queryString = "INSERT INTO  Public.\"Vehicle\" (vid, cid, regnumber, uid, description)" +
+						" VALUES (?, ?, ?, ?, ?)";
+				
+				System.out.println(queryString);
+				
+				PreparedStatement prepStmt = conn.prepareStatement(queryString);
+				prepStmt.setString (1, UUID.randomUUID().toString());
+				prepStmt.setString (2, origin.toString());
+				prepStmt.setString (3, registrationNr);
+				prepStmt.setString (4, email);
+				prepStmt.setString (5, description);
+
+				prepStmt.execute();
+				prepStmt.close();
+				System.out.println("Entry created successfully");
+			} 
+			catch ( Exception e ) {
+				System.err.println( e.toString() );
+			}
+			
 		}
 		
 		/**
