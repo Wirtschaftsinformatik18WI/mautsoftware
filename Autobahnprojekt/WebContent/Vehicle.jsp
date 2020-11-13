@@ -68,16 +68,9 @@
 	   
 	   <% 
 	   List<Vehicle> vehicles = database.getVehicle(currentUser);
-	  /* for(Vehicle v: vehicles) {
-		   //out.print("<td>" + escapeHtml(v.getDescription())+ "</td>");
-		   out.print("<td>" + escapeHtml(v.getOrigin().toString())+ "</td>");
-		   out.print("<td>" + escapeHtml(v.getRegistrationNumber())+ "</td>");
-		   //out.print("<td>" + escapeHtml(v.getLastPos().get)+ "</td>");
-		   //out.print("<td>" + escapeHtml(v.getAcuallPos())+ "</td>");
-		   out.print("<td>" + escapeHtml(Double. toString(v.getKm()))+ "</td>");}
-		*/   
+	  /* for(Vehicle v: vehicles) {  
 		for(Vehicle v: vehicles) {
-			   //out.print("<td>" + v.getDescription()+ "</td>");
+			   out.print("<td>" + v.getDescription()+ "</td>");
 			   out.print("<td>" + "test"+ "</td>");
 			   out.print("<td>" + v.getOrigin().toString()+ "</td>");
 			   out.print("<td>" + v.getRegistrationNumber()+ "</td>");

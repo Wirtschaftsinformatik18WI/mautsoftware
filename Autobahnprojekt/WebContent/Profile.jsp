@@ -53,7 +53,8 @@
 		<br/>
 	</nav>
 	<p font size="3"><b>Mein Profil </b></p>
-	<%
+	 <%
+	
 	out.print("<b>Vorname: </b>" + currentUser.getName() + "</br>");
 	if(!(currentUser.isFirma())){
 	out.print("<b>Nachname: </b>" + currentUser.getSurname()+ "</br>");}
@@ -66,8 +67,9 @@
 	out.print("<b>Benutzerart: </b>" + "gewerblicher Nutzer"+ "</br>");}
 	else {out.print("<b>Benutzerart: </b>" + "privater Nutzer"+ "</br>");}
 	
+	%>  
 	
-	%>
+	
 	</section>
 	</main>
 	</body>

@@ -191,13 +191,14 @@ public class MainMethodes {
 	 * @param month month who are the user looking for
 	 */
 	
-	public void createBillOfAMonth(User user, int month) {
+	public String createBillOfAMonth(User user, int month) {
 		
 		ArrayList<FinishedTransits> alltransit = new ArrayList<>();
 		ArrayList<Vehicle> allvehicleFromAUser = new ArrayList<>();
 		String allTransitsForBill = "All Transits of " + month + "/n";
 		double fee = con.getFee();
 		double tax = con.getTax();
+		
 		allvehicleFromAUser.addAll(con.getVehicle(user));
 		
 		for(Vehicle userVehicle : allvehicleFromAUser ) {
@@ -207,7 +208,7 @@ public class MainMethodes {
 			allTransitsForBill = allTransitsForBill + finishedTransit.toString(tax, fee) + " Price: " + "/n";
 		}
 		
-		
+		return allTransitsForBill;
 		//TODO send via Mail to User
 				
 	}
