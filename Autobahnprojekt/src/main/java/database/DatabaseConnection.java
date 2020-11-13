@@ -38,7 +38,7 @@ public class DatabaseConnection {
 		public DatabaseConnection () {
 			try {
 				Class.forName("org.postgresql.Driver");
-				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/MotorwayToll","postgres", "postgres");
+				conn = DriverManager.getConnection("jdbc:postgresql://localhost:5433/MotorwayToll","postgres", "postgres");
 				conn.setAutoCommit(true);
 			} 
 			catch ( Exception e ) {
@@ -75,7 +75,7 @@ public class DatabaseConnection {
 			  */
 			try {
 				stmt = conn.createStatement();
-				String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE email =  ?  ";
+				String queryString = "SELECT *  FROM Public.\"Vehicle\" WHERE uid =  ?  ";
 
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
 				prepStmt.setObject (1, user.geteMail());
@@ -87,12 +87,14 @@ public class DatabaseConnection {
 				 */
 				while ( rs.next() ) {
 					Origin origin = Origin.D;
-					origin = origin.changeToCorrectOrigin(rs.getString("origin"));
+					origin = origin.changeToCorrectOrigin(rs.getString("cid"));
 					Vehicle vehicle = new Vehicle (origin, rs.getString("regnumber"),user, rs.getString("vid"));
 					vehicle.setLastPos(new Position (rs.getString("lastPosition")));
 					vehicle.setAcuallPos(new Position (rs.getString("currentPosition")));
 					vehicle.setDescription(rs.getString("description"));
-					vehicle.setKm(rs.getDouble("km"));
+					allvehicle.add(vehicle);
+					//vehicle.setKm(rs.getDouble("km"));
+					
 				}
 				
 				rs.close();
@@ -493,7 +495,7 @@ public class DatabaseConnection {
 		public void createVehicle(String description, Origin origin, String registrationNr, String email) {
 			
 			try {
-				String queryString = "INSERT INTO  Public.\"Vehicle\" (vid, cid, regnumber, uid, description)" +
+				String queryString = "INSERT INTO  Public.\"Vehicle\" (vid, cid, regnumber, email, description)" +
 						" VALUES (?, ?, ?, ?, ?)";
 				
 				System.out.println(queryString);
@@ -901,8 +903,8 @@ public class DatabaseConnection {
 				return false;
 			}
 			try {
-				String queryString = "INSERT INTO  Public.\"User\" (name,surname,street, postcode, hnumber, city, telephone, iscompany, email, password)" +
-						" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				String queryString = "INSERT INTO  Public.\"User\" (name,surname,street, postcode, hnumber, city, telephone, iscompany, email, password, country)" +
+						" VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 				System.out.println(queryString);
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
 				prepStmt.setString (1, user.getName());
@@ -915,6 +917,7 @@ public class DatabaseConnection {
 				prepStmt.setBoolean(8, user.isFirma());
 				prepStmt.setString (9, user.geteMail());
 				prepStmt.setString (10, user.getPassword()); 
+				prepStmt.setString (11, user.getCountry()); 
 
 				prepStmt.execute();
 				prepStmt.close();
@@ -1083,36 +1086,6 @@ public class DatabaseConnection {
 			}
 			return doesExist;
 		}
-		
-		
-		
-//Testfunktion:________________________________________________________________________________
-		public boolean addFeeTest(String feename, UUID feeid, double d) {
-			if (conn == null) {
-				return false;
-			}
-			try {
-				String queryString = "INSERT INTO  Public.\"Fees\" (name,id,amount)" +
-						" VALUES (?, ?, ?)";
-				System.out.println(queryString);
-
-				PreparedStatement prepStmt = conn.prepareStatement(queryString);
-				prepStmt.setString (1, feename);
-				prepStmt.setString (2, feeid.toString());
-				prepStmt.setDouble(3, 0.5);
-
-				prepStmt.execute();
-				prepStmt.close();
-
-				System.out.println("Entry created successfully");
-				return true;
-			} 
-			catch ( Exception e ) {
-				System.err.println( e.toString() );
-				return false;
-			}
-		}
-//_____________________________________________________________________________________________
-
+	
 		
 	}

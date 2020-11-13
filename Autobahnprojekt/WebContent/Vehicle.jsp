@@ -63,22 +63,21 @@
 	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Kennzeichen</span></b></td>
 	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Letzte Position</span></b></td>
 	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Aktuelle Position</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">mautpflichtige Strecke</span></b></td>
 	   </tr>
 	   
 	   <% 
 	   List<Vehicle> vehicles = database.getVehicle(currentUser);
-	  /* for(Vehicle v: vehicles) {  
+	    
 		for(Vehicle v: vehicles) {
+			out.print("<tr>");
 			   out.print("<td>" + v.getDescription()+ "</td>");
-			   out.print("<td>" + "test"+ "</td>");
 			   out.print("<td>" + v.getOrigin().toString()+ "</td>");
 			   out.print("<td>" + v.getRegistrationNumber()+ "</td>");
 			   out.print("<td>" + v.getLastPos().toString()+ "</td>");
 			   out.print("<td>" + v.getAcuallPos().toString()+ "</td>");
 			   out.print("<td>" + Double.toString(v.getKm())+ "</td>");   
-	   }
-		
+			   out.print("</tr>");
+	  }
 	 
 	  %> 
 	</table>

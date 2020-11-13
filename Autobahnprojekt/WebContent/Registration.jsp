@@ -29,9 +29,7 @@
 		telephone=request.getParameter("telephone");
 		email=request.getParameter("email");
 		password=request.getParameter("password");
-		iscompany=Boolean.valueOf(request.getParameter("iscompany").toString());
-		System.out.println(name);
-		System.out.println(iscompany);
+		//iscompany=Boolean.valueOf(request.getParameter("iscompany").toString());
 		
 		DatabaseConnection database = new DatabaseConnection();
 		
