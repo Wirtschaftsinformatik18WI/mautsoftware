@@ -8,6 +8,7 @@
 	</head> 
 	<body> 
 		<% 
+		Origin originx =  Origin.D;
 		String description="";
 		String origin="";
 		String regnumber="";
@@ -18,7 +19,7 @@
 		email=request.getParameter("email");
 		
 		DatabaseConnection database = new DatabaseConnection();
-		database.createVehicle(description,  , regnumber, email);
+		database.createVehicle(description, originx.changeToCorrectOrigin(origin) , regnumber, email);
 		System.out.println(description+ " - " + origin + " - " + regnumber);
 		
 		%> 

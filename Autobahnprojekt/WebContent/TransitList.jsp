@@ -65,18 +65,35 @@
 	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Ankunftszeit</span></b></td>
 	      <td><b><span style=\"margin-left:2em,margin-right:2em\">mautpflichtige Strecke</span></b></td>
 	   </tr>
-	   
+	   </table>
 	   <% 
-	   List<Transit> transits= null;//hier muss die Methode aufgerufen werden, die  alle Transits holt
-	    
-		for(Transit t: transits) {
-			   out.print("<td>" + "Fahrzeug"+ "</td>");//wie komme ich vom transit zum Auto?
-			   out.print("<td>" + t.getAbsolutStartPosition()+ "</td>");
-			   out.print("<td>" + t.getAbsolutStartTime()+ "</td>");
-			   out.print("<td>" + t.getAbsolutEndPosition()+ "</td>");
-			   out.print("<td>" + t.getAbsolutEndTime()+ "</td>");
+	   MainMethodes mainm = new MainMethodes();
+	   ArrayList<Vehicle> allvehicleFromAUser = new ArrayList<>();
+	   allvehicleFromAUser.addAll(database.getVehicle(currentUser)); 
+	   ArrayList<FinishedTransits> allTransitsFromVehicle= new ArrayList<>();
+	   for(Vehicle v: allvehicleFromAUser) {
+		   out.print(v.getDescription());
+		 out.print("  <tr id=\"headline\" class=\"table\">");
+		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Startpunkt</span></b></td>");
+		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Startzeit</span></b></td>");
+		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Endpunkt</span></b></td>");
+		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Ankunftszeit</span></b></td>");
+		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">mautflichtige Strecke</span></b></td>");
+		     out.print("</tr>");
+		   out.print("</table>");
+		   
+		   allTransitsFromVehicle.addAll(database.getAllTransitFromVehicle(v, 11));
+		   for(FinishedTransits t: allTransitsFromVehicle) {
+			   out.print("<td>" + t.getStartPosition()+ "</td>");
+			   out.print("<td>" + t.getStartDate()+ "</td>");
+			   out.print("<td>" + t.getEndPosition()+ "</td>");
+			   out.print("<td>" + t.getEndDate()+ "</td>");
 			   out.print("<td>" + Double.toString(t.getKm())+ "</td>");   
 	   }
+		   allTransitsFromVehicle.clear();  
+	   }
+	   
+	  
 		%>
 	</section>
 	</main>

@@ -36,7 +36,7 @@
 		DatabaseConnection database = new DatabaseConnection();
 		
 		if (database.doesUserExist(email)){
-			//Nutzer gibt es schon - kann sich nicht 2 mal registrieren
+			response.sendRedirect("UserExists.html");
 		}
 		else {
 			if (iscompany){

@@ -52,7 +52,14 @@
 		</table>
 		<br/>
 	</nav>
-	<p font size="3"><b>Meine Rechnungen </b></p>
+	<p font size="3"><b>Meine Rechnungen </b></p></br>
+	Monat November:
+	   
+	   <% 
+	   MainMethodes mainm = new MainMethodes();
+	   out.print(mainm.createBillOfAMonth(currentUser, 11)); 
+	  %> 
+	</table>
 	
 	</section>
 	</main>
