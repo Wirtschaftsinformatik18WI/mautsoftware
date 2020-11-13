@@ -21,7 +21,7 @@
 		DatabaseConnection database = new DatabaseConnection();
 		database.createVehicle(description, originx.changeToCorrectOrigin(origin) , regnumber, email);
 		System.out.println(description+ " - " + origin + " - " + regnumber);
-		
+		response.sendRedirect("vehicleadded.html");
 		%> 
 	</body> 
 </html>

@@ -34,7 +34,7 @@
 		DatabaseConnection database = new DatabaseConnection();
 		
 		if (database.doesUserExist(email)){
-			response.sendRedirect("UserExists.html");
+			response.sendRedirect("UserAlreadyExists.html");
 		}
 		else {
 			if (iscompany){
