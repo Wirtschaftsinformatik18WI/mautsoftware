@@ -30,6 +30,8 @@ public class Position {
 	@Override
 	public String toString() {
 		String description = "";
+		if (positionID == null) {return description;}
+		
 		if(positionID.substring(1, positionID.length()).equals("A")) {
 			description = "Abfahrt -" + positionID.substring(1, positionID.length());
 		}else {

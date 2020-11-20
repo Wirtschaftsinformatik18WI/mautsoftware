@@ -40,12 +40,12 @@
 			if (iscompany){
 				User newUser = new User (email, name, street,postcode,hnumber,city,telephone,password,country);
 				database.createNewUser(newUser);
-				out.print("created: companyUser");
+				response.sendRedirect("registrationsuccessfully.html");
 			}
 			else {
 				User newUser = new User (email, name, surname, street,postcode,hnumber,city,telephone,password,country);
 				database.createNewUser(newUser);
-				out.print("created: privateUser");
+				response.sendRedirect("registrationsuccessfully.html");
 			}
 		}
 		

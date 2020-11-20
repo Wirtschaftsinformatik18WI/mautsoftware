@@ -56,7 +56,7 @@ public enum Origin {
      * @return correct formatted origin
      */
     public Origin changeToCorrectOrigin(String origin) {
-    	ArrayList<Origin> allOrigins = new ArrayList<>();
+    	ArrayList<Origin> allOrigins = new ArrayList<Origin>();
     	for(Origin o : allOrigins) {
     		if(o.toString().equals(origin)) {
     			return o;

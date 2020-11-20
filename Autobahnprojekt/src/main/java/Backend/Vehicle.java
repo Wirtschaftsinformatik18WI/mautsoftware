@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Vehicle {
     private Origin origin;
     private String registrationNumber = new String();
-    private ArrayList<FinishedTransits> transitList = new ArrayList<>();
+    private ArrayList<FinishedTransits> transitList = new ArrayList<FinishedTransits>();
     private Position lastPos;
     private Position absolutStartPos;
     private Position acuallPos;

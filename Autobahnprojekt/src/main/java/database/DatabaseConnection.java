@@ -67,7 +67,7 @@ public class DatabaseConnection {
 		 * @return ArrayList<Vehicle> from a User
 		 */
 		public ArrayList<Vehicle> getVehicle(User user) {
-			ArrayList<Vehicle> allvehicle = new ArrayList<>();
+			ArrayList<Vehicle> allvehicle = new ArrayList<Vehicle>();
 			 Statement stmt;
 			
 			 /**
@@ -313,10 +313,11 @@ public class DatabaseConnection {
 				LocalDate firstDayOfGivenMonth = LocalDate.of(2020, month, 1);
 				LocalDate lastDayOfGivenMonth = firstDayOfGivenMonth.withDayOfMonth(firstDayOfGivenMonth.lengthOfMonth());
 				stmt = conn.createStatement();
-				String queryString = "SELECT *  FROM Public.\"finishedTransit\" WHERE vid =  ? AND startdate "
-						+ "BETWEEN " + firstDayOfGivenMonth.toString() +" AND " + lastDayOfGivenMonth; //TODO 
+				String queryString = "SELECT *  FROM Public.\"finishedTransit\" WHERE vid =  ? AND startdate BETWEEN ? AND ? ";//TODO 
 				PreparedStatement prepStmt = conn.prepareStatement(queryString);
-				prepStmt.setObject (1, vehicle.getRegistrationNumber());
+				prepStmt.setObject (1, vehicle.getVid());
+				prepStmt.setObject (2, firstDayOfGivenMonth);
+				prepStmt.setObject (3, lastDayOfGivenMonth);
 				
 				ResultSet rs = prepStmt.executeQuery();
 				
@@ -325,8 +326,8 @@ public class DatabaseConnection {
 				 */
 				while ( rs.next() ) {
 					FinishedTransits finishedTransit = new FinishedTransits(
-							new Position(rs.getString("startPosition"), rs.getDate("startdate").toLocalDate(), rs.getString("description")), rs.getDate("startdate").toLocalDate(),
-							new Position(rs.getString("endPosition"), rs.getDate("enddate").toLocalDate(),  rs.getString("description")), rs.getDate("enddate").toLocalDate(),
+							new Position(rs.getString("startPosition"), rs.getDate("startdate").toLocalDate(), " "), rs.getDate("startdate").toLocalDate(),
+							new Position(rs.getString("endPosition"), rs.getDate("enddate").toLocalDate(),  " "), rs.getDate("enddate").toLocalDate(),
 							rs.getLong("km"));
 					
 					allfinishedTransits.add(finishedTransit);
@@ -495,7 +496,7 @@ public class DatabaseConnection {
 		public void createVehicle(String description, Origin origin, String registrationNr, String email) {
 			
 			try {
-				String queryString = "INSERT INTO  Public.\"Vehicle\" (vid, cid, regnumber, email, description)" +
+				String queryString = "INSERT INTO  Public.\"Vehicle\" (vid, cid, regnumber, uid, description)" +
 						" VALUES (?, ?, ?, ?, ?)";
 				
 				System.out.println(queryString);

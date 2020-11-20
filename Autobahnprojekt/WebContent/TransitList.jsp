@@ -56,23 +56,15 @@
 		<br/>
 	</nav>
 	<p font size="3"><b>Meine Strecken </b></p>
-	<table border="1" id="AddressBookTable" class="table table-hover">
-	   <tr id="headline" class="table"> <!--  class=table makes row unselectable -->
-	      <td><b><span style=\"margin-left:2em,margin-right:2em \">Fahrzeug</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Startpunkt</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Startzeit</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Endpunkt</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Ankunftszeit</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">mautpflichtige Strecke</span></b></td>
-	   </tr>
-	   </table>
+	
 	   <% 
 	   MainMethodes mainm = new MainMethodes();
-	   ArrayList<Vehicle> allvehicleFromAUser = new ArrayList<>();
+	   ArrayList<Vehicle> allvehicleFromAUser = new ArrayList<Vehicle>();
 	   allvehicleFromAUser.addAll(database.getVehicle(currentUser)); 
-	   ArrayList<FinishedTransits> allTransitsFromVehicle= new ArrayList<>();
+	   ArrayList<FinishedTransits> allTransitsFromVehicle= new ArrayList<FinishedTransits>();
 	   for(Vehicle v: allvehicleFromAUser) {
-		   out.print(v.getDescription());
+		   out.print(v.getDescription()); 
+		   out.print("<table border=\"1\">");
 		 out.print("  <tr id=\"headline\" class=\"table\">");
 		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Startpunkt</span></b></td>");
 		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Startzeit</span></b></td>");
@@ -80,16 +72,21 @@
 		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">Ankunftszeit</span></b></td>");
 		      out.print("<td><b><span style=\"margin-left:2em,margin-right:2em \">mautflichtige Strecke</span></b></td>");
 		     out.print("</tr>");
-		   out.print("</table>");
+		   
 		   
 		   allTransitsFromVehicle.addAll(database.getAllTransitFromVehicle(v, 11));
 		   for(FinishedTransits t: allTransitsFromVehicle) {
-			   out.print("<td>" + t.getStartPosition()+ "</td>");
-			   out.print("<td>" + t.getStartDate()+ "</td>");
-			   out.print("<td>" + t.getEndPosition()+ "</td>");
-			   out.print("<td>" + t.getEndDate()+ "</td>");
-			   out.print("<td>" + Double.toString(t.getKm())+ "</td>");   
+			   out.print("<tr>");
+			   out.print("<td><span style=\"margin-left:2em,margin-right:3em \">" + t.getStartPosition()+ "</span></td>");
+			   out.print("<td><span style=\"margin-left:2em,margin-right:3em \">" + t.getStartDate()+ "</span></td>");
+			   out.print("<td><span style=\"margin-left:2em,margin-right:3em \">" + t.getEndPosition()+ "</span></td>");
+			   out.print("<td><span style=\"margin-left:2em,margin-right:3em \">" + t.getEndDate()+ "</span></td>");
+			   out.print("<td><span style=\"margin-left:2em,margin-right:3em \">" + Double.toString(t.getKm())+ "</span></td>"); 
+			   out.print("</tr>");
+			  
 	   }
+		   out.print("</table>");
+		   out.print("</br>");
 		   allTransitsFromVehicle.clear();  
 	   }
 	   

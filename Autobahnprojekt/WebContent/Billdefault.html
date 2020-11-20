@@ -3,7 +3,6 @@
 <%@ page import="database.*" %>
 <%@ page import ="java.util.ArrayList"%>
 <%@ page import ="java.util.List"%>
-<% //@ page import ="static org.apache.commons.lang.StringEscapeUtils.escapeHtml" %>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -14,7 +13,7 @@
 </head>
 <body>
 <header>
-    <a class="ribbon" tabindex="-1" title="zurück zur Startseite!" href="Start.jsp">
+    <a class="ribbon" tabindex="-1" title="zurÃ¼ck zur Startseite!" href="Start.jsp">
 	   <img src="logotransparent.png" alt="Logo" style="width:120px;height:100px;float:left;"> 
 	   <h1 id="headline">Mautilus 18</h1>
        <p>Mercurius IT GmbH</span></p>
@@ -22,7 +21,8 @@
 </header>
 
 <main>
-<%
+
+	<%
 	session.getAttribute("username");
 	System.out.println(session.getAttribute("username"));
 	DatabaseConnection database = new DatabaseConnection();
@@ -55,45 +55,7 @@
 		</table>
 		<br/>
 	</nav>
-	<p font size="3"><b>Meine Fahrzeuge </b></p>
-	<table border="1" id="AddressBookTable" class="table table-hover">
-	   <tr id="headline" class="table"> <!--  class=table makes row unselectable -->
-	      <td><b><span style=\"margin-left:2em,margin-right:2em \">Beschreibung</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Landeszeichen</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Kennzeichen</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Letzte Position</span></b></td>
-	      <td><b><span style=\"margin-left:2em,margin-right:2em\">Aktuelle Position</span></b></td>
-	   </tr>
-	   
-	   <% 
-	   List<Vehicle> vehicles = database.getVehicle(currentUser);
-	    
-		for(Vehicle v: vehicles) {
-			out.print("<tr>");
-			   out.print("<td>" + v.getDescription()+ "</td>");
-			   out.print("<td>" + v.getOrigin().toString()+ "</td>");
-			   out.print("<td>" + v.getRegistrationNumber()+ "</td>");
-			   out.print("<td>" + v.getLastPos().toString()+ "</td>");
-			   out.print("<td>" + v.getAcuallPos().toString()+ "</td>");
-			   //out.print("<td>" + Double.toString(v.getKm())+ "</td>");   
-			   out.print("</tr>");
-	  }
-	 
-	  %> 
-	</table>
-	 <%
-	 out.print("<form action=\"AddVehicle.jsp\"?email="+currentUser.geteMail() +"method=\"post\"><br/>");
-	 %>
-	<!--  <form action="AddVehicle.jsp" method="post"><br/> -->	
-		Beschreibung:<input type="text" name="description"><br/>
-		Länderkennzeichen:<input type="text" name="origin"> <br/>
-		Kennzeichen:<input type="text" name="regnumber"> <br/>
-		<% 
-		out.print("<input type=\"hidden\" name=\"email\" value=\""+ currentUser.geteMail() +  "\"> <br/>");
-		%>
-		 <input type="submit" value="Hinzufügen">
-		  </form> 
-	
+	Rechnung wird versandt...
 	</section>
 	</main>
 	</body>
